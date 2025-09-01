@@ -1,75 +1,205 @@
-// server.js
-
-// 1. Importation des modules nécessaires
 const express = require('express');
+const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const session = require('express-session');
+const multer = require('multer');
 const path = require('path');
-require('dotenv').config(); // Charge les variables d'environnement depuis le fichier .env
+const fs = require('fs');
+require('dotenv').config();
 
-// 2. Initialisation de l'application Express
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// 3. Middlewares pour servir les fichiers statiques et parser les données du formulaire
-// Sert les fichiers (HTML, CSS, JS) du dossier 'public'
-app.use(express.static(path.join(__dirname, 'public')));
-// Permet de lire les données envoyées par le formulaire au format URL-encoded
-app.use(express.urlencoded({ extended: true }));
-// Permet de lire les données au format JSON
+// ---- Middlewares ----
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
+// ---- Configuration de la session (Version corrigée pour le déploiement) ----
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'une_cle_secrete_par_defaut',
+    resave: false,
+    saveUninitialized: true,
+    // En production (HTTPS), le cookie doit être sécurisé.
+    cookie: { secure: process.env.NODE_ENV === 'production' } 
+}));
+
+// ---- Configuration de Multer pour l'upload de fichiers ----
+const storage = multer.diskStorage({
+    destination: './public/images/realisations',
+    filename: function(req, file, cb){
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage }).fields([
+    { name: 'photo', maxCount: 1 },
+    { name: 'photo_avant', maxCount: 1 },
+    { name: 'photo_apres', maxCount: 1 }
+]);
+
+// ---- Chemin vers notre "base de données" JSON ----
+const photosDbPath = path.join(__dirname, 'photos.json');
+const uploadDir = path.join(__dirname, 'public', 'images', 'realisations');
 
 
-// 4. Création de la route pour gérer la soumission du formulaire
+// Assurer que le dossier d'upload et le fichier JSON existent
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+if (!fs.existsSync(photosDbPath)) fs.writeFileSync(photosDbPath, '[]');
+
+// ---- Middleware pour protéger les routes admin ----
+const isAuthenticated = (req, res, next) => {
+    if (req.session.user) {
+        return next();
+    }
+    res.status(401).send('Accès non autorisé');
+};
+
+// ---- Routes API publiques ----
+app.get('/api/photos', (req, res) => {
+    fs.readFile(photosDbPath, (err, data) => {
+        if (err) return res.status(500).send('Erreur serveur');
+        let photos = JSON.parse(data.toString() || '[]');
+        if (req.query.featured) {
+            photos = photos.filter(p => p.isFeatured);
+        }
+        res.json(photos);
+    });
+});
+
 app.post('/send-email', (req, res) => {
-    // Récupération des données du corps de la requête (envoyées par le script.js)
-    const { name, email, phone, address, "property-type": propertyType, "project-type": projectType, message } = req.body;
+    const { nom, prenom, telephone, email, message } = req.body;
 
-    // 5. Configuration du transporteur Nodemailer
-    // ATTENTION : Utilisez un service d'e-mail transactionnel (SendGrid, Mailgun) en production
-    // Pour le développement, vous pouvez utiliser un compte Gmail avec un "mot de passe d'application"
     const transporter = nodemailer.createTransport({
-        service: 'gmail', // ou un autre service SMTP
+        service: 'gmail',
         auth: {
-            user: process.env.EMAIL_USER, // Votre adresse e-mail dans le .env
-            pass: process.env.EMAIL_PASS  // Votre mot de passe d'application dans le .env
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
         }
     });
 
-    // 6. Définition du contenu de l'e-mail
     const mailOptions = {
-        from: `"${name}" <${email}>`,
-        to: process.env.RECIPIENT_EMAIL, // L'e-mail qui recevra les demandes
-        subject: `Nouvelle demande de devis de ${name}`,
-        html: `
-            <h2>Nouvelle demande de contact depuis le site web</h2>
-            <p><strong>Nom :</strong> ${name}</p>
-            <p><strong>Email :</strong> ${email}</p>
-            <p><strong>Téléphone :</strong> ${phone || 'Non fourni'}</p>
-            <p><strong>Adresse du chantier :</strong> ${address || 'Non fournie'}</p>
-            <p><strong>Type de bien :</strong> ${propertyType}</p>
-            <p><strong>Type de projet :</strong> ${projectType}</p>
-            <hr>
-            <h3>Message :</h3>
-            <p>${message}</p>
-        `
+        from: `"${nom} ${prenom}" <${email}>`,
+        to: 'dylan.pimont18@gmail.com',
+        subject: 'Nouveau message depuis le formulaire de contact',
+        text: `Vous avez reçu un nouveau message de :
+        Nom: ${nom}
+        Prénom: ${prenom}
+        Téléphone: ${telephone}
+        Email: ${email}
+        
+        Message:
+        ${message}`
     };
 
-    // 7. Envoi de l'e-mail
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.error(error);
-            // En cas d'erreur, on envoie une réponse avec un statut 500
-            res.status(500).json({ message: "Oops! Une erreur s'est produite lors de l'envoi." });
+            console.log(error);
+            res.status(500).send('Une erreur est survenue lors de l\'envoi de l\'e-mail.');
         } else {
             console.log('Email sent: ' + info.response);
-            // Si tout s'est bien passé, on envoie une réponse de succès
-            res.status(200).json({ message: "Merci pour votre message ! Je vous recontacterai bientôt." });
+            res.status(200).send('E-mail envoyé avec succès !');
         }
     });
 });
 
+// ---- Routes d'Administration ----
+app.post('/admin/login', (req, res) => {
+    const { username, password } = req.body;
+    if (username === process.env.ADMIN_USER && password === process.env.ADMIN_PASS) {
+        req.session.user = { username: username };
+        res.status(200).json({ message: 'Connexion réussie' });
+    } else {
+        res.status(401).json({ message: 'Identifiants incorrects' });
+    }
+});
 
-// 8. Démarrage du serveur
-app.listen(PORT, () => {
-    console.log(`Serveur démarré sur http://localhost:${PORT}`);
+app.post('/admin/logout', (req, res) => {
+    req.session.destroy();
+    res.status(200).send('Déconnexion réussie');
+});
+
+// Route d'upload
+app.post('/api/upload', isAuthenticated, (req, res) => {
+    upload(req, res, (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        
+        const photos = JSON.parse(fs.readFileSync(photosDbPath));
+        const description = req.body.description || '';
+        let newEntry;
+
+        if (req.files['photo']) {
+            newEntry = {
+                id: Date.now(),
+                type: 'single',
+                filename: req.files['photo'][0].filename,
+                description: description,
+                isFeatured: false
+            };
+        } else if (req.files['photo_avant'] && req.files['photo_apres']) {
+            newEntry = {
+                id: Date.now(),
+                type: 'before-after',
+                filename_before: req.files['photo_avant'][0].filename,
+                filename_after: req.files['photo_apres'][0].filename,
+                description: description,
+                isFeatured: false
+            };
+        } else {
+            return res.status(400).json({ error: "Fichiers manquants." });
+        }
+        
+        photos.push(newEntry);
+        fs.writeFileSync(photosDbPath, JSON.stringify(photos, null, 2));
+        res.json(newEntry);
+    });
+});
+
+// Route de suppression
+app.post('/api/delete/:id', isAuthenticated, (req, res) => {
+    const id = parseInt(req.params.id, 10);
+    let photos = JSON.parse(fs.readFileSync(photosDbPath));
+    const photoToDelete = photos.find(p => p.id === id);
+
+    if (!photoToDelete) return res.status(404).send('Photo non trouvée');
+
+    try {
+        if (photoToDelete.type === 'single') {
+            const filePath = path.join(uploadDir, photoToDelete.filename);
+            if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+        } else {
+            const filePathBefore = path.join(uploadDir, photoToDelete.filename_before);
+            if (fs.existsSync(filePathBefore)) fs.unlinkSync(filePathBefore);
+            
+            const filePathAfter = path.join(uploadDir, photoToDelete.filename_after);
+            if (fs.existsSync(filePathAfter)) fs.unlinkSync(filePathAfter);
+        }
+    } catch (e) {
+        console.error("Erreur suppression fichier:", e);
+    }
+    
+    const updatedPhotos = photos.filter(photo => photo.id !== id);
+    fs.writeFileSync(photosDbPath, JSON.stringify(updatedPhotos, null, 2));
+    res.status(200).send('Réalisation supprimée');
+});
+
+// Route pour mettre à jour isFeatured
+app.post('/api/photos/:id/feature', isAuthenticated, (req, res) => {
+    const id = parseInt(req.params.id, 10);
+    const { isFeatured } = req.body;
+
+    let photos = JSON.parse(fs.readFileSync(photosDbPath));
+    const photoIndex = photos.findIndex(p => p.id === id);
+
+    if (photoIndex === -1) return res.status(404).send('Photo non trouvée');
+
+    photos[photoIndex].isFeatured = isFeatured;
+    fs.writeFileSync(photosDbPath, JSON.stringify(photos, null, 2));
+    res.status(200).json(photos[photoIndex]);
+});
+
+// ---- Démarrage du serveur (Version corrigée pour le déploiement) ----
+// L'hébergeur fournit le port via process.env.PORT. En local, on garde 3000.
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Serveur en écoute sur http://localhost:${port}`);
 });

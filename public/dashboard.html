@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Lato&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="dashboard-header">
+            <h2>Gestion des réalisations</h2>
+            <button id="logout-btn" class="button">Déconnexion</button>
+        </header>
+
+        <div class="dashboard-section">
+            <h3>Ajouter une nouvelle réalisation</h3>
+            <form id="uploadForm" enctype="multipart/form-data">
+                
+                <div class="form-group">
+                    <label>Type de réalisation :</label>
+                    <div>
+                        <input type="radio" id="typeSingle" name="uploadType" value="single" checked>
+                        <label for="typeSingle">Réalisation simple</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="typeBeforeAfter" name="uploadType" value="before-after">
+                        <label for="typeBeforeAfter">Avant / Après</label>
+                    </div>
+                </div>
+
+                <div id="singlePhoto-fields">
+                    <div class="form-group">
+                        <label for="photo">Photo unique :</label>
+                        <input type="file" id="photo" name="photo" accept="image/*">
+                    </div>
+                </div>
+
+                <div id="beforeAfter-fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="photo_avant">Photo AVANT :</label>
+                        <input type="file" id="photo_avant" name="photo_avant" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="photo_apres">Photo APRÈS :</label>
+                        <input type="file" id="photo_apres" name="photo_apres" accept="image/*">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description :</label>
+                    <textarea id="description" name="description" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="button">Ajouter la réalisation</button>
+            </form>
+        </div>
+
+        <div class="dashboard-section">
+            <h3>Toutes les réalisations</h3>
+            <div id="admin-gallery" class="dashboard-gallery">
+                </div>
+        </div>
+    </div>
+    <script src="dashboard.js"></script>
+</body>
+</html>

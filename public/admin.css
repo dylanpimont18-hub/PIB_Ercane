@@ -1,0 +1,191 @@
+/* ---- Styles Généraux ---- */
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+    font-family: 'Poppins', sans-serif;
+    color: #2c3e50;
+}
+
+.button {
+    background-color: #D46A4B;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #D46A4B;
+}
+
+/* ---- Header du Dashboard ---- */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+/* ---- Sections du Dashboard ---- */
+.dashboard-section {
+    margin-bottom: 40px;
+}
+
+/* ---- Formulaire ---- */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="file"],
+textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* ---- Galerie d'administration ---- */
+.dashboard-gallery {
+    display: grid;
+    /* Crée une grille de 4 colonnes égales */
+    grid-template-columns: repeat(4, 1fr);
+    /* Définit l'espace entre les éléments de la grille */
+    gap: 20px;
+}
+
+.dashboard-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-item img {
+    /* Assure que l'image ne dépasse pas son conteneur */
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    object-fit: cover; /* Assure que l'image couvre l'espace sans se déformer */
+    aspect-ratio: 1 / 1; /* Force un format carré pour un affichage uniforme */
+}
+
+/* Style pour les images Avant/Après */
+.dashboard-ba {
+    display: flex;
+    gap: 5px;
+    aspect-ratio: 2 / 1; /* Ratio pour les conteneurs d'images doubles */
+}
+
+.dashboard-ba img {
+    width: 50%;
+    aspect-ratio: 1 / 1; /* Chaque image est carrée */
+}
+
+
+.dashboard-item p {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #555;
+    flex-grow: 1;
+}
+
+.dashboard-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.feature-label {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.feature-cb {
+    margin-right: 5px;
+}
+
+/* ---- Pour les écrans plus petits (tablettes, etc.) ---- */
+@media (max-width: 992px) {
+    .dashboard-gallery {
+        /* Passe à 3 colonnes */
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ---- Pour les écrans encore plus petits (mobiles) ---- */
+@media (max-width: 768px) {
+    .dashboard-gallery {
+        /* Passe à 2 colonnes */
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .container {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-gallery {
+        /* Passe à 1 colonne */
+        grid-template-columns: 1fr;
+    }
+}

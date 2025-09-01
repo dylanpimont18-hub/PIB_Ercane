@@ -11,9 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
         initStickyHeader();
         initMobileMenu();
         initScrollAnimations();
-        initContactForm(); // C'est cette fonction qui est modifiée
+        initContactForm();
         initFloatingButtonObserver();
         initFancybox();
+        // On charge la galerie de la page d'accueil avec uniquement les photos mises en avant
+        loadFeaturedGallery();
     };
 
     /**
@@ -82,28 +84,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const handleSubmit = async (event) => {
             event.preventDefault();
             const data = new FormData(event.target);
-            const jsonData = Object.fromEntries(data.entries()); // Convertir FormData en objet JSON
+            const jsonData = Object.fromEntries(data.entries());
 
             try {
                 const response = await fetch(event.target.action, {
                     method: form.method,
-                    // On envoie les données en JSON
                     body: JSON.stringify(jsonData),
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json' // Préciser qu'on envoie du JSON
+                        'Content-Type': 'application/json'
                     }
                 });
 
-                // On récupère la réponse JSON du serveur
                 const responseData = await response.json();
 
                 if (response.ok) {
-                    status.textContent = responseData.message; // Message de succès du serveur
+                    status.textContent = responseData.message;
                     status.style.color = 'green';
                     form.reset();
                 } else {
-                    status.textContent = responseData.message || "Oops! Une erreur s'est produite."; // Message d'erreur du serveur
+                    status.textContent = responseData.message || "Oops! Une erreur s'est produite.";
                     status.style.color = 'red';
                 }
             } catch (error) {
@@ -143,6 +143,72 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Options personnalisées si besoin
             });
         }
+    };
+
+    /**
+     * Charge uniquement les réalisations mises en avant sur la page d'accueil.
+     */
+    const loadFeaturedGallery = () => {
+        const galleryContainer = document.getElementById('realisations-gallery');
+        if (!galleryContainer) return;
+
+        // C'est cette ligne qui fait la magie : elle demande uniquement les photos "featured"
+        fetch('/api/photos?featured=true')
+            .then(response => response.json())
+            .then(photosToShow => {
+                if (photosToShow.length === 0) {
+                    galleryContainer.innerHTML = '<p>Aucune réalisation à afficher pour le moment.</p>';
+                    return;
+                }
+
+                galleryContainer.innerHTML = ''; // Vider le conteneur
+
+                photosToShow.forEach(photo => {
+                    let galleryItemHTML = '';
+                    const descriptionHTML = `<div class="gallery__caption"><span class="gallery__caption-title">${photo.description || ''}</span></div>`;
+
+                    if (photo.type === 'single') {
+                        galleryItemHTML = `
+                            <div class="gallery__item">
+                                <a href="/images/realisations/${photo.filename}" data-fancybox="gallery" data-caption="${photo.description || ''}">
+                                    <img src="/images/realisations/${photo.filename}" alt="Réalisation" class="gallery__image">
+                                </a>
+                                ${descriptionHTML}
+                            </div>`;
+                    } else if (photo.type === 'before-after') {
+                        galleryItemHTML = `
+                            <div class="gallery__item">
+                                <div class="before-after__container">
+                                    <div class="before-after__image-wrapper">
+                                        <span class="before-after__label">AVANT</span>
+                                        <a href="/images/realisations/${photo.filename_before}" data-fancybox="gallery-${photo.id}" data-caption="Avant: ${photo.description || ''}">
+                                            <img src="/images/realisations/${photo.filename_before}" alt="Avant" class="gallery__image">
+                                        </a>
+                                    </div>
+                                    <div class="before-after__image-wrapper">
+                                        <span class="before-after__label">APRÈS</span>
+                                        <a href="/images/realisations/${photo.filename_after}" data-fancybox="gallery-${photo.id}" data-caption="Après: ${photo.description || ''}">
+                                            <img src="/images/realisations/${photo.filename_after}" alt="Après" class="gallery__image">
+                                        </a>
+                                    </div>
+                                </div>
+                                ${descriptionHTML}
+                            </div>`;
+                    }
+                    galleryContainer.innerHTML += galleryItemHTML;
+                });
+
+                // Ré-initialiser Fancybox après avoir ajouté les nouveaux éléments
+                if (typeof Fancybox !== 'undefined') {
+                    Fancybox.bind("[data-fancybox]", {
+                        // Options
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Erreur de chargement des photos:', error);
+                galleryContainer.innerHTML = '<p>Impossible de charger les réalisations.</p>';
+            });
     };
 
     // Lance l'application
