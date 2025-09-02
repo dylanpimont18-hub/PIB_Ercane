@@ -110,6 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Fichier public/dashboard.js corrigé
+
     gallery.addEventListener('change', async (e) => {
         const id = e.target.dataset.id;
         if (e.target.classList.contains('feature-cb')) {
@@ -119,9 +121,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isFeatured })
             });
-        }
-    });
-
-    // Chargement initial
-    loadPhotos();
+            loadPhotos(); // <== AJOUTEZ CETTE LIGNE
+    }
 });
