@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
         initContactForm();
         initFloatingButtonObserver();
         initFancybox();
-        // On charge la galerie de la page d'accueil avec uniquement les photos mises en avant
         loadFeaturedGallery();
     };
 
@@ -73,7 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * Gère la soumission asynchrone du formulaire de contact vers le serveur Node.js.
+     * Gère la soumission asynchrone du formulaire de contact.
+     * AMÉLIORATION : Construit correctement l'objet JSON pour le serveur.
      */
     const initContactForm = () => {
         const form = document.getElementById('contact-form');
@@ -81,21 +81,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const status = document.getElementById('form-status');
 
-        const handleSubmit = async (event) => {
+        form.addEventListener("submit", async (event) => {
             event.preventDefault();
             const data = new FormData(event.target);
             
-            // Correction pour envoyer les données au format attendu par le serveur
-            const jsonData = {};
-            data.forEach((value, key) => {
-                // Remplace les clés pour correspondre à ce que le serveur attend
-                if (key === 'name') jsonData['nom'] = value.split(' ')[1] || '';
-                if (key === 'name') jsonData['prenom'] = value.split(' ')[0] || '';
-                if (key === 'phone') jsonData['telephone'] = value;
-                if (key === 'email') jsonData['email'] = value;
-                if (key === 'message') jsonData['message'] = value;
-            });
-
+            // Correction pour correspondre aux attentes du serveur (nom, prenom, etc.)
+            const nameParts = (data.get('name') || '').split(' ');
+            const jsonData = {
+                prenom: nameParts[0] || '',
+                nom: nameParts.slice(1).join(' ') || '',
+                email: data.get('email'),
+                telephone: data.get('phone'),
+                message: data.get('message')
+                // Les autres champs du formulaire peuvent être ajoutés ici si nécessaire
+            };
 
             try {
                 const response = await fetch(event.target.action, {
@@ -107,21 +106,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
+                const responseData = await response.json();
+
                 if (response.ok) {
-                    status.textContent = 'E-mail envoyé avec succès !';
+                    status.textContent = responseData.message || 'E-mail envoyé avec succès !';
                     status.style.color = 'green';
                     form.reset();
                 } else {
-                    status.textContent = "Oops! Une erreur s'est produite.";
+                    status.textContent = responseData.error || "Oops! Une erreur s'est produite.";
                     status.style.color = 'red';
                 }
             } catch (error) {
                 status.textContent = "Oops! Une erreur de connexion s'est produite.";
                 status.style.color = 'red';
             }
-        };
-
-        form.addEventListener("submit", handleSubmit);
+        });
     };
 
     /**
@@ -155,70 +154,72 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * Charge uniquement les réalisations mises en avant sur la page d'accueil.
+     * CORRIGÉ : Charge les réalisations depuis l'API et utilise les URL complètes de Cloudinary.
      */
-    const loadFeaturedGallery = () => {
+    const loadFeaturedGallery = async () => {
         const galleryContainer = document.getElementById('realisations-gallery');
         if (!galleryContainer) return;
 
-        // C'est cette ligne qui fait la magie : elle demande uniquement les photos "featured"
-        fetch('/api/photos?featured=true')
-            .then(response => response.json())
-            .then(photosToShow => {
-                if (photosToShow.length === 0) {
-                    galleryContainer.innerHTML = '<p>Aucune réalisation à afficher pour le moment.</p>';
-                    return;
-                }
+        try {
+            // Demande uniquement les photos mises en avant ("featured")
+            const response = await fetch('/api/photos?featured=true');
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+            
+            const photosToShow = await response.json();
 
-                galleryContainer.innerHTML = ''; // Vider le conteneur
+            if (photosToShow.length === 0) {
+                galleryContainer.innerHTML = '<p>Aucune réalisation à afficher pour le moment.</p>';
+                return;
+            }
 
-                photosToShow.forEach(photo => {
-                    let galleryItemHTML = '';
-                    const descriptionHTML = `<div class="gallery__caption"><span class="gallery__caption-title">${photo.description || ''}</span></div>`;
-                    
-                    // MODIFICATION: Changer le chemin des images
-                    if (photo.type === 'single') {
-                        galleryItemHTML = `
-                            <div class="gallery__item">
-                                <a href="/uploads/${photo.filename}" data-fancybox="gallery" data-caption="${photo.description || ''}">
-                                    <img src="/uploads/${photo.filename}" alt="Réalisation" class="gallery__image">
-                                </a>
-                                ${descriptionHTML}
-                            </div>`;
-                    } else if (photo.type === 'before-after') {
-                        galleryItemHTML = `
-                            <div class="gallery__item">
-                                <div class="before-after__container">
-                                    <div class="before-after__image-wrapper">
-                                        <span class="before-after__label">AVANT</span>
-                                        <a href="/uploads/${photo.filename_before}" data-fancybox="gallery-${photo.id}" data-caption="Avant: ${photo.description || ''}">
-                                            <img src="/uploads/${photo.filename_before}" alt="Avant" class="gallery__image">
-                                        </a>
-                                    </div>
-                                    <div class="before-after__image-wrapper">
-                                        <span class="before-after__label">APRÈS</span>
-                                        <a href="/uploads/${photo.filename_after}" data-fancybox="gallery-${photo.id}" data-caption="Après: ${photo.description || ''}">
-                                            <img src="/uploads/${photo.filename_after}" alt="Après" class="gallery__image">
-                                        </a>
-                                    </div>
+            galleryContainer.innerHTML = ''; // Vider le conteneur pour éviter les doublons
+
+            photosToShow.forEach(photo => {
+                const descriptionHTML = `<div class="gallery__caption"><span class="gallery__caption-title">${photo.description || ''}</span></div>`;
+                let galleryItemHTML = '';
+
+                if (photo.type === 'single') {
+                    galleryItemHTML = `
+                        <div class="gallery__item">
+                            <a href="${photo.image_url_single}" data-fancybox="gallery" data-caption="${photo.description || ''}">
+                                <img src="${photo.image_url_single}" alt="Réalisation" class="gallery__image">
+                            </a>
+                            ${descriptionHTML}
+                        </div>`;
+                } else if (photo.type === 'before-after') {
+                    galleryItemHTML = `
+                        <div class="gallery__item">
+                            <div class="before-after__container">
+                                <div class="before-after__image-wrapper">
+                                    <span class="before-after__label">AVANT</span>
+                                    <a href="${photo.image_url_before}" data-fancybox="gallery-${photo.id}" data-caption="Avant: ${photo.description || ''}">
+                                        <img src="${photo.image_url_before}" alt="Avant" class="gallery__image">
+                                    </a>
                                 </div>
-                                ${descriptionHTML}
-                            </div>`;
-                    }
-                    galleryContainer.innerHTML += galleryItemHTML;
-                });
-
-                // Ré-initialiser Fancybox après avoir ajouté les nouveaux éléments
-                if (typeof Fancybox !== 'undefined') {
-                    Fancybox.bind("[data-fancybox]", {
-                        // Options
-                    });
+                                <div class="before-after__image-wrapper">
+                                    <span class="before-after__label">APRÈS</span>
+                                    <a href="${photo.image_url_after}" data-fancybox="gallery-${photo.id}" data-caption="Après: ${photo.description || ''}">
+                                        <img src="${photo.image_url_after}" alt="Après" class="gallery__image">
+                                    </a>
+                                </div>
+                            </div>
+                            ${descriptionHTML}
+                        </div>`;
                 }
-            })
-            .catch(error => {
-                console.error('Erreur de chargement des photos:', error);
-                galleryContainer.innerHTML = '<p>Impossible de charger les réalisations.</p>';
+                galleryContainer.innerHTML += galleryItemHTML;
             });
+
+            // Ré-initialiser Fancybox après avoir ajouté les nouveaux éléments
+            if (typeof Fancybox !== 'undefined') {
+                Fancybox.unbind(galleryContainer); // D'abord on détache les anciens gestionnaires
+                Fancybox.bind(galleryContainer, "[data-fancybox]", { /* options */ }); // Puis on les rattache
+            }
+        } catch (error) {
+            console.error('Erreur de chargement des photos:', error);
+            galleryContainer.innerHTML = '<p style="color:red;">Impossible de charger les réalisations.</p>';
+        }
     };
 
     // Lance l'application
