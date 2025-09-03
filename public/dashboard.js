@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const singlePhotoFields = document.getElementById('singlePhoto-fields');
     const beforeAfterFields = document.getElementById('beforeAfter-fields');
     const submitButton = uploadForm.querySelector('button[type="submit"]');
-    const formStatus = document.getElementById('form-status'); // Élément pour les messages
+    const formStatus = document.getElementById('form-status');
 
     // --- Fonctions utilitaires ---
     const showStatusMessage = (message, isError = false) => {
@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData(uploadForm);
         const uploadType = formData.get('uploadType');
 
-        // Valider que les bons fichiers sont présents
         if ((uploadType === 'single' && !formData.get('photo').size) ||
             (uploadType === 'before-after' && (!formData.get('photo_avant').size || !formData.get('photo_apres').size))) {
             return showStatusMessage('Veuillez sélectionner les fichiers requis.', true);
@@ -47,7 +46,9 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch('/api/upload', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                // LA CORRECTION EST ICI : On inclut les informations de session (cookies)
+                credentials: 'same-origin' 
             });
 
             if (response.ok) {
@@ -121,8 +122,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (confirm('Voulez-vous vraiment supprimer cette réalisation ?')) {
                 e.target.textContent = '...';
                 e.target.disabled = true;
-                await fetch(`/api/delete/${id}`, { method: 'POST' });
-                item.remove(); // Suppression optimiste de l'UI
+                // On ajoute 'credentials' ici aussi pour la suppression
+                await fetch(`/api/delete/${id}`, { method: 'POST', credentials: 'same-origin' });
+                item.remove();
             }
         }
     });
@@ -133,13 +135,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const id = item.dataset.id;
         const isFeatured = e.target.checked;
+        // Et ici pour la mise en avant
         await fetch(`/api/photos/${id}/feature`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isFeatured })
+            body: JSON.stringify({ isFeatured }),
+            credentials: 'same-origin'
         });
     });
 
-    // Charger les photos au démarrage
     loadPhotos();
 });
