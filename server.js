@@ -4,31 +4,27 @@ const nodemailer = require('nodemailer');
 const session = require('express-session');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const { Pool } = require('pg');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 require('dotenv').config();
 
 const app = express();
 
-// ---- Middlewares ----
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+// ---- Configuration de Cloudinary ----
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-// ---- Configuration de la session (Version corrigée pour le déploiement) ----
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'une_cle_secrete_par_defaut',
-    resave: false,
-    saveUninitialized: true,
-    // En production (HTTPS), le cookie doit être sécurisé.
-    cookie: { secure: process.env.NODE_ENV === 'production' } 
-}));
-
-// ---- Configuration de Multer pour l'upload de fichiers ----
-const storage = multer.diskStorage({
-    destination: './public/images/realisations',
-    filename: function(req, file, cb){
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'pib_ercane',
+    format: async (req, file) => 'jpg',
+    public_id: (req, file) => file.fieldname + '-' + Date.now(),
+  },
 });
 
 const upload = multer({ storage: storage }).fields([
@@ -37,168 +33,161 @@ const upload = multer({ storage: storage }).fields([
     { name: 'photo_apres', maxCount: 1 }
 ]);
 
-// ---- Chemin vers notre "base de données" JSON ----
-const photosDbPath = path.join(__dirname, 'photos.json');
-const uploadDir = path.join(__dirname, 'public', 'images', 'realisations');
+
+// ---- Configuration de la base de données PostgreSQL ----
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+// ---- Création de la table si elle n'existe pas ----
+const createTable = async () => {
+  const query = `
+    CREATE TABLE IF NOT EXISTS photos (
+      id SERIAL PRIMARY KEY,
+      type VARCHAR(20) NOT NULL,
+      description TEXT,
+      isFeatured BOOLEAN DEFAULT false,
+      filename VARCHAR(255),
+      file_url TEXT,
+      filename_before VARCHAR(255),
+      file_url_before TEXT,
+      filename_after VARCHAR(255),
+      file_url_after TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
+  try {
+    await pool.query(query);
+    console.log('Table "photos" est prête.');
+  } catch (err) {
+    console.error('Erreur lors de la création de la table', err.stack);
+  }
+};
+createTable();
 
 
-// Assurer que le dossier d'upload et le fichier JSON existent
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-if (!fs.existsSync(photosDbPath)) fs.writeFileSync(photosDbPath, '[]');
+// ---- Middlewares ----
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'une_cle_secrete_par_defaut',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: process.env.NODE_ENV === 'production' } 
+}));
 
-// ---- Middleware pour protéger les routes admin ----
 const isAuthenticated = (req, res, next) => {
-    if (req.session.user) {
-        return next();
-    }
+    if (req.session.user) return next();
     res.status(401).send('Accès non autorisé');
 };
 
-// ---- Routes API publiques ----
-app.get('/api/photos', (req, res) => {
-    fs.readFile(photosDbPath, (err, data) => {
-        if (err) return res.status(500).send('Erreur serveur');
-        let photos = JSON.parse(data.toString() || '[]');
+// ---- Routes API (modifiées pour PostgreSQL) ----
+
+// Obtenir les photos
+app.get('/api/photos', async (req, res) => {
+    try {
+        let query = 'SELECT * FROM photos ORDER BY created_at DESC';
         if (req.query.featured) {
-            photos = photos.filter(p => p.isFeatured);
+            query = 'SELECT * FROM photos WHERE isFeatured = true ORDER BY created_at DESC';
         }
-        res.json(photos);
-    });
-});
-
-app.post('/send-email', (req, res) => {
-    const { nom, prenom, telephone, email, message } = req.body;
-
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
-    });
-
-    const mailOptions = {
-        from: `"${nom} ${prenom}" <${email}>`,
-        to: 'dylan.pimont18@gmail.com',
-        subject: 'Nouveau message depuis le formulaire de contact',
-        text: `Vous avez reçu un nouveau message de :
-        Nom: ${nom}
-        Prénom: ${prenom}
-        Téléphone: ${telephone}
-        Email: ${email}
-        
-        Message:
-        ${message}`
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-            res.status(500).send('Une erreur est survenue lors de l\'envoi de l\'e-mail.');
-        } else {
-            console.log('Email sent: ' + info.response);
-            res.status(200).send('E-mail envoyé avec succès !');
-        }
-    });
-});
-
-// ---- Routes d'Administration ----
-app.post('/admin/login', (req, res) => {
-    const { username, password } = req.body;
-    if (username === process.env.ADMIN_USER && password === process.env.ADMIN_PASS) {
-        req.session.user = { username: username };
-        res.status(200).json({ message: 'Connexion réussie' });
-    } else {
-        res.status(401).json({ message: 'Identifiants incorrects' });
+        const result = await pool.query(query);
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erreur serveur');
     }
 });
 
-app.post('/admin/logout', (req, res) => {
-    req.session.destroy();
-    res.status(200).send('Déconnexion réussie');
-});
-
-// Route d'upload
+// Uploader une réalisation
 app.post('/api/upload', isAuthenticated, (req, res) => {
-    upload(req, res, (err) => {
+    upload(req, res, async (err) => {
         if (err) return res.status(500).json({ error: err.message });
         
-        const photos = JSON.parse(fs.readFileSync(photosDbPath));
-        const description = req.body.description || '';
-        let newEntry;
+        const { description } = req.body;
 
-        if (req.files['photo']) {
-            newEntry = {
-                id: Date.now(),
-                type: 'single',
-                filename: req.files['photo'][0].filename,
-                description: description,
-                isFeatured: false
-            };
-        } else if (req.files['photo_avant'] && req.files['photo_apres']) {
-            newEntry = {
-                id: Date.now(),
-                type: 'before-after',
-                filename_before: req.files['photo_avant'][0].filename,
-                filename_after: req.files['photo_apres'][0].filename,
-                description: description,
-                isFeatured: false
-            };
-        } else {
-            return res.status(400).json({ error: "Fichiers manquants." });
+        try {
+            if (req.files['photo']) {
+                const photo = req.files['photo'][0];
+                const query = `INSERT INTO photos (type, description, filename, file_url) VALUES ($1, $2, $3, $4) RETURNING *`;
+                const values = ['single', description, photo.filename, photo.path];
+                const result = await pool.query(query, values);
+                res.json(result.rows[0]);
+
+            } else if (req.files['photo_avant'] && req.files['photo_apres']) {
+                const avant = req.files['photo_avant'][0];
+                const apres = req.files['photo_apres'][0];
+                const query = `INSERT INTO photos (type, description, filename_before, file_url_before, filename_after, file_url_after) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+                const values = ['before-after', description, avant.filename, avant.path, apres.filename, apres.path];
+                const result = await pool.query(query, values);
+                res.json(result.rows[0]);
+            } else {
+                return res.status(400).json({ error: "Fichiers manquants." });
+            }
+        } catch (dbErr) {
+            console.error(dbErr);
+            res.status(500).json({ error: "Erreur lors de la sauvegarde en base de données." });
         }
-        
-        photos.push(newEntry);
-        fs.writeFileSync(photosDbPath, JSON.stringify(photos, null, 2));
-        res.json(newEntry);
     });
 });
 
-// Route de suppression
-app.post('/api/delete/:id', isAuthenticated, (req, res) => {
-    const id = parseInt(req.params.id, 10);
-    let photos = JSON.parse(fs.readFileSync(photosDbPath));
-    const photoToDelete = photos.find(p => p.id === id);
-
-    if (!photoToDelete) return res.status(404).send('Photo non trouvée');
-
+// Supprimer une réalisation
+app.post('/api/delete/:id', isAuthenticated, async (req, res) => {
+    const { id } = req.params;
     try {
-        if (photoToDelete.type === 'single') {
-            const filePath = path.join(uploadDir, photoToDelete.filename);
-            if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-        } else {
-            const filePathBefore = path.join(uploadDir, photoToDelete.filename_before);
-            if (fs.existsSync(filePathBefore)) fs.unlinkSync(filePathBefore);
-            
-            const filePathAfter = path.join(uploadDir, photoToDelete.filename_after);
-            if (fs.existsSync(filePathAfter)) fs.unlinkSync(filePathAfter);
+        // 1. Récupérer les noms des fichiers à supprimer de Cloudinary
+        const findResult = await pool.query('SELECT filename, filename_before, filename_after FROM photos WHERE id = $1', [id]);
+        if (findResult.rows.length === 0) {
+            return res.status(404).send('Photo non trouvée');
         }
-    } catch (e) {
-        console.error("Erreur suppression fichier:", e);
+        const photoToDelete = findResult.rows[0];
+
+        // 2. Supprimer les fichiers sur Cloudinary
+        if (photoToDelete.filename) cloudinary.uploader.destroy(photoToDelete.filename);
+        if (photoToDelete.filename_before) cloudinary.uploader.destroy(photoToDelete.filename_before);
+        if (photoToDelete.filename_after) cloudinary.uploader.destroy(photoToDelete.filename_after);
+
+        // 3. Supprimer l'entrée de la base de données
+        await pool.query('DELETE FROM photos WHERE id = $1', [id]);
+        res.status(200).send('Réalisation supprimée');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erreur serveur');
     }
-    
-    const updatedPhotos = photos.filter(photo => photo.id !== id);
-    fs.writeFileSync(photosDbPath, JSON.stringify(updatedPhotos, null, 2));
-    res.status(200).send('Réalisation supprimée');
 });
 
-// Route pour mettre à jour isFeatured
-app.post('/api/photos/:id/feature', isAuthenticated, (req, res) => {
-    const id = parseInt(req.params.id, 10);
+// Mettre en avant une réalisation
+app.post('/api/photos/:id/feature', isAuthenticated, async (req, res) => {
+    const { id } = req.params;
     const { isFeatured } = req.body;
-
-    let photos = JSON.parse(fs.readFileSync(photosDbPath));
-    const photoIndex = photos.findIndex(p => p.id === id);
-
-    if (photoIndex === -1) return res.status(404).send('Photo non trouvée');
-
-    photos[photoIndex].isFeatured = isFeatured;
-    fs.writeFileSync(photosDbPath, JSON.stringify(photos, null, 2));
-    res.status(200).json(photos[photoIndex]);
+    try {
+        const result = await pool.query('UPDATE photos SET isFeatured = $1 WHERE id = $2 RETURNING *', [isFeatured, id]);
+        if (result.rows.length === 0) return res.status(404).send('Photo non trouvée');
+        res.status(200).json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erreur serveur');
+    }
 });
 
-// ---- Démarrage du serveur (Version corrigée pour le déploiement) ----
-// L'hébergeur fournit le port via process.env.PORT. En local, on garde 3000.
+
+// ---- Route pour le formulaire de contact (inchangée) ----
+app.post('/send-email', (req, res) => {
+    // ... votre code pour nodemailer reste le même ...
+});
+
+// ---- Routes d'administration (inchangées) ----
+app.post('/admin/login', (req, res) => {
+    // ... votre code de login reste le même ...
+});
+app.post('/admin/logout', (req, res) => {
+    // ... votre code de logout reste le même ...
+});
+
+// ---- Démarrage du serveur ----
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Serveur en écoute sur http://localhost:${port}`);

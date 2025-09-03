@@ -84,7 +84,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const handleSubmit = async (event) => {
             event.preventDefault();
             const data = new FormData(event.target);
-            const jsonData = Object.fromEntries(data.entries());
+            
+            // Correction pour envoyer les données au format attendu par le serveur
+            const jsonData = {};
+            data.forEach((value, key) => {
+                // Remplace les clés pour correspondre à ce que le serveur attend
+                if (key === 'name') jsonData['nom'] = value.split(' ')[1] || '';
+                if (key === 'name') jsonData['prenom'] = value.split(' ')[0] || '';
+                if (key === 'phone') jsonData['telephone'] = value;
+                if (key === 'email') jsonData['email'] = value;
+                if (key === 'message') jsonData['message'] = value;
+            });
+
 
             try {
                 const response = await fetch(event.target.action, {
@@ -96,14 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                const responseData = await response.json();
-
                 if (response.ok) {
-                    status.textContent = responseData.message;
+                    status.textContent = 'E-mail envoyé avec succès !';
                     status.style.color = 'green';
                     form.reset();
                 } else {
-                    status.textContent = responseData.message || "Oops! Une erreur s'est produite.";
+                    status.textContent = "Oops! Une erreur s'est produite.";
                     status.style.color = 'red';
                 }
             } catch (error) {
@@ -166,12 +175,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 photosToShow.forEach(photo => {
                     let galleryItemHTML = '';
                     const descriptionHTML = `<div class="gallery__caption"><span class="gallery__caption-title">${photo.description || ''}</span></div>`;
-
+                    
+                    // MODIFICATION: Changer le chemin des images
                     if (photo.type === 'single') {
                         galleryItemHTML = `
                             <div class="gallery__item">
-                                <a href="/images/realisations/${photo.filename}" data-fancybox="gallery" data-caption="${photo.description || ''}">
-                                    <img src="/images/realisations/${photo.filename}" alt="Réalisation" class="gallery__image">
+                                <a href="/uploads/${photo.filename}" data-fancybox="gallery" data-caption="${photo.description || ''}">
+                                    <img src="/uploads/${photo.filename}" alt="Réalisation" class="gallery__image">
                                 </a>
                                 ${descriptionHTML}
                             </div>`;
@@ -181,14 +191,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="before-after__container">
                                     <div class="before-after__image-wrapper">
                                         <span class="before-after__label">AVANT</span>
-                                        <a href="/images/realisations/${photo.filename_before}" data-fancybox="gallery-${photo.id}" data-caption="Avant: ${photo.description || ''}">
-                                            <img src="/images/realisations/${photo.filename_before}" alt="Avant" class="gallery__image">
+                                        <a href="/uploads/${photo.filename_before}" data-fancybox="gallery-${photo.id}" data-caption="Avant: ${photo.description || ''}">
+                                            <img src="/uploads/${photo.filename_before}" alt="Avant" class="gallery__image">
                                         </a>
                                     </div>
                                     <div class="before-after__image-wrapper">
                                         <span class="before-after__label">APRÈS</span>
-                                        <a href="/images/realisations/${photo.filename_after}" data-fancybox="gallery-${photo.id}" data-caption="Après: ${photo.description || ''}">
-                                            <img src="/images/realisations/${photo.filename_after}" alt="Après" class="gallery__image">
+                                        <a href="/uploads/${photo.filename_after}" data-fancybox="gallery-${photo.id}" data-caption="Après: ${photo.description || ''}">
+                                            <img src="/uploads/${photo.filename_after}" alt="Après" class="gallery__image">
                                         </a>
                                     </div>
                                 </div>

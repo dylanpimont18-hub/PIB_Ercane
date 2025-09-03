@@ -73,13 +73,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function createPhotoElement(photo) {
         const isChecked = photo.isFeatured ? 'checked' : '';
         let imageHtml = '';
+        // MODIFICATION: Changer le chemin des images
         if (photo.type === 'single') {
-            imageHtml = `<img src="/images/realisations/${photo.filename}" alt="Réalisation">`;
+            imageHtml = `<img src="/uploads/${photo.filename}" alt="Réalisation">`;
         } else {
             imageHtml = `
                 <div class="dashboard-ba">
-                    <img src="/images/realisations/${photo.filename_before}" alt="Avant">
-                    <img src="/images/realisations/${photo.filename_after}" alt="Après">
+                    <img src="/uploads/${photo.filename_before}" alt="Avant">
+                    <img src="/uploads/${photo.filename_after}" alt="Après">
                 </div>
             `;
         }
@@ -109,8 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
-    // Fichier public/dashboard.js corrigé
 
     gallery.addEventListener('change', async (e) => {
         const id = e.target.dataset.id;
@@ -121,6 +120,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isFeatured })
             });
-            loadPhotos(); // <== AJOUTEZ CETTE LIGNE
-    }
+            loadPhotos();
+        }
+    });
+
+    // Charger les photos au démarrage
+    loadPhotos();
 });
