@@ -1,6 +1,6 @@
 const express = require('express');
 const session = require('express-session');
-const multer = 'multer';
+const multer = require('multer'); // CORRECTION APPLIQUÉE ICI
 const path = require('path');
 const { Pool } = require('pg');
 const cloudinary = require('cloudinary').v2;
