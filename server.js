@@ -4,6 +4,7 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const fs = require('fs'); // <--- Module ajouté pour lire les fichiers
 
 // Charge les variables d'environnement depuis le fichier .env en développement
 require('dotenv').config();
@@ -15,24 +16,33 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // === MIDDLEWARE ===
-// Active CORS pour autoriser les requêtes entre le client et le serveur
 app.use(cors());
-// Parse les données du formulaire (pour req.body)
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// Indiquer à Express que nos fichiers statiques (CSS, JS, images) sont à la racine
 app.use(express.static(path.join(__dirname, '/')));
 
 // === ROUTES HTML ===
-// Route principale pour servir la page d'accueil
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Route pour la page des réalisations
 app.get('/realisations', (req, res) => {
     res.sendFile(path.join(__dirname, 'realisations.html'));
+});
+
+// === NOUVELLE ROUTE API POUR LIRE LES PHOTOS ===
+app.get('/api/photos', (req, res) => {
+    const photosDir = path.join(__dirname, 'photos_autres');
+
+    fs.readdir(photosDir, (err, files) => {
+        if (err) {
+            console.error("Impossible de lire le dossier photos_autres:", err);
+            return res.status(500).json({ error: "Erreur interne du serveur." });
+        }
+        // On filtre pour ne garder que les fichiers images courants
+        const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
+        res.json(imageFiles);
+    });
 });
 
 // === ROUTE API POUR LE FORMULAIRE ===
@@ -40,23 +50,20 @@ app.post('/send-email', (req, res) => {
     console.log('Requête reçue sur /send-email');
     console.log('Données du formulaire :', req.body);
 
-    // Configuration du transporteur d'e-mail avec Nodemailer
-    // Utilise les variables d'environnement (sécurisé)
     const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST, // ex: 'smtp.gmail.com'
-        port: process.env.EMAIL_PORT,       // ex: 465
-        secure: true,                 // true pour le port 465, false pour les autres
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
+        secure: true,
         auth: {
-            user: process.env.EMAIL_USER, // Votre adresse e-mail
-            pass: process.env.EMAIL_PASS  // Le mot de passe d'application
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
         }
     });
 
-    // Création du contenu de l'e-mail
     const mailOptions = {
-        from: `"${req.body.name}" <${process.env.EMAIL_USER}>`, // L'expéditeur sera vous, mais avec le nom du client
-        to: process.env.EMAIL_TO, // L'adresse qui reçoit l'e-mail (vous)
-        replyTo: req.body.email, // Pour que le bouton "Répondre" fonctionne
+        from: `"${req.body.name}" <${process.env.EMAIL_USER}>`,
+        to: process.env.EMAIL_TO,
+        replyTo: req.body.email,
         subject: `Nouveau message de ${req.body.name} via le site web`,
         html: `
             <h2>Nouvelle demande de devis de : ${req.body.name}</h2>
@@ -71,7 +78,6 @@ app.post('/send-email', (req, res) => {
         `
     };
 
-    // Envoi de l'e-mail
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.error('Erreur lors de l\'envoi de l\'e-mail:', error);

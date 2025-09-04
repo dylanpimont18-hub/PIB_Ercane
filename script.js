@@ -4,12 +4,69 @@
         initStickyHeader();
         initMobileMenu();
         initScrollAnimations();
-        initContactForm(); // <-- On garde cette ligne
+        initContactForm(); 
         initFloatingButtonObserver();
         initFancybox();
+
+        // Ajout : Lancer la fonction pour charger la galerie
+        // si nous sommes sur la bonne page.
+        if (document.getElementById('realisations-gallery')) {
+            loadRealisationsGallery();
+        }
+    };
+
+    // NOUVELLE FONCTION pour charger la galerie dynamiquement
+    const loadRealisationsGallery = async () => {
+        const galleryGrid = document.getElementById('realisations-gallery');
+        if (!galleryGrid) return;
+
+        try {
+            const response = await fetch('/api/photos');
+            if (!response.ok) {
+                throw new Error('La réponse du serveur n\'est pas OK');
+            }
+            const images = await response.json();
+
+            if (images.length === 0) {
+                galleryGrid.innerHTML = '<p>Aucune réalisation à afficher pour le moment.</p>';
+                return;
+            }
+
+            // Vider la galerie avant de la remplir
+            galleryGrid.innerHTML = ''; 
+
+            images.forEach(imageFile => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery__item';
+
+                // Crée un nom de titre à partir du nom du fichier
+                // exemple: "mon_image_super.jpg" -> "Mon Image Super"
+                const title = imageFile
+                    .replace(/\.(jpg|jpeg|png|gif)$/i, '') // enlève l'extension
+                    .replace(/_/g, ' ') // remplace les underscores par des espaces
+                    .replace(/\b\w/g, l => l.toUpperCase()); // met la première lettre de chaque mot en majuscule
+
+                galleryItem.innerHTML = `
+                    <a href="photos_autres/${imageFile}" data-fancybox="gallery" data-caption="${title}">
+                        <img src="photos_autres/${imageFile}" alt="${title}" class="gallery__image">
+                    </a>
+                    <div class="gallery__caption">
+                        <span class="gallery__caption-title">${title}</span>
+                    </div>
+                `;
+                galleryGrid.appendChild(galleryItem);
+            });
+            
+            // Une fois que toutes les images sont ajoutées au DOM,
+            // on ré-initialise Fancybox pour qu'il les prenne en compte.
+            Fancybox.bind("[data-fancybox='gallery']", {});
+
+        } catch (error) {
+            console.error('Erreur lors du chargement de la galerie:', error);
+            galleryGrid.innerHTML = '<p>Impossible de charger les réalisations. Veuillez réessayer plus tard.</p>';
+        }
     };
     
-    // La fonction est maintenant mise à jour pour envoyer les données au serveur
     const initContactForm = () => {
         const form = document.getElementById('contact-form');
         if (!form) return;
@@ -39,7 +96,7 @@
                 if (result.success) {
                     status.textContent = result.message;
                     status.style.color = 'green';
-                    form.reset(); // Vide le formulaire après succès
+                    form.reset();
                 } else {
                     status.textContent = result.message || "Une erreur s'est produite.";
                     status.style.color = 'red';
