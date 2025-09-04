@@ -54,21 +54,21 @@ app.post('/send-email', (req, res) => {
 
     // Création du contenu de l'e-mail
     const mailOptions = {
-        from: "" <>, // L'expéditeur sera vous, mais avec le nom du client
+        from: `"${req.body.name}" <${process.env.EMAIL_USER}>`, // L'expéditeur sera vous, mais avec le nom du client
         to: process.env.EMAIL_TO, // L'adresse qui reçoit l'e-mail (vous)
         replyTo: req.body.email, // Pour que le bouton "Répondre" fonctionne
-        subject: Nouveau message de  via le site web,
-        html: 
-            <h2>Nouvelle demande de devis de : </h2>
-            <p><strong>Email :</strong> <a href="mailto:"></a></p>
-            <p><strong>Téléphone :</strong> </p>
-            <p><strong>Adresse du chantier :</strong> </p>
-            <p><strong>Type de bien :</strong> </p>
-            <p><strong>Type de projet :</strong> </p>
+        subject: `Nouveau message de ${req.body.name} via le site web`,
+        html: `
+            <h2>Nouvelle demande de devis de : ${req.body.name}</h2>
+            <p><strong>Email :</strong> <a href="mailto:${req.body.email}">${req.body.email}</a></p>
+            <p><strong>Téléphone :</strong> ${req.body.phone}</p>
+            <p><strong>Adresse du chantier :</strong> ${req.body.address}</p>
+            <p><strong>Type de bien :</strong> ${req.body['property-type']}</p>
+            <p><strong>Type de projet :</strong> ${req.body['project-type']}</p>
             <hr>
             <h3>Message :</h3>
-            <p style="white-space: pre-wrap;"></p>
-        
+            <p style="white-space: pre-wrap;">${req.body.message}</p>
+        `
     };
 
     // Envoi de l'e-mail
@@ -84,5 +84,5 @@ app.post('/send-email', (req, res) => {
 
 // Démarrer le serveur
 app.listen(PORT, () => {
-    console.log(Serveur démarré sur le port );
+    console.log(`Serveur démarré sur le port ${PORT}`);
 });
