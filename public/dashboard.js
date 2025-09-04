@@ -45,7 +45,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 uploadForm.reset();
                 loadPhotos();
             } else {
-                 if (response.status === 401) window.location.href = '/admin.html';
+                 if (response.status === 401) {
+                    alert("Votre session a expiré. Vous allez être redirigé vers la page de connexion.");
+                    window.location.href = '/admin.html';
+                 }
                 const result = await response.json();
                 showStatusMessage(`Erreur : ${result.error || 'Problème serveur'}`, true);
             }
