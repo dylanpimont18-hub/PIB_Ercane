@@ -1,32 +1,54 @@
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
 
-    /**
-     * Initialise toutes les fonctionnalités du site.
-     */
     const initApp = () => {
         initStickyHeader();
         initMobileMenu();
         initScrollAnimations();
-        initContactForm();
+        initContactForm(); // <-- On garde cette ligne
         initFloatingButtonObserver();
         initFancybox();
     };
     
-    /**
-     * Gère la soumission asynchrone du formulaire de contact vers le serveur.
-     * NOTE : Pour un site 100% statique, ce formulaire ne fonctionnera pas sans backend.
-     * Vous pouvez utiliser un service tiers comme Formspree ou Netlify Forms.
-     */
+    // La fonction est maintenant mise à jour pour envoyer les données au serveur
     const initContactForm = () => {
         const form = document.getElementById('contact-form');
         if (!form) return;
+        
         const status = document.getElementById('form-status');
 
-        // La partie envoi de mail est désactivée car elle nécessite un serveur.
-        form.addEventListener("submit", (event) => {
+        form.addEventListener("submit", async (event) => {
             event.preventDefault();
-            status.textContent = "Le formulaire de contact n'est pas actif sur cette version statique.";
-            status.style.color = 'orange';
+
+            status.textContent = "Envoi en cours...";
+            status.style.color = 'gray';
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    status.textContent = result.message;
+                    status.style.color = 'green';
+                    form.reset(); // Vide le formulaire après succès
+                } else {
+                    status.textContent = result.message || "Une erreur s'est produite.";
+                    status.style.color = 'red';
+                }
+            } catch (error) {
+                console.error('Erreur lors de la soumission du formulaire:', error);
+                status.textContent = "Impossible de contacter le serveur. Veuillez réessayer plus tard.";
+                status.style.color = 'red';
+            }
         });
     };
     
@@ -77,6 +99,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Lance l'application
     initApp();
 });
