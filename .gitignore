@@ -1,1 +1,5 @@
+# Fichier de variables d'environnement
 .env
+
+# Dépendances du projet
+node_modules
