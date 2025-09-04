@@ -1,0 +1,14 @@
+
+/* ==========================================================================
+   7. STYLES DE PAGE SPÉCIFIQUES
+   ========================================================================== */
+.page-header {
+    padding-top: calc(var(--header-height) + 2rem);
+    padding-bottom: 1rem;
+    background-color: var(--secondary-color);
+    text-align: center;
+}
+
+.page-header .section__title {
+    margin-bottom: 1rem;
+}

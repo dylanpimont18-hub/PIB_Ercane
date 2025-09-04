@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Réalisations - Placo Isolation du Berry</title>
+    <meta name="description" content="Découvrez nos réalisations en aménagement de combles, isolation, création de salles d'eau et plus encore.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo">
+                <img src="photo_pp/logo.jpg" alt="Logo Placo Isolation du Berry" class="nav__logo-img">
+            </a>
+            
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="index.html#accueil" class="nav__link">Accueil</a></li>
+                    <li class="nav__item"><a href="index.html#services" class="nav__link">Services</a></li>
+                    <li class="nav__item"><a href="realisations.html" class="nav__link">Réalisations</a></li>
+                    <li class="nav__item"><a href="index.html#methode" class="nav__link">Méthode</a></li>
+                    <li class="nav__item"><a href="index.html#contact" class="nav__link">Contact</a></li>
+                </ul>
+            </div>
+            
+            <a href="index.html#contact" class="button nav__button">Demander un Devis</a>
+
+            <button class="nav__toggle" id="nav-toggle" aria-label="Ouvrir le menu">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+        </nav>
+    </header>
+    
+    <main class="main">
+        <section class="page-header section container">
+            <h1 class="section__title">Nos Réalisations</h1>
+            <p>Découvrez un aperçu de nos chantiers. Chaque projet est réalisé avec le plus grand soin pour garantir votre satisfaction.</p>
+        </section>
+        
+        <section id="gallery" class="gallery section container">
+            <div id="realisations-gallery" class="gallery__grid">
+                
+                <div class="gallery__item">
+                    <a href="photos_autres/nom_de_votre_image.jpg" data-fancybox="gallery" data-caption="Description de votre projet ici">
+                        <img src="photos_autres/nom_de_votre_image.jpg" alt="Description de l'image" class="gallery__image">
+                    </a>
+                    <div class="gallery__caption">
+                        <span class="gallery__caption-title">Titre de la Réalisation</span>
+                        <p>Petite description facultative ici.</p>
+                    </div>
+                </div>
+                <div class="gallery__item">
+                    <div class="before-after__container">
+                        <div class="before-after__image-wrapper">
+                            <span class="before-after__label">AVANT</span>
+                            <a href="photos_autres/votre_image_avant.jpg" data-fancybox="gallery-autre" data-caption="Avant: Description">
+                                <img src="photos_autres/votre_image_avant.jpg" alt="Chantier avant travaux" class="gallery__image">
+                            </a>
+                        </div>
+                        <div class="before-after__image-wrapper">
+                            <span class="before-after__label">APRÈS</span>
+                            <a href="photos_autres/votre_image_apres.jpg" data-fancybox="gallery-autre" data-caption="Après: Description">
+                                <img src="photos_autres/votre_image_apres.jpg" alt="Chantier après travaux" class="gallery__image">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="gallery__caption">
+                        <span class="gallery__caption-title">Titre du Avant/Après</span>
+                    </div>
+                </div>
+                </div>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <div class="footer__container container">
+            <p class="footer__copy">&copy; 2025 Placo Isolation du Berry. Tous droits réservés.</p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script src="script.js" defer></script>
+
+    <a href="index.html#contact" class="floating-cta-button" id="floating-button" aria-label="Aller au formulaire de contact">
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+    </a>
+
+</body>
+</html>
