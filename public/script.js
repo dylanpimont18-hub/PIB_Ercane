@@ -1,37 +1,4 @@
-/**
- * Fichier de script principal pour l'interactivité du site.
- */
 document.addEventListener('DOMContentLoaded', () => {
-
-    /**
-     * Les données des réalisations.
-     * Pour ajouter, modifier ou supprimer une réalisation, modifiez cette liste.
-     * N'oubliez pas d'ajouter les images correspondantes dans le dossier /images/realisations/
-     */
-    const galleryData = [
-        {
-            "type": "before-after",
-            "description": "Aménagement et isolation de combles",
-            "image_url_before": "images/realisations/photo_avant-1756663344336.jpg",
-            "image_url_after": "images/realisations/photo_apres-1756663344346.jpg"
-        },
-        {
-            "type": "single",
-            "description": "Création d'un meuble TV sur mesure en placo",
-            "image_url_single": "images/realisations/photo-1756663407366.jpg"
-        },
-        {
-            "type": "single",
-            "description": "Préparation d'une salle d'eau (placo hydrofuge)",
-            "image_url_single": "images/realisations/photo-1756663411960.jpg"
-        },
-        {
-            "type": "before-after",
-            "description": "Transformation et isolation d'une pièce sous les toits",
-            "image_url_before": "images/realisations/photo_avant-1756663371410.jpg",
-            "image_url_after": "images/realisations/photo_apres-1756663371416.jpg"
-        }
-    ];
 
     /**
      * Initialise toutes les fonctionnalités du site.
@@ -40,97 +7,72 @@ document.addEventListener('DOMContentLoaded', () => {
         initStickyHeader();
         initMobileMenu();
         initScrollAnimations();
-        initContactForm(); // Garde la fonctionnalité d'envoi de mail
+        initContactForm();
         initFloatingButtonObserver();
         initFancybox();
-        loadStaticGallery(); // Utilise la galerie statique
+        loadFeaturedGallery(); // Appelle la fonction qui charge les données depuis l'API
     };
 
     /**
-     * Gère la galerie de manière statique à partir de la variable 'galleryData'.
+     * Charge uniquement les réalisations "mises en avant" depuis l'API pour la page d'accueil.
      */
-    const loadStaticGallery = () => {
+    const loadFeaturedGallery = async () => {
         const galleryContainer = document.getElementById('realisations-gallery');
         if (!galleryContainer) return;
 
-        if (galleryData.length === 0) {
-            galleryContainer.innerHTML = '<p>Aucune réalisation à afficher pour le moment.</p>';
-            return;
-        }
+        try {
+            const response = await fetch('/api/photos?featured=true');
+            if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+            const photosToShow = await response.json();
 
-        galleryContainer.innerHTML = ''; // Vider le conteneur
-
-        galleryData.forEach((photo, index) => {
-            const descriptionHTML = `<div class="gallery__caption"><span class="gallery__caption-title">${photo.description || ''}</span></div>`;
-            let galleryItemHTML = '';
-
-            if (photo.type === 'single') {
-                galleryItemHTML = `
-                    <div class="gallery__item">
-                        <a href="${photo.image_url_single}" data-fancybox="gallery" data-caption="${photo.description || ''}">
-                            <img src="${photo.image_url_single}" alt="Réalisation : ${photo.description || ''}" class="gallery__image">
-                        </a>
-                        ${descriptionHTML}
-                    </div>`;
-            } else if (photo.type === 'before-after') {
-                galleryItemHTML = `
-                    <div class="gallery__item">
-                        <div class="before-after__container">
-                            <div class="before-after__image-wrapper">
-                                <span class="before-after__label">AVANT</span>
-                                <a href="${photo.image_url_before}" data-fancybox="gallery-${index}" data-caption="Avant: ${photo.description || ''}">
-                                    <img src="${photo.image_url_before}" alt="Avant : ${photo.description || ''}" class="gallery__image">
-                                </a>
-                            </div>
-                            <div class="before-after__image-wrapper">
-                                <span class="before-after__label">APRÈS</span>
-                                <a href="${photo.image_url_after}" data-fancybox="gallery-${index}" data-caption="Après: ${photo.description || ''}">
-                                    <img src="${photo.image_url_after}" alt="Après : ${photo.description || ''}" class="gallery__image">
-                                </a>
-                            </div>
-                        </div>
-                        ${descriptionHTML}
-                    </div>`;
+            if (photosToShow.length === 0) {
+                galleryContainer.innerHTML = '<p>Aucune réalisation à afficher pour le moment.</p>';
+                return;
             }
-            galleryContainer.innerHTML += galleryItemHTML;
-        });
 
-        if (typeof Fancybox !== 'undefined') {
-            Fancybox.unbind(galleryContainer);
-            Fancybox.bind(galleryContainer, "[data-fancybox]", {});
+            galleryContainer.innerHTML = photosToShow.map(photo => {
+                const descriptionHTML = `<div class="gallery__caption"><span class="gallery__caption-title">${photo.description || ''}</span></div>`;
+                if (photo.type === 'single') {
+                    return `
+                        <div class="gallery__item">
+                            <a href="${photo.image_url_single}" data-fancybox="gallery" data-caption="${photo.description || ''}">
+                                <img src="${photo.image_url_single}" alt="Réalisation" class="gallery__image">
+                            </a>
+                            ${descriptionHTML}
+                        </div>`;
+                } else { // 'before-after'
+                    return `
+                        <div class="gallery__item">
+                            <div class="before-after__container">
+                                <div class="before-after__image-wrapper">
+                                    <span class="before-after__label">AVANT</span>
+                                    <a href="${photo.image_url_before}" data-fancybox="gallery-${photo.id}" data-caption="Avant: ${photo.description || ''}">
+                                        <img src="${photo.image_url_before}" alt="Avant" class="gallery__image">
+                                    </a>
+                                </div>
+                                <div class="before-after__image-wrapper">
+                                    <span class="before-after__label">APRÈS</span>
+                                    <a href="${photo.image_url_after}" data-fancybox="gallery-${photo.id}" data-caption="Après: ${photo.description || ''}">
+                                        <img src="${photo.image_url_after}" alt="Après" class="gallery__image">
+                                    </a>
+                                </div>
+                            </div>
+                            ${descriptionHTML}
+                        </div>`;
+                }
+            }).join('');
+            
+            if (typeof Fancybox !== 'undefined') {
+                Fancybox.unbind(galleryContainer);
+                Fancybox.bind(galleryContainer, "[data-fancybox]", {});
+            }
+
+        } catch (error) {
+            console.error('Erreur de chargement des photos:', error);
+            galleryContainer.innerHTML = '<p style="color:red;">Impossible de charger les réalisations.</p>';
         }
     };
-
-    const initStickyHeader = () => {
-        const header = document.querySelector('.header');
-        if (header) window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 50));
-    };
-
-    const initMobileMenu = () => {
-        const navMenu = document.getElementById('nav-menu');
-        const navToggle = document.getElementById('nav-toggle');
-        const navLinks = document.querySelectorAll('.nav__link');
-        if (navMenu && navToggle) {
-            navToggle.addEventListener('click', () => navMenu.classList.toggle('show-menu'));
-            navLinks.forEach(link => link.addEventListener('click', () => navMenu.classList.remove('show-menu')));
-        }
-    };
-
-    const initScrollAnimations = () => {
-        const elements = document.querySelectorAll('.animate-on-scroll');
-        if (elements.length > 0) {
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            elements.forEach(el => observer.observe(el));
-        }
-    };
-
+    
     /**
      * Gère la soumission asynchrone du formulaire de contact vers le serveur.
      */
@@ -170,6 +112,36 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
+    
+    const initStickyHeader = () => {
+        const header = document.querySelector('.header');
+        if (header) window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 50));
+    };
+
+    const initMobileMenu = () => {
+        const navMenu = document.getElementById('nav-menu');
+        const navToggle = document.getElementById('nav-toggle');
+        const navLinks = document.querySelectorAll('.nav__link');
+        if (navMenu && navToggle) {
+            navToggle.addEventListener('click', () => navMenu.classList.toggle('show-menu'));
+            navLinks.forEach(link => link.addEventListener('click', () => navMenu.classList.remove('show-menu')));
+        }
+    };
+
+    const initScrollAnimations = () => {
+        const elements = document.querySelectorAll('.animate-on-scroll');
+        if (elements.length > 0) {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            elements.forEach(el => observer.observe(el));
+        }
+    };
 
     const initFloatingButtonObserver = () => {
         const floatingButton = document.getElementById('floating-button');
@@ -188,5 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Lance l'application
     initApp();
 });

@@ -1,14 +1,19 @@
 {
-  "name": "pib_ercane_static",
+  "name": "pib_ercane",
   "version": "1.0.0",
-  "description": "Site vitrine pour PIB Ercane avec formulaire de contact",
+  "description": "Site vitrine pour PIB Ercane avec administration",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "nodemailer": "^6.9.14",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "multer": "^1.4.5-lts.1",
+    "cloudinary": "^1.41.3",
+    "multer-storage-cloudinary": "^4.0.0",
+    "pg": "^8.11.3"
   }
 }
