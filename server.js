@@ -48,12 +48,15 @@ app.get('/api/photos', (req, res) => {
 // === ROUTE API POUR LE FORMULAIRE ===
 app.post('/send-email', (req, res) => {
     console.log('Requête reçue sur /send-email');
-    console.log('Données du formulaire :', req.body);
+
+    // Vérification que les variables d'environnement sont bien chargées
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.EMAIL_RECEIVER) {
+        console.error("ERREUR: Variables d'environnement pour l'e-mail non définies !");
+        return res.status(500).json({ success: false, message: "Erreur de configuration du serveur." });
+    }
 
     const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        secure: true,
+        service: 'gmail', // Plus simple pour Gmail
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
@@ -62,14 +65,14 @@ app.post('/send-email', (req, res) => {
 
     const mailOptions = {
         from: `"${req.body.name}" <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_TO,
+        to: process.env.EMAIL_RECEIVER, // <-- CORRECTION ICI
         replyTo: req.body.email,
         subject: `Nouveau message de ${req.body.name} via le site web`,
         html: `
             <h2>Nouvelle demande de devis de : ${req.body.name}</h2>
             <p><strong>Email :</strong> <a href="mailto:${req.body.email}">${req.body.email}</a></p>
-            <p><strong>Téléphone :</strong> ${req.body.phone}</p>
-            <p><strong>Adresse du chantier :</strong> ${req.body.address}</p>
+            <p><strong>Téléphone :</strong> ${req.body.phone || 'Non fourni'}</p>
+            <p><strong>Adresse du chantier :</strong> ${req.body.address || 'Non fournie'}</p>
             <p><strong>Type de bien :</strong> ${req.body['property-type']}</p>
             <p><strong>Type de projet :</strong> ${req.body['project-type']}</p>
             <hr>
