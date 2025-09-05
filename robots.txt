@@ -1,0 +1,6 @@
+# Indique à tous les robots qu'ils peuvent explorer l'ensemble du site.
+User-agent: *
+Disallow:
+
+# Chemin vers votre sitemap.
+Sitemap: https://pib-vierzon.onrender.com/sitemap.xml
