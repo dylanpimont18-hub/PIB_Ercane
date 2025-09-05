@@ -211,84 +211,6 @@ img {
     margin-bottom: 0.5rem;
 }
 
-/* -------------------- GALLERY -------------------- */
-.gallery {
-    background-color: var(--secondary-color);
-}
-
-.gallery__grid {
-    display: grid;
-    gap: 1.5rem;
-    /* Par défaut une seule colonne pour les mobiles */
-    grid-template-columns: 1fr;
-}
-
-/* Grille de 2 colonnes pour les écrans plus larges */
-@media screen and (min-width: 768px) {
-    .gallery__grid {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-.gallery__item {
-    background-color: var(--white-color);
-    border-radius: 0.25rem;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-}
-
-.gallery__image {
-    width: 100%;
-    height: 280px; /* ! LA HAUTEUR FIXE EST ICI ! */
-    object-fit: cover; /* Recadre l'image proprement */
-    transition: transform 0.3s;
-    cursor: pointer;
-}
-
-.gallery__image:hover {
-    transform: scale(1.05);
-}
-
-.before-after__container {
-    display: flex;
-}
-
-.before-after__image-wrapper {
-    position: relative;
-    flex: 1; 
-}
-
-.before-after__label {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: var(--white-color);
-    padding: 0.25rem 0.6rem;
-    border-radius: 3px;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-.gallery__caption {
-    padding: 1rem;
-    text-align: left;
-    margin-top: auto;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: var(--text-color);
-}
-
-.gallery__caption-title {
-    display: block;
-    font-family: var(--title-font);
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 0.25rem;
-    font-size: 1.1rem;
-}
 /* -------------------- METHOD -------------------- */
 .method__grid {
     display: grid;
@@ -569,7 +491,152 @@ textarea.form-group__input {
 }
 
 /* ==========================================================================
-   7. STYLES DE PAGE SPÉCIFIQUES
+   7. NOUVELLE SECTION GALERIE (AMÉLIORÉE)
+   ========================================================================== */
+
+.gallery {
+    background-color: var(--secondary-color);
+}
+
+.section__description {
+    text-align: center;
+    max-width: 700px;
+    margin: -1.5rem auto 2.5rem auto;
+    line-height: 1.6;
+    color: #666;
+}
+
+.gallery__grid {
+    display: grid;
+    /* Crée 2 colonnes sur les écrans moyens et 1 seule sur mobile */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery__item {
+    background-color: var(--white-color);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none; /* Pour les items cliquables */
+    color: var(--text-color); /* Couleur de texte par défaut */
+}
+
+.gallery__item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Styles pour les images */
+.gallery__image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery__image--single {
+    transition: transform 0.4s ease;
+}
+
+.gallery__item:hover .gallery__image--single {
+    transform: scale(1.05);
+}
+
+/* Conteneur avant/après */
+.before-after__container {
+    display: flex;
+    width: 100%;
+}
+
+.before-after__image-wrapper {
+    position: relative;
+    flex: 1;
+    overflow: hidden; /* Empêche le débordement de l'image au zoom */
+}
+.before-after__image-wrapper img {
+    transition: transform 0.4s ease;
+}
+.before-after__image-wrapper:hover img {
+    transform: scale(1.05);
+}
+
+
+.before-after__label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--white-color);
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+/* Légende sous les images */
+.gallery__caption {
+    padding: 1rem 1.25rem;
+    background-color: var(--white-color);
+    margin-top: auto; /* Pousse la légende en bas */
+    text-align: left;
+}
+
+.gallery__caption-title {
+    font-family: var(--title-font);
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin: 0 0 0.25rem 0;
+}
+
+.gallery__caption-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #555;
+    margin: 0;
+}
+
+/* Superposition pour les images seules */
+.gallery__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 2.5rem 1.25rem 1rem; /* Plus d'espace pour le dégradé */
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    color: var(--white-color);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.gallery__item:hover .gallery__overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery__overlay .gallery__caption-title {
+    color: var(--white-color);
+}
+
+.gallery__overlay .gallery__caption-text {
+    color: #e0e0e0;
+}
+
+
+/* Bouton "Voir plus" */
+.gallery__cta {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
+
+/* ==========================================================================
+   8. STYLES DE PAGE SPÉCIFIQUES (PAGE RÉALISATIONS)
    ========================================================================== */
 .page-header {
     padding-top: calc(var(--header-height) + 2rem);
@@ -580,4 +647,11 @@ textarea.form-group__input {
 
 .page-header .section__title {
     margin-bottom: 1rem;
+}
+
+/* Adaptation pour les écrans plus petits */
+@media screen and (max-width: 400px) {
+    .gallery__grid {
+        grid-template-columns: 1fr;
+    }
 }
