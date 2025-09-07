@@ -655,3 +655,19 @@ textarea.form-group__input {
         grid-template-columns: 1fr;
     }
 }
+/* ==========================================================================
+   8. AJUSTEMENT POUR MOBILES
+   ========================================================================== */
+
+@media screen and (max-width: 767px) {
+  .hero {
+    height: auto; /* La hauteur s'adaptera au contenu */
+    min-height: 350px; /* Une hauteur minimale pour un bon rendu */
+    padding-top: 8rem; /* Un peu d'espace en haut */
+    padding-bottom: 2rem; /* Un peu d'espace en bas */
+  }
+
+  .hero__title {
+    font-size: 1.8rem; /* On peut légèrement réduire la taille du titre */
+  }
+}
