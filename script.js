@@ -4,17 +4,15 @@
         initStickyHeader();
         initMobileMenu();
         initScrollAnimations();
+        initContactForm(); // On réactive cette fonction
         initFloatingButtonObserver();
         initFancybox();
 
-        // Ajout : Lancer la fonction pour charger la galerie
-        // si nous sommes sur la bonne page.
         if (document.getElementById('realisations-gallery')) {
             loadRealisationsGallery();
         }
     };
 
-    // NOUVELLE FONCTION pour charger la galerie dynamiquement
     const loadRealisationsGallery = async () => {
         const galleryGrid = document.getElementById('realisations-gallery');
         if (!galleryGrid) return;
@@ -31,19 +29,16 @@
                 return;
             }
 
-            // Vider la galerie avant de la remplir
             galleryGrid.innerHTML = ''; 
 
             images.forEach(imageFile => {
                 const galleryItem = document.createElement('div');
                 galleryItem.className = 'gallery__item';
 
-                // Crée un nom de titre à partir du nom du fichier
-                // exemple: "mon_image_super.jpg" -> "Mon Image Super"
                 const title = imageFile
-                    .replace(/\.(jpg|jpeg|png|gif)$/i, '') // enlève l'extension
-                    .replace(/_/g, ' ') // remplace les underscores par des espaces
-                    .replace(/\b\w/g, l => l.toUpperCase()); // met la première lettre de chaque mot en majuscule
+                    .replace(/\.(jpg|jpeg|png|gif)$/i, '')
+                    .replace(/_/g, ' ')
+                    .replace(/\b\w/g, l => l.toUpperCase());
 
                 galleryItem.innerHTML = `
                     <a href="photos_autres/${imageFile}" data-fancybox="gallery" data-caption="${title}">
@@ -56,14 +51,54 @@
                 galleryGrid.appendChild(galleryItem);
             });
             
-            // Une fois que toutes les images sont ajoutées au DOM,
-            // on ré-initialise Fancybox pour qu'il les prenne en compte.
             Fancybox.bind("[data-fancybox='gallery']", {});
 
         } catch (error) {
             console.error('Erreur lors du chargement de la galerie:', error);
             galleryGrid.innerHTML = '<p>Impossible de charger les réalisations. Veuillez réessayer plus tard.</p>';
         }
+    };
+    
+    // NOUVELLE FONCTION POUR LE FORMULAIRE AVEC FORMSPREE
+    const initContactForm = () => {
+        const form = document.getElementById('contact-form');
+        const status = document.getElementById('form-status');
+        if (!form || !status) return;
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault(); // Empêche la redirection
+            const formData = new FormData(form);
+
+            status.textContent = "Envoi en cours...";
+            status.style.color = 'gray';
+
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json' // Important pour que Formspree ne redirige pas
+                    }
+                });
+
+                if (response.ok) {
+                    status.textContent = "Votre message a bien été envoyé !";
+                    status.style.color = 'green';
+                    form.reset(); // Vide les champs du formulaire
+                } else {
+                    const data = await response.json();
+                    if (Object.hasOwn(data, 'errors')) {
+                        status.textContent = data["errors"].map(error => error["message"]).join(", ");
+                    } else {
+                        status.textContent = "Une erreur s'est produite lors de l'envoi du message.";
+                    }
+                    status.style.color = 'red';
+                }
+            } catch (error) {
+                status.textContent = "Impossible d'envoyer le message. Vérifiez votre connexion internet.";
+                status.style.color = 'red';
+            }
+        });
     };
     
     const initStickyHeader = () => {
