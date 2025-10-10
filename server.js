@@ -55,17 +55,22 @@ app.post('/send-email', (req, res) => {
         return res.status(500).json({ success: false, message: "Erreur de configuration du serveur." });
     }
 
+    // DÉBUT DE LA MODIFICATION IMPORTANTE
+    // On remplace 'service: 'gmail'' par une configuration explicite du serveur SMTP de Gmail
     const transporter = nodemailer.createTransport({
-        service: 'gmail', // Plus simple pour Gmail
+        host: 'smtp.gmail.com', // Serveur SMTP de Gmail
+        port: 465,               // Port sécurisé standard
+        secure: true,            // Utilise SSL/TLS, obligatoire pour le port 465
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
         }
     });
+    // FIN DE LA MODIFICATION IMPORTANTE
 
     const mailOptions = {
         from: `"${req.body.name}" <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_RECEIVER, // <-- CORRECTION ICI
+        to: process.env.EMAIL_RECEIVER,
         replyTo: req.body.email,
         subject: `Nouveau message de ${req.body.name} via le site web`,
         html: `
