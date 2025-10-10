@@ -1,24 +1,16 @@
-﻿// Importation des librairies nécessaires
-const express = require('express');
+﻿const express = require('express');
 const path = require('path');
-const nodemailer = require('nodemailer');
-const bodyParser = require('body-parser');
+const fs = require('fs');
 const cors = require('cors');
-const fs = require('fs'); // <--- Module ajouté pour lire les fichiers
-
-// Charge les variables d'environnement depuis le fichier .env en développement
-require('dotenv').config();
 
 // Créer l'application serveur
 const app = express();
 
 // Définir le port d'écoute. Render fournira sa propre variable PORT.
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 // === MIDDLEWARE ===
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/')));
 
 // === ROUTES HTML ===
@@ -42,57 +34,6 @@ app.get('/api/photos', (req, res) => {
         // On filtre pour ne garder que les fichiers images courants
         const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
         res.json(imageFiles);
-    });
-});
-
-// === ROUTE API POUR LE FORMULAIRE ===
-app.post('/send-email', (req, res) => {
-    console.log('Requête reçue sur /send-email');
-
-    // Vérification que les variables d'environnement sont bien chargées
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.EMAIL_RECEIVER) {
-        console.error("ERREUR: Variables d'environnement pour l'e-mail non définies !");
-        return res.status(500).json({ success: false, message: "Erreur de configuration du serveur." });
-    }
-
-    // DÉBUT DE LA MODIFICATION IMPORTANTE
-    // On remplace 'service: 'gmail'' par une configuration explicite du serveur SMTP de Gmail
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com', // Serveur SMTP de Gmail
-        port: 465,               // Port sécurisé standard
-        secure: true,            // Utilise SSL/TLS, obligatoire pour le port 465
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
-    });
-    // FIN DE LA MODIFICATION IMPORTANTE
-
-    const mailOptions = {
-        from: `"${req.body.name}" <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_RECEIVER,
-        replyTo: req.body.email,
-        subject: `Nouveau message de ${req.body.name} via le site web`,
-        html: `
-            <h2>Nouvelle demande de devis de : ${req.body.name}</h2>
-            <p><strong>Email :</strong> <a href="mailto:${req.body.email}">${req.body.email}</a></p>
-            <p><strong>Téléphone :</strong> ${req.body.phone || 'Non fourni'}</p>
-            <p><strong>Adresse du chantier :</strong> ${req.body.address || 'Non fournie'}</p>
-            <p><strong>Type de bien :</strong> ${req.body['property-type']}</p>
-            <p><strong>Type de projet :</strong> ${req.body['project-type']}</p>
-            <hr>
-            <h3>Message :</h3>
-            <p style="white-space: pre-wrap;">${req.body.message}</p>
-        `
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Erreur lors de l\'envoi de l\'e-mail:', error);
-            return res.status(500).json({ success: false, message: "Erreur lors de l'envoi de l'e-mail." });
-        }
-        console.log('E-mail envoyé:', info.response);
-        res.status(200).json({ success: true, message: 'Votre message a bien été envoyé !' });
     });
 });
 

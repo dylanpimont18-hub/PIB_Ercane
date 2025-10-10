@@ -4,7 +4,6 @@
         initStickyHeader();
         initMobileMenu();
         initScrollAnimations();
-        initContactForm(); 
         initFloatingButtonObserver();
         initFancybox();
 
@@ -65,48 +64,6 @@
             console.error('Erreur lors du chargement de la galerie:', error);
             galleryGrid.innerHTML = '<p>Impossible de charger les réalisations. Veuillez réessayer plus tard.</p>';
         }
-    };
-    
-    const initContactForm = () => {
-        const form = document.getElementById('contact-form');
-        if (!form) return;
-        
-        const status = document.getElementById('form-status');
-
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
-
-            status.textContent = "Envoi en cours...";
-            status.style.color = 'gray';
-
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-
-            try {
-                const response = await fetch('/send-email', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    status.textContent = result.message;
-                    status.style.color = 'green';
-                    form.reset();
-                } else {
-                    status.textContent = result.message || "Une erreur s'est produite.";
-                    status.style.color = 'red';
-                }
-            } catch (error) {
-                console.error('Erreur lors de la soumission du formulaire:', error);
-                status.textContent = "Impossible de contacter le serveur. Veuillez réessayer plus tard.";
-                status.style.color = 'red';
-            }
-        });
     };
     
     const initStickyHeader = () => {
