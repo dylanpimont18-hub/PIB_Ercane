@@ -3,7 +3,7 @@
 Index de navigation du site vitrine PIB (Placo Isolation du Berry).
 
 ## server.js
-Serveur Express : sert les fichiers statiques (dont admin.html).
+Serveur Express : sert les fichiers statiques (dont admin.html), headers de sécurité via helmet (CSP configurée pour les CDN utilisés + Supabase + Formspree).
 - app.get('/') — sert index.html
 - app.get('/realisations') — sert realisations.html
 - app.get('/admin') — sert admin.html
@@ -25,6 +25,8 @@ Comportements front partagés entre les pages (menu, animations, formulaire, gal
 - initScrollAnimations() — révèle les éléments ".animate-on-scroll" via IntersectionObserver
 - initFloatingButtonObserver() — masque le bouton flottant quand la section contact est visible
 - initFancybox() — bind générique de la lightbox Fancybox
+- initCookieConsent() — affiche/masque #cookie-banner selon le consentement stocké en localStorage, gère le lien "modifier mes préférences"
+- loadGoogleAnalytics() — injecte gtag.js (GA4) uniquement après consentement accepté
 
 ## admin.html / admin.css / admin.js
 Page d'administration (protégée par Supabase Auth + RLS, pas par obscurité de l'URL) : login, onglets Réalisations / Avis clients.
@@ -34,22 +36,19 @@ Page d'administration (protégée par Supabase Auth + RLS, pas par obscurité de
 - initTestimonialForm() / loadTestimonialsAdmin() / deleteTestimonial() — CRUD avis clients (table `testimonials`)
 
 ## index.html
-Page d'accueil : hero, services, avant/après (statique, dossier photo_pp/), méthode, avis clients dynamiques (section #avis, conteneur #reviews-list rempli via Supabase, secours codé en dur si Supabase indisponible), formulaire de contact, SEO (JSON-LD LocalBusiness).
+Page d'accueil : hero, services, avant/après (statique, dossier photo_pp/, images en `loading="lazy"`), méthode, avis clients dynamiques (section #avis, conteneur #reviews-list rempli via Supabase, secours codé en dur si Supabase indisponible), formulaire de contact (dont surface et upload photo facultatifs, envoyés à Formspree en multipart/form-data), bandeau cookies (#cookie-banner, GA4), SEO (JSON-LD LocalBusiness).
 
 ## realisations.html
-Page galerie dédiée : conteneur #realisations-gallery rempli dynamiquement par script.js via la table Supabase `projects`.
+Page galerie dédiée : conteneur #realisations-gallery rempli dynamiquement par script.js via la table Supabase `projects`, bandeau cookies (#cookie-banner, GA4).
 
 ## mentions-legales.html
-Page statique de mentions légales (éditeur FIDAN Ercane — entreprise individuelle, SIRET 983 082 595 00015, hébergeur Render, propriété intellectuelle).
+Page statique de mentions légales (éditeur FIDAN Ercane — entreprise individuelle, SIRET 983 082 595 00015, hébergeur Render, propriété intellectuelle), bandeau cookies (#cookie-banner, GA4).
 
 ## politique-confidentialite.html
-Page statique de politique de confidentialité RGPD (données du formulaire, Formspree, droits des utilisateurs — contact par téléphone).
-
-## photos.json
-Obsolète — remplacé par la table Supabase `projects`. Non supprimé pour l'instant (voir docs/supabase-setup.sql pour la migration).
+Page statique de politique de confidentialité RGPD (données du formulaire, Formspree, droits des utilisateurs — contact par téléphone, cookies/GA4 avec lien #cookie-preferences-link pour rouvrir le bandeau), bandeau cookies (#cookie-banner, GA4).
 
 ## style.css
-Feuille de style unique du site (variables couleurs --primary/--secondary/--accent, BEM, responsive mobile-first).
+Feuille de style unique du site (variables couleurs --primary/--secondary/--accent, BEM, responsive mobile-first), inclut les styles du bandeau cookies (.cookie-banner).
 
 ## admin.css
 Styles de la page admin (login, onglets, formulaires, listes) — s'appuie sur les variables de style.css.
@@ -58,10 +57,10 @@ Styles de la page admin (login, onglets, formulaires, listes) — s'appuie sur l
 Script SQL à exécuter dans Supabase (tables projects/testimonials, RLS, policies Storage, migration des 6 photos et 4 avis existants).
 
 ## package.json
-Manifest npm : dépendances (express, cors) et script `start` → node server.js.
+Manifest npm : dépendances (express, cors, helmet) et script `start` → node server.js.
 
 ## photo_pp/
 Images avant/après utilisées sur la page d'accueil.
 
 ## photos_autres/
-Photos de chantiers servies dynamiquement (référencées par photos.json / API /api/photos).
+Photos de chantiers historiques, désormais gérées via le bucket Supabase `media` (voir docs/supabase-setup.sql).

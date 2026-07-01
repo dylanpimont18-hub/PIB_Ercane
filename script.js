@@ -7,6 +7,7 @@
         initContactForm(); // On réactive cette fonction
         initFloatingButtonObserver();
         initFancybox();
+        initCookieConsent();
 
         if (document.getElementById('realisations-gallery')) {
             loadRealisationsGallery();
@@ -14,6 +15,59 @@
         if (document.getElementById('reviews-list')) {
             loadTestimonials();
         }
+    };
+
+    // === COOKIES / GOOGLE ANALYTICS ===
+
+    const GA_MEASUREMENT_ID = 'G-2QX9D10KE9';
+    const COOKIE_CONSENT_KEY = 'pib-cookie-consent';
+
+    const loadGoogleAnalytics = () => {
+        if (window.gaLoaded) return;
+        window.gaLoaded = true;
+
+        const script = document.createElement('script');
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+        script.async = true;
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function gtag() { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', GA_MEASUREMENT_ID);
+    };
+
+    const initCookieConsent = () => {
+        const banner = document.getElementById('cookie-banner');
+        const acceptButton = document.getElementById('cookie-accept');
+        const refuseButton = document.getElementById('cookie-refuse');
+        if (!banner || !acceptButton || !refuseButton) return;
+
+        const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+
+        if (consent === 'accepted') {
+            loadGoogleAnalytics();
+        } else if (consent !== 'refused') {
+            banner.classList.add('is-visible');
+        }
+
+        acceptButton.addEventListener('click', () => {
+            localStorage.setItem(COOKIE_CONSENT_KEY, 'accepted');
+            banner.classList.remove('is-visible');
+            loadGoogleAnalytics();
+        });
+
+        refuseButton.addEventListener('click', () => {
+            localStorage.setItem(COOKIE_CONSENT_KEY, 'refused');
+            banner.classList.remove('is-visible');
+        });
+
+        const preferencesLink = document.getElementById('cookie-preferences-link');
+        preferencesLink?.addEventListener('click', (event) => {
+            event.preventDefault();
+            localStorage.removeItem(COOKIE_CONSENT_KEY);
+            banner.classList.add('is-visible');
+        });
     };
 
     const mediaPublicUrl = (path) => {
@@ -65,13 +119,13 @@
                     <div class="before-after__image-wrapper">
                         <span class="before-after__label">AVANT</span>
                         <a href="${beforeUrl}" data-fancybox="gallery" data-caption="Avant: ${title}">
-                            <img src="${beforeUrl}" alt="Avant: ${title}" class="gallery__image">
+                            <img src="${beforeUrl}" alt="Avant: ${title}" class="gallery__image" loading="lazy">
                         </a>
                     </div>
                     <div class="before-after__image-wrapper">
                         <span class="before-after__label">APRÈS</span>
                         <a href="${afterUrl}" data-fancybox="gallery" data-caption="Après: ${title}">
-                            <img src="${afterUrl}" alt="Après: ${title}" class="gallery__image">
+                            <img src="${afterUrl}" alt="Après: ${title}" class="gallery__image" loading="lazy">
                         </a>
                     </div>
                 </div>
@@ -97,7 +151,7 @@
         const imageUrl = mediaPublicUrl(imagePath);
         return `
             <a href="${imageUrl}" data-fancybox="gallery" data-caption="${title}">
-                <img src="${imageUrl}" alt="${title}" class="gallery__image gallery__image--single">
+                <img src="${imageUrl}" alt="${title}" class="gallery__image gallery__image--single" loading="lazy">
                 <div class="gallery__overlay">
                     <h3 class="gallery__caption-title">${title}</h3>
                     <p class="gallery__caption-text">${description || ''}</p>
@@ -128,7 +182,7 @@
                 card.innerHTML = `
                     <div class="review-card__stars" aria-label="${review.rating} étoiles sur 5">${stars}</div>
                     <p class="review-card__text">« ${review.text} »</p>
-                    <p class="review-card__author">${review.author_name}</p>
+                    <p class="review-card__author"><i class="fa-brands fa-google" aria-hidden="true"></i> ${review.author_name}</p>
                 `;
                 reviewsGrid.appendChild(card);
             });

@@ -91,8 +91,12 @@
 
             <h2>Cookies</h2>
             <p>
-                Ce site n'utilise pas de cookies de traçage ou de mesure d'audience à ce jour.
-                [À COMPLÉTER si un outil d'analytics est ajouté ultérieurement.]
+                Ce site utilise Google Analytics pour mesurer l'audience (pages visitées, provenance des visiteurs).
+                Cet outil dépose des cookies de mesure uniquement si vous avez donné votre consentement via le
+                bandeau affiché lors de votre première visite. Vous pouvez à tout moment revenir sur votre choix
+                en <a href="#" id="cookie-preferences-link">modifiant vos préférences de cookies</a>. Pour en savoir
+                plus, consultez la
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">politique de confidentialité de Google</a>.
             </p>
         </section>
     </main>
@@ -130,6 +134,18 @@
     <a href="index.html#contact" class="floating-cta-button" id="floating-button" aria-label="Aller au formulaire de contact">
         <i class="fa-solid fa-envelope" aria-hidden="true"></i>
     </a>
+
+    <div id="cookie-banner" class="cookie-banner">
+        <i class="fa-solid fa-cookie-bite cookie-banner__icon" aria-hidden="true"></i>
+        <div class="cookie-banner__body">
+            <p class="cookie-banner__title">Un petit mot sur les cookies</p>
+            <p class="cookie-banner__text">Nous utilisons Google Analytics pour mieux comprendre nos visiteurs et améliorer le site. Vous décidez librement. <a href="politique-confidentialite.html">En savoir plus</a>.</p>
+        </div>
+        <div class="cookie-banner__actions">
+            <button type="button" id="cookie-refuse" class="cookie-banner__button cookie-banner__button--refuse">Refuser</button>
+            <button type="button" id="cookie-accept" class="cookie-banner__button cookie-banner__button--accept">Accepter</button>
+        </div>
+    </div>
 
 </body>
 </html>
