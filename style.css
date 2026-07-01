@@ -4,16 +4,18 @@
 :root {
     /* Couleurs */
     --primary-color: #8B5A2B;
+    --primary-light: #C49A6C;
     --secondary-color: #F5F5F3;
     --accent-color: #E87E5A;
+    --dark-color: #1E1A17;
     --text-color: #333333;
     --white-color: #FFFFFF;
     
     /* Typographie */
     --title-font: 'Poppins', sans-serif;
     --body-font: 'Lato', sans-serif;
-    --h1-font-size: 2rem;
-    --h2-font-size: 1.25rem;
+    --h1-font-size: 2.2rem;
+    --h2-font-size: 1.5rem;
     --normal-font-size: 0.938rem;
     
     /* Layout */
@@ -45,7 +47,12 @@ h1, h2, h3 {
     font-family: var(--title-font);
     color: var(--primary-color);
     font-weight: 600;
-    line-height: 1.3; /* -- AJOUT : Espacement des lignes de titres -- */
+    line-height: 1.3;
+}
+
+h1 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
 ul {
@@ -84,19 +91,30 @@ img {
 .section__title {
     font-size: var(--h2-font-size);
     text-align: center;
-    margin-bottom: 2.5rem; /* -- MODIFIÉ -- */
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.01em;
+}
+
+.section__title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: var(--accent-color);
+    margin: 0.75rem auto 0;
+    border-radius: 2px;
 }
 
 .button {
     display: inline-block;
     background-color: var(--accent-color);
     color: var(--white-color);
-    padding: 0.85rem 1.75rem; /* -- MODIFIÉ : Bouton légèrement plus grand -- */
-    border-radius: 0.25rem;
+    padding: 0.85rem 1.75rem;
+    border-radius: 0.4rem;
     font-family: var(--title-font);
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* -- MODIFIÉ -- */
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
 .button:hover {
@@ -288,12 +306,80 @@ img {
 }
 
 .trust-card {
-    text-align: center;
+    text-align: left;
+    padding: 1.5rem 1.5rem 1.5rem 1.75rem;
+    background-color: var(--white-color);
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--accent-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trust-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .trust-card__title {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+}
+
+/* -------------------- AVIS CLIENTS -------------------- */
+.reviews__grid {
+    display: grid;
+    gap: 2rem;
+}
+
+.review-card {
+    text-align: left;
+    padding: 1.75rem;
+    background-color: var(--secondary-color);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.review-card__stars {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.review-card__text {
+    font-style: italic;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.review-card__author {
+    font-family: var(--title-font);
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.reviews__cta {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
+.reviews__google-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.reviews__google-link:hover {
+    color: var(--accent-color);
 }
 
 /* -------------------- CONTACT FORM -------------------- */
@@ -310,10 +396,10 @@ img {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid #ccc;
-    border-radius: 0.25rem;
+    border-radius: 0.4rem;
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* -- AJOUT -- */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-group__input:focus {
@@ -349,7 +435,7 @@ textarea.form-group__input {
     text-align: center;
     padding: 2rem;
     background-color: var(--white-color);
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
 }
 
 .contact__direct h3 {
@@ -374,17 +460,88 @@ textarea.form-group__input {
 
 /* -------------------- FOOTER -------------------- */
 .footer {
-    background-color: #e9e9e7;
-    padding: 2rem 0;
+    background-color: var(--dark-color);
+    padding: 3rem 0 0;
 }
 
-.footer__container {
+.footer__inner {
+    display: grid;
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.footer__brand-name {
+    font-family: var(--title-font);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--white-color);
+    margin-bottom: 0.3rem;
+}
+
+.footer__tagline {
+    font-size: 0.875rem;
+    color: #a89880;
+}
+
+.footer__col-title {
+    font-family: var(--title-font);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7a6555;
+    margin-bottom: 0.75rem;
+}
+
+.footer__phone {
+    display: block;
+    color: var(--accent-color);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    transition: color 0.3s;
+}
+
+.footer__phone:hover {
+    color: var(--primary-light);
+}
+
+.footer__zone {
+    font-size: 0.875rem;
+    color: #a89880;
+}
+
+.footer__links {
     display: flex;
-    justify-content: center; /* -- MODIFIÉ : Centré pour un look propre -- */
-    align-items: center;
-    font-size: 0.9rem;
-    color: #666;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.footer__link {
+    color: #a89880;
+    font-size: 0.875rem;
+    transition: color 0.3s;
+}
+
+.footer__link:hover {
+    color: var(--white-color);
+}
+
+.footer__bottom {
+    padding: 1.25rem 0;
     text-align: center;
+}
+
+.footer__copy {
+    font-size: 0.8rem;
+    color: #4a3d32;
+}
+
+@media screen and (min-width: 768px) {
+    .footer__inner {
+        grid-template-columns: 1.5fr 1fr 1fr;
+    }
 }
 
 /* -------------------- FLOATING CTA BUTTON -------------------- */
@@ -519,6 +676,9 @@ textarea.form-group__input {
     .trust__grid {
         grid-template-columns: repeat(3, 1fr);
     }
+    .reviews__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
     .method__grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -534,6 +694,9 @@ textarea.form-group__input {
         margin-right: auto;
     }
     .method__grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .reviews__grid {
         grid-template-columns: repeat(4, 1fr);
     }
 }
@@ -684,6 +847,26 @@ textarea.form-group__input {
 
 .page-header .section__title {
     margin-bottom: 1rem;
+}
+
+/* -------------------- PAGES LÉGALES -------------------- */
+.legal-content {
+    max-width: 800px;
+}
+
+.legal-content h2 {
+    font-size: 1.15rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.legal-content h2:first-child {
+    margin-top: 0;
+}
+
+.legal-content p {
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
 }
 
 @media screen and (max-width: 400px) {

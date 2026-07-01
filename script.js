@@ -11,6 +11,13 @@
         if (document.getElementById('realisations-gallery')) {
             loadRealisationsGallery();
         }
+        if (document.getElementById('reviews-list')) {
+            loadTestimonials();
+        }
+    };
+
+    const mediaPublicUrl = (path) => {
+        return supabaseClient.storage.from('media').getPublicUrl(path).data.publicUrl;
     };
 
     const loadRealisationsGallery = async () => {
@@ -18,44 +25,115 @@
         if (!galleryGrid) return;
 
         try {
-            const response = await fetch('/api/photos');
-            if (!response.ok) {
-                throw new Error('La réponse du serveur n\'est pas OK');
-            }
-            const images = await response.json();
+            const { data: projects, error } = await supabaseClient
+                .from('projects')
+                .select('*')
+                .order('sort_order', { ascending: true });
 
-            if (images.length === 0) {
+            if (error) throw error;
+
+            if (!projects || projects.length === 0) {
                 galleryGrid.innerHTML = '<p>Aucune réalisation à afficher pour le moment.</p>';
                 return;
             }
 
-            galleryGrid.innerHTML = ''; 
+            galleryGrid.innerHTML = '';
 
-            images.forEach(imageFile => {
+            projects.forEach(project => {
                 const galleryItem = document.createElement('div');
                 galleryItem.className = 'gallery__item';
-
-                const title = imageFile
-                    .replace(/\.(jpg|jpeg|png|gif)$/i, '')
-                    .replace(/_/g, ' ')
-                    .replace(/\b\w/g, l => l.toUpperCase());
-
-                galleryItem.innerHTML = `
-                    <a href="photos_autres/${imageFile}" data-fancybox="gallery" data-caption="${title}">
-                        <img src="photos_autres/${imageFile}" alt="${title}" class="gallery__image">
-                    </a>
-                    <div class="gallery__caption">
-                        <span class="gallery__caption-title">${title}</span>
-                    </div>
-                `;
+                galleryItem.innerHTML = buildProjectMarkup(project);
                 galleryGrid.appendChild(galleryItem);
             });
-            
+
             Fancybox.bind("[data-fancybox='gallery']", {});
 
         } catch (error) {
             console.error('Erreur lors du chargement de la galerie:', error);
             galleryGrid.innerHTML = '<p>Impossible de charger les réalisations. Veuillez réessayer plus tard.</p>';
+        }
+    };
+
+    const buildProjectMarkup = (project) => {
+        const { title, description, before_image_path, after_image_path, video_path } = project;
+
+        if (before_image_path && after_image_path) {
+            const beforeUrl = mediaPublicUrl(before_image_path);
+            const afterUrl = mediaPublicUrl(after_image_path);
+            return `
+                <div class="before-after__container">
+                    <div class="before-after__image-wrapper">
+                        <span class="before-after__label">AVANT</span>
+                        <a href="${beforeUrl}" data-fancybox="gallery" data-caption="Avant: ${title}">
+                            <img src="${beforeUrl}" alt="Avant: ${title}" class="gallery__image">
+                        </a>
+                    </div>
+                    <div class="before-after__image-wrapper">
+                        <span class="before-after__label">APRÈS</span>
+                        <a href="${afterUrl}" data-fancybox="gallery" data-caption="Après: ${title}">
+                            <img src="${afterUrl}" alt="Après: ${title}" class="gallery__image">
+                        </a>
+                    </div>
+                </div>
+                <div class="gallery__caption">
+                    <h3 class="gallery__caption-title">${title}</h3>
+                    <p class="gallery__caption-text">${description || ''}</p>
+                </div>
+            `;
+        }
+
+        if (video_path) {
+            const videoUrl = mediaPublicUrl(video_path);
+            return `
+                <video src="${videoUrl}" class="gallery__image gallery__image--single" controls></video>
+                <div class="gallery__caption">
+                    <h3 class="gallery__caption-title">${title}</h3>
+                    <p class="gallery__caption-text">${description || ''}</p>
+                </div>
+            `;
+        }
+
+        const imagePath = after_image_path || before_image_path;
+        const imageUrl = mediaPublicUrl(imagePath);
+        return `
+            <a href="${imageUrl}" data-fancybox="gallery" data-caption="${title}">
+                <img src="${imageUrl}" alt="${title}" class="gallery__image gallery__image--single">
+                <div class="gallery__overlay">
+                    <h3 class="gallery__caption-title">${title}</h3>
+                    <p class="gallery__caption-text">${description || ''}</p>
+                </div>
+            </a>
+        `;
+    };
+
+    const loadTestimonials = async () => {
+        const reviewsGrid = document.getElementById('reviews-list');
+        if (!reviewsGrid) return;
+
+        try {
+            const { data: testimonials, error } = await supabaseClient
+                .from('testimonials')
+                .select('*')
+                .eq('is_visible', true)
+                .order('sort_order', { ascending: true });
+
+            if (error) throw error;
+            if (!testimonials || testimonials.length === 0) return; // garde les avis codés en dur en secours
+
+            reviewsGrid.innerHTML = '';
+            testimonials.forEach(review => {
+                const card = document.createElement('div');
+                card.className = 'review-card is-visible';
+                const stars = '<i class="fa-solid fa-star"></i>'.repeat(review.rating);
+                card.innerHTML = `
+                    <div class="review-card__stars" aria-label="${review.rating} étoiles sur 5">${stars}</div>
+                    <p class="review-card__text">« ${review.text} »</p>
+                    <p class="review-card__author">${review.author_name}</p>
+                `;
+                reviewsGrid.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Erreur lors du chargement des avis:', error); // garde les avis codés en dur en secours
         }
     };
     

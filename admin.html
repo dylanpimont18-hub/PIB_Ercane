@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Administration - Placo Isolation du Berry</title>
+    <link rel="icon" type="image/png" href="logo-carre.png">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo">
+                <img src="logo.jpg" alt="Logo Placo Isolation du Berry" class="nav__logo-img">
+            </a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="admin-login" id="login-section">
+            <h1 class="section__title">Connexion admin</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email" class="form-group__label">Email</label>
+                    <input type="email" id="login-email" class="form-group__input" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password" class="form-group__label">Mot de passe</label>
+                    <input type="password" id="login-password" class="form-group__input" required>
+                </div>
+                <button type="submit" class="button">Se connecter</button>
+                <p class="admin-login__error" id="login-error"></p>
+            </form>
+        </section>
+
+        <section class="admin-dashboard" id="dashboard-section">
+            <div class="admin-dashboard__header container">
+                <h1 class="section__title">Administration</h1>
+                <button class="button button--small" id="logout-button">Se déconnecter</button>
+            </div>
+
+            <div class="container">
+                <div class="admin-tabs">
+                    <button class="admin-tabs__button is-active" data-tab="projects">Réalisations</button>
+                    <button class="admin-tabs__button" data-tab="testimonials">Avis clients</button>
+                </div>
+
+                <div class="admin-panel is-active" id="panel-projects">
+                    <form class="admin-form" id="project-form">
+                        <h2>Ajouter une réalisation</h2>
+                        <div class="admin-form__row">
+                            <label class="form-group__label" for="project-title">Titre</label>
+                            <input type="text" id="project-title" class="form-group__input" required>
+                        </div>
+                        <div class="admin-form__row">
+                            <label class="form-group__label" for="project-description">Description</label>
+                            <textarea id="project-description" class="form-group__input" rows="3"></textarea>
+                        </div>
+                        <div class="admin-form__row">
+                            <label class="form-group__label" for="project-before">Photo "avant" (optionnel)</label>
+                            <input type="file" id="project-before" accept="image/*">
+                        </div>
+                        <div class="admin-form__row">
+                            <label class="form-group__label" for="project-after">Photo "après" (optionnel)</label>
+                            <input type="file" id="project-after" accept="image/*">
+                        </div>
+                        <div class="admin-form__row">
+                            <label class="form-group__label" for="project-video">Vidéo (optionnel)</label>
+                            <input type="file" id="project-video" accept="video/*">
+                        </div>
+                        <button type="submit" class="button">Ajouter</button>
+                        <p class="admin-form__error" id="project-form-error"></p>
+                        <p class="admin-form__success" id="project-form-success"></p>
+                    </form>
+
+                    <div class="admin-list" id="projects-list"></div>
+                </div>
+
+                <div class="admin-panel" id="panel-testimonials">
+                    <form class="admin-form" id="testimonial-form">
+                        <h2 id="testimonial-form-title">Ajouter un avis</h2>
+                        <input type="hidden" id="testimonial-id">
+                        <div class="admin-form__row">
+                            <label class="form-group__label" for="testimonial-author">Nom du client</label>
+                            <input type="text" id="testimonial-author" class="form-group__input" required>
+                        </div>
+                        <div class="admin-form__row">
+                            <label class="form-group__label" for="testimonial-rating">Note (1 à 5)</label>
+                            <select id="testimonial-rating" class="form-group__input">
+                                <option value="5">5 étoiles</option>
+                                <option value="4">4 étoiles</option>
+                                <option value="3">3 étoiles</option>
+                                <option value="2">2 étoiles</option>
+                                <option value="1">1 étoile</option>
+                            </select>
+                        </div>
+                        <div class="admin-form__row">
+                            <label class="form-group__label" for="testimonial-text">Texte de l'avis</label>
+                            <textarea id="testimonial-text" class="form-group__input" rows="3" required></textarea>
+                        </div>
+                        <div class="admin-form__row admin-form__checkbox">
+                            <input type="checkbox" id="testimonial-visible" checked>
+                            <label for="testimonial-visible">Visible sur le site</label>
+                        </div>
+                        <button type="submit" class="button">Enregistrer</button>
+                        <button type="button" class="button button--small" id="testimonial-cancel-edit" style="display:none;">Annuler la modification</button>
+                        <p class="admin-form__error" id="testimonial-form-error"></p>
+                        <p class="admin-form__success" id="testimonial-form-success"></p>
+                    </form>
+
+                    <div class="admin-list" id="testimonials-list"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
