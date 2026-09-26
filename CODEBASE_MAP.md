@@ -53,7 +53,7 @@ Ton rédactionnel : « nous » partout (jamais « je »), et les 15 ans sont tou
 Page galerie dédiée : conteneur #realisations-gallery rempli dynamiquement par script.js via la table Supabase `projects`, bandeau cookies (#cookie-banner, GA4).
 
 ## mentions-legales.html
-Page statique de mentions légales (éditeur FIDAN Ercane — entreprise individuelle, SIRET 983 082 595 00015, hébergeur Render, propriété intellectuelle), bandeau cookies (#cookie-banner, GA4).
+Page statique de mentions légales (éditeur FIDAN Ercane — entreprise individuelle, SIRET 983 082 595 00015, hébergeur GitHub Pages, propriété intellectuelle, crédit conception Sparklearning), bandeau cookies (#cookie-banner, GA4).
 
 ## politique-confidentialite.html
 Page statique de politique de confidentialité RGPD (données du formulaire, Formspree, droits des utilisateurs — contact par téléphone, cookies/GA4 avec lien #cookie-preferences-link pour rouvrir le bandeau), bandeau cookies (#cookie-banner, GA4).
