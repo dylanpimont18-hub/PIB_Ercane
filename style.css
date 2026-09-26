@@ -519,6 +519,30 @@ textarea.form-group__input {
     line-height: 1.6;
 }
 
+.contact__intro {
+    text-align: center;
+    max-width: 640px;
+    margin: -1rem auto 2rem;
+    line-height: 1.6;
+}
+
+.contact__email-label {
+    margin: 1.5rem 0 0.5rem;
+}
+
+.contact__email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    overflow-wrap: anywhere;
+}
+
+.contact__email:hover {
+    color: var(--accent-color);
+}
+
 .button--cta {
     display: inline-block;
     width: 100%;
@@ -576,6 +600,19 @@ textarea.form-group__input {
 
 .footer__phone:hover {
     color: var(--primary-light);
+}
+
+.footer__email {
+    display: block;
+    color: #a89880;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    overflow-wrap: anywhere;
+    transition: color 0.3s;
+}
+
+.footer__email:hover {
+    color: var(--white-color);
 }
 
 .footer__zone {
@@ -1654,5 +1691,146 @@ textarea.form-group__input {
 @media screen and (min-width: 1024px) {
     .related-services {
         grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+
+/* ==========================================================================
+   11. OPTIMISATIONS SMARTPHONE
+   ========================================================================== */
+
+/* 16px minimum : en dessous, iOS zoome sur le champ au focus */
+.form-group__input {
+    font-size: 1rem;
+}
+
+/* Bouton « Appeler » : réservé au mobile, là où un appel se lance d'un tap */
+.floating-call-button {
+    display: none;
+}
+
+/* Écrans tactiles : pas de survol, donc légendes toujours visibles sous la photo */
+@media (hover: none) {
+    .gallery__item a {
+        display: block;
+    }
+
+    .gallery__overlay {
+        position: static;
+        opacity: 1;
+        transform: none;
+        background: var(--white-color);
+        padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .gallery__overlay .gallery__caption-title {
+        color: var(--primary-color);
+    }
+
+    .gallery__overlay .gallery__caption-text {
+        color: #555;
+    }
+
+    .gallery__item:hover,
+    .trust-card:hover {
+        transform: none;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    /* Zones tactiles d'au moins 44 px */
+    .nav__toggle {
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: -0.5rem;
+    }
+
+    .about__phone,
+    .contact__email,
+    .service-card__link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+
+    .breadcrumb a {
+        display: inline-block;
+        padding: 0.75rem 0;
+    }
+
+    .footer__links {
+        gap: 0;
+    }
+
+    .footer__link,
+    .footer__phone,
+    .footer__email {
+        padding: 0.6rem 0;
+        margin-bottom: 0;
+    }
+
+    /* Formulaire : bouton d'envoi pleine largeur, facile à atteindre au pouce */
+    .contact__form .button {
+        width: 100%;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    /* Barre d'action : « Appeler » à gauche, devis (bouton rond existant) à droite */
+    .floating-call-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: fixed;
+        left: 16px;
+        bottom: calc(16px + env(safe-area-inset-bottom));
+        z-index: 999;
+        height: 52px;
+        padding: 0 1.4rem;
+        border-radius: 999px;
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        font-family: var(--title-font);
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .floating-cta-button {
+        width: 52px;
+        height: 52px;
+        right: 16px;
+        bottom: calc(16px + env(safe-area-inset-bottom));
+        font-size: 1.3rem;
+    }
+
+    /* Laisse de la place sous le footer pour que les boutons fixes ne masquent rien */
+    .footer {
+        padding-bottom: calc(84px + env(safe-area-inset-bottom));
+    }
+}
+
+@media screen and (max-width: 500px) {
+    /* Bandeau cookies compact : en colonne, la base de 300px devenait une hauteur vide */
+    .cookie-banner {
+        left: 0.75rem;
+        right: 0.75rem;
+        bottom: calc(0.75rem + env(safe-area-inset-bottom));
+        padding: 1rem 1.1rem;
+        gap: 0.75rem;
+    }
+
+    .cookie-banner__icon {
+        display: none;
+    }
+
+    .cookie-banner__body {
+        flex: 0 0 auto;
+    }
+
+    .cookie-banner__button {
+        min-height: 44px;
     }
 }

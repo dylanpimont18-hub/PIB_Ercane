@@ -8,6 +8,7 @@
         initFloatingButtonObserver();
         initFancybox();
         initCookieConsent();
+        initFooterYear();
 
         if (document.getElementById('realisations-gallery')) {
             loadRealisationsGallery();
@@ -214,7 +215,7 @@
                 });
 
                 if (response.ok) {
-                    status.textContent = "Votre message a bien été envoyé !";
+                    status.textContent = "Votre message a bien été envoyé ! Nous vous recontactons sous 48 h.";
                     status.style.color = 'green';
                     form.reset(); // Vide les champs du formulaire
                 } else {
@@ -274,6 +275,13 @@
         }
     };
     
+    // Année du copyright à jour sans retoucher chaque page (2026 reste en secours sans JS)
+    const initFooterYear = () => {
+        document.querySelectorAll('.footer__year').forEach(el => {
+            el.textContent = new Date().getFullYear();
+        });
+    };
+
     const initFancybox = () => {
         if (typeof Fancybox !== 'undefined') {
             Fancybox.bind("[data-fancybox]", {});
