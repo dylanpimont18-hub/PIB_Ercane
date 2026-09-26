@@ -1,10 +1,11 @@
 {
   "name": "pib_ercane",
   "version": "1.0.0",
-  "description": "Website for Placo Isolation du Berry",
+  "description": "Site vitrine de Placo Isolation du Berry (PIB). Hébergé sur GitHub Pages — server.js ne sert plus qu'au développement local.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "author": "",
   "license": "ISC",

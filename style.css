@@ -1076,3 +1076,322 @@ textarea.form-group__input {
         flex: 1;
     }
 }
+/* ==========================================================================
+   9. SECTION À PROPOS (#a-propos)
+   ========================================================================== */
+.about {
+    background-color: var(--white-color);
+}
+
+.about__grid {
+    display: grid;
+    gap: 2.5rem;
+}
+
+.about__eyebrow {
+    font-family: var(--title-font);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.about__title {
+    font-size: var(--h2-font-size);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+}
+
+.about__title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: var(--accent-color);
+    margin-top: 0.75rem;
+    border-radius: 2px;
+}
+
+.about__lead {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.about__text {
+    line-height: 1.75;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.about__text strong,
+.about__lead strong {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.about__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 1.75rem;
+}
+
+.about__phone {
+    font-family: var(--title-font);
+    font-weight: 600;
+    color: var(--primary-color);
+    white-space: nowrap;
+}
+
+.about__phone:hover {
+    color: var(--accent-color);
+}
+
+/* -------------------- CHIFFRES CLÉS -------------------- */
+.about__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    align-content: start;
+}
+
+.about-stat {
+    padding: 1.5rem 1.25rem;
+    background-color: var(--secondary-color);
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--primary-light);
+    text-align: left;
+}
+
+.about-stat--highlight {
+    grid-column: 1 / -1;
+    background-color: var(--primary-color);
+    border-left-color: var(--accent-color);
+}
+
+.about-stat__value {
+    display: block;
+    font-family: var(--title-font);
+    font-weight: 700;
+    font-size: 1.75rem;
+    line-height: 1.1;
+    color: var(--primary-color);
+}
+
+.about-stat--highlight .about-stat__value {
+    font-size: 2.5rem;
+    color: var(--white-color);
+}
+
+.about-stat__star {
+    font-size: 0.7em;
+    margin-left: 0.15em;
+    color: #F5B301;
+    vertical-align: 0.15em;
+}
+
+.about-stat__label {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: #666;
+}
+
+.about-stat--highlight .about-stat__label {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.9375rem;
+}
+
+/* ==========================================================================
+   10. SECTION ZONE D'INTERVENTION (#zone-intervention)
+   ========================================================================== */
+.zone {
+    background-color: var(--white-color);
+}
+
+.zone__grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.zone-card {
+    padding: 1.75rem 1.5rem;
+    background-color: var(--secondary-color);
+    border-radius: 0.5rem;
+    border-top: 4px solid var(--accent-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.zone-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.zone-card__title {
+    font-size: 1.0625rem;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+.zone-card__title i {
+    color: var(--accent-color);
+    margin-right: 0.4rem;
+}
+
+.zone-card__distance {
+    font-family: var(--title-font);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8a8178;
+    margin-bottom: 0.75rem;
+}
+
+.zone-card__cities {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: #555;
+}
+
+.zone__note {
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--secondary-color);
+    border-left: 4px solid var(--primary-light);
+    border-radius: 0.5rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: #555;
+}
+
+.zone__note i {
+    color: var(--primary-color);
+    margin-right: 0.35rem;
+}
+
+.zone__note-link {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.zone__note-link:hover {
+    color: var(--accent-color);
+}
+
+/* -------------------- HERO : BADGE ZONE -------------------- */
+.hero__badge {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.4rem 0.9rem;
+    background-color: rgba(30, 26, 23, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 2rem;
+    font-family: var(--title-font);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    color: var(--white-color);
+    backdrop-filter: blur(2px);
+}
+
+.hero__badge i {
+    color: var(--accent-color);
+    margin-right: 0.3rem;
+}
+
+/* -------------------- FOOTER : LISTE SERVICES -------------------- */
+.footer__services {
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: #8a7d68;
+}
+
+/* ==========================================================================
+   11. MEDIA QUERIES DES NOUVELLES SECTIONS
+   ========================================================================== */
+@media screen and (min-width: 768px) {
+    .zone__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .about__grid {
+        grid-template-columns: 1.55fr 1fr;
+        gap: 4rem;
+        align-items: start;
+    }
+
+    .about__stats {
+        position: sticky;
+        top: calc(var(--header-height) + 2rem);
+    }
+
+    .zone__grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .about__stats {
+        grid-template-columns: 1fr;
+    }
+
+    .about__actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* -------------------- NAV : 7 entrées, resserrement tablette -------------------- */
+@media screen and (min-width: 768px) and (max-width: 1100px) {
+    .nav__list {
+        gap: 1.25rem;
+    }
+
+    .nav__link {
+        font-size: 0.875rem;
+    }
+
+    .nav__button {
+        padding: 0.65rem 1rem;
+        font-size: 0.8125rem;
+    }
+}
+
+@media screen and (min-width: 1101px) {
+    .nav__list {
+        gap: 1.75rem;
+    }
+}
+
+/* -------------------- HERO : lisibilité du texte sur l'image -------------------- */
+/* Voile renforcé : le hero porte désormais 3 niveaux de texte (titre, sous-titre, badge)
+   sur une photo de chantier très claire. */
+.hero {
+    background:
+        linear-gradient(rgba(30, 26, 23, 0.55), rgba(30, 26, 23, 0.72)),
+        url('banniere.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
+.hero__subtitle {
+    max-width: 46rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero__subtitle strong {
+    color: #FFD9C8;
+    font-weight: 700;
+}

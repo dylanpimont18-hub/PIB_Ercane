@@ -3,3 +3,14 @@
 
 # Dépendances du projet
 node_modules
+
+# Travaux internes NON destinés à la publication.
+# Le site est servi par GitHub Pages depuis la racine de `main` : tout fichier
+# commité ici devient publiquement accessible sur https://pib-vierzon.fr.
+#
+# prototypes/ : maquettes de refonte, non liées au site en production.
+# rendus/     : vues d'artiste générées par IA — ne doivent jamais être
+#               accessibles publiquement au risque d'être prises pour des
+#               chantiers réellement réalisés (voir CODEBASE_MAP.md).
+prototypes/
+rendus/

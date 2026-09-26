@@ -6,13 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Business website for **Placo Isolation du Berry (PIB)**, a French plaster/drywall and insulation contractor based in Vierzon. The site showcases services, project galleries, and a contact/quote form.
 
-Live URL: `https://pib-vierzon.onrender.com`
+Live URL: `https://pib-vierzon.fr` (GitHub Pages)
 
 ## Commands
 
 ```bash
-# Start the Express server (serves the site)
+# Start the local dev server (production is GitHub Pages, not this)
 npm start          # runs: node server.js
+
+# Test in the exact conditions of GitHub Pages (no Express)
+python -m http.server 8099
 
 # Install dependencies
 npm install
@@ -62,4 +65,11 @@ BEM-style class naming. Mobile-responsive, no preprocessor.
 
 ## Deployment
 
-Hosted on **Render**. The `PORT` environment variable controls the listening port (defaults to `10000`). No other environment variables are required — Formspree key is hardcoded in `script.js`.
+Hosted on **GitHub Pages**: the site is served statically from the root of the `main` branch, so **any push to `main` deploys it**. There is no build step and no server in production.
+
+- Custom domain `pib-vierzon.fr` (bought from Hostinger), declared in the `CNAME` file.
+- `.nojekyll` disables Jekyll processing.
+- `server.js` is now a **local dev server only** (`npm start`). Two caveats: its extensionless routes (`/realisations`, `/admin`) do not exist on Pages — always link `realisations.html` / `admin.html`; and security headers cannot be set on Pages, so the helmet CSP is mirrored as a `<meta http-equiv="Content-Security-Policy">` tag in every HTML page. **Keep both in sync.**
+- See `README.md` for the Pages settings and the Hostinger DNS records.
+
+No environment variables are required — the Formspree endpoint is hardcoded in `script.js` and the Supabase anon key in `supabase-config.js` (both are meant to be public; write access is gated by Supabase RLS policies).

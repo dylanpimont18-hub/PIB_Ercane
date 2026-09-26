@@ -3,4 +3,4 @@ User-agent: *
 Disallow:
 
 # Chemin vers votre sitemap.
-Sitemap: https://pib-vierzon.onrender.com/sitemap.xml
+Sitemap: https://pib-vierzon.fr/sitemap.xml

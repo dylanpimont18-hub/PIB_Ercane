@@ -3,11 +3,21 @@
 Index de navigation du site vitrine PIB (Placo Isolation du Berry).
 
 ## server.js
-Serveur Express : sert les fichiers statiques (dont admin.html), headers de sécurité via helmet (CSP configurée pour les CDN utilisés + Supabase + Formspree).
+**Serveur de développement local uniquement** — le site est hébergé sur GitHub Pages, qui sert les fichiers statiques de `main` sans passer par Express. Lancé avec `npm start` pour prévisualiser en local.
+Deux écarts avec la production à garder en tête : les routes sans extension ci-dessous n'existent pas sur Pages (toujours lier `realisations.html` / `admin.html`), et la CSP appliquée ici par helmet est doublée par la balise `<meta http-equiv="Content-Security-Policy">` de chaque page HTML — toute modification doit être reportée dans les deux.
 - app.get('/') — sert index.html
 - app.get('/realisations') — sert realisations.html
 - app.get('/admin') — sert admin.html
 - app.listen(PORT) — démarre le serveur (port 10000 ou env PORT)
+
+## CNAME
+Domaine personnalisé lu par GitHub Pages : `pib-vierzon.fr` (sans protocole ni slash). Ne pas supprimer — GitHub le réécrit depuis Settings > Pages > Custom domain.
+
+## .nojekyll
+Fichier vide qui désactive le traitement Jekyll sur GitHub Pages (déploiement plus rapide, pas d'exclusion des dossiers commençant par `_`).
+
+## README.md
+Documentation d'hébergement : procédure de déploiement (push sur `main`), développement local, réglages GitHub Pages, table des enregistrements DNS à saisir chez Hostinger, et précautions sur la page admin.
 
 ## supabase-config.js
 Config partagée (index.html, realisations.html, admin.html) : crée `supabaseClient` (URL + clé anon à renseigner).
@@ -36,7 +46,8 @@ Page d'administration (protégée par Supabase Auth + RLS, pas par obscurité de
 - initTestimonialForm() / loadTestimonialsAdmin() / deleteTestimonial() — CRUD avis clients (table `testimonials`)
 
 ## index.html
-Page d'accueil : hero, services, avant/après (statique, dossier photo_pp/, images en `loading="lazy"`), méthode, avis clients dynamiques (section #avis, conteneur #reviews-list rempli via Supabase, secours codé en dur si Supabase indisponible), formulaire de contact (dont surface et upload photo facultatifs, envoyés à Formspree en multipart/form-data), bandeau cookies (#cookie-banner, GA4), SEO (JSON-LD LocalBusiness).
+Page d'accueil : hero (titre + badge zone, voile sombre géré en CSS — pas de `style` inline), présentation de l'entreprise (#a-propos : texte éditorial + 4 chiffres clés dont « 15 ans » mis en avant, aucun nom de personne à la demande du client), services (6 cartes avec vocabulaire métier pour le SEO), avant/après (statique, dossier photo_pp/, images en `loading="lazy"`), méthode, zone d'intervention (#zone-intervention : ~45 communes dans un rayon de 50 km groupées en 4 secteurs + encart d'appel), réassurance (.trust, 4 cartes), avis clients dynamiques (section #avis, conteneur #reviews-list rempli via Supabase, secours codé en dur si Supabase indisponible), formulaire de contact (dont surface et upload photo facultatifs, envoyés à Formspree en multipart/form-data), bandeau cookies (#cookie-banner, GA4), SEO (title/description/keywords orientés plaquiste-placo-isolation-combles + Vierzon, JSON-LD LocalBusiness avec `areaServed` listant 29 villes, `hasOfferCatalog` de 5 services et `knowsAbout`).
+Ton rédactionnel : « nous » partout (jamais « je »), et les 15 ans sont toujours rattachés au métier (« 15 ans d'expérience dans le bâtiment et la rénovation »), jamais à l'ancienneté de la société — le SIRET date de 2023.
 
 ## realisations.html
 Page galerie dédiée : conteneur #realisations-gallery rempli dynamiquement par script.js via la table Supabase `projects`, bandeau cookies (#cookie-banner, GA4).
@@ -48,13 +59,20 @@ Page statique de mentions légales (éditeur FIDAN Ercane — entreprise individ
 Page statique de politique de confidentialité RGPD (données du formulaire, Formspree, droits des utilisateurs — contact par téléphone, cookies/GA4 avec lien #cookie-preferences-link pour rouvrir le bandeau), bandeau cookies (#cookie-banner, GA4).
 
 ## style.css
-Feuille de style unique du site (variables couleurs --primary/--secondary/--accent, BEM, responsive mobile-first), inclut les styles du bandeau cookies (.cookie-banner).
+Feuille de style unique du site (variables couleurs --primary-color/--secondary-color/--accent-color, BEM, responsive mobile-first), inclut les styles du bandeau cookies (.cookie-banner).
+Sections 9 à 11 (fin de fichier) : #a-propos (.about__grid 2 colonnes ≥1024px, .about__stats en grille sticky, .about-stat--highlight = bloc brun « 15 ans »), #zone-intervention (.zone__grid 1/2/4 colonnes, .zone-card, .zone__note), .hero__badge, .footer__services, et le resserrement de .nav__list entre 768 et 1100px (la nav compte 7 entrées).
 
 ## admin.css
 Styles de la page admin (login, onglets, formulaires, listes) — s'appuie sur les variables de style.css.
 
 ## docs/supabase-setup.sql
 Script SQL à exécuter dans Supabase (tables projects/testimonials, RLS, policies Storage, migration des 6 photos et 4 avis existants).
+
+## sitemap.xml
+Plan de site soumis à Google : 4 URLs (accueil sur `/` pour coller au canonical, réalisations, mentions légales, politique de confidentialité) avec `lastmod` et `changefreq`. À réactualiser (`lastmod`) à chaque refonte de contenu.
+
+## robots.txt
+Autorise tous les robots et pointe vers sitemap.xml.
 
 ## package.json
 Manifest npm : dépendances (express, cors, helmet) et script `start` → node server.js.
@@ -64,3 +82,16 @@ Images avant/après utilisées sur la page d'accueil.
 
 ## photos_autres/
 Photos de chantiers historiques, désormais gérées via le bucket Supabase `media` (voir docs/supabase-setup.sql).
+
+## prototypes/
+Maquettes autonomes de refonte (non liées au site en production, aucune dépendance : CSS et JS inline, images depuis `../photo_pp/`). Charte conservée à l'identique (#8B5A2B / #E87E5A / #F5F5F3, Poppins + Lato).
+- proto-1-editorial.html — direction « Éditorial » : fond crème, titres XXL, grille asymétrique, sections numérotées, bande d'avis sombre
+- proto-2-immersif.html — direction « Immersif » : fond sombre, hero plein écran avec parallaxe, slider avant/après au pointeur, timeline sticky, bande d'avis claire. Section #projections (rendus 3D, badges « Vue d'artiste » + mention de non-réalisation) tenue séparée de #realisations (vraies photos)
+- proto-3-atelier.html — direction « Atelier » : bento grid sur 6 colonnes, nav flottante en pilule, tuiles tactiles, densité conversion (CTA accent + formulaire)
+
+## rendus/
+Rendus 3D d'aménagement générés via `~/Desktop/mammouth-image-gen/generer_image.py` (modèle gemini-2.5-flash-image), utilisés uniquement comme vues d'artiste explicitement libellées — jamais présentés comme des chantiers réalisés, jamais post-traités pour masquer leur origine.
+- rendu-combles.jpg — combles aménagés sous rampants
+- rendu-niche-tv.jpg — cloison avec niche TV et étagères LED
+- rendu-faux-plafond.jpg — faux plafond à décrochement, gorge lumineuse
+- rendu-salle-eau.jpg — salle d'eau, cloison hydrofuge et plafond suspendu

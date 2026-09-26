@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://pib-vierzon.onrender.com/index.html</loc>
-    <lastmod>2023-10-27</lastmod>
+    <loc>https://pib-vierzon.fr/</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://pib-vierzon.onrender.com/realisations.html</loc>
-    <lastmod>2023-10-27</lastmod>
+    <loc>https://pib-vierzon.fr/realisations.html</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://pib-vierzon.fr/mentions-legales.html</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.20</priority>
+  </url>
+  <url>
+    <loc>https://pib-vierzon.fr/politique-confidentialite.html</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.20</priority>
   </url>
 </urlset>
