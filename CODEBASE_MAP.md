@@ -52,6 +52,9 @@ Ton rédactionnel : « nous » partout (jamais « je »), et les 15 ans sont tou
 ## Pages services (pose-placo-vierzon.html, isolation-interieure-vierzon.html, amenagement-combles-vierzon.html, faux-plafond-vierzon.html, plaquiste-bourges.html)
 Landing pages SEO statiques (une requête cible chacune : « pose placo Vierzon », « isolation intérieure Vierzon », « aménagement combles Vierzon », « faux plafond Vierzon », « plaquiste Bourges »). Même gabarit : fil d'Ariane, h1 + chapeau + CTA, article `.service-page` (h2/h3, photos photo_pp/), bandeau `.cta-band`, FAQ `<details>`, bloc « Nos autres services » (maillage interne), footer 4 colonnes, bandeau cookies. JSON-LD Service (provider = `#entreprise`) + BreadcrumbList + FAQPage. Pas de Supabase ni Fancybox : seul script.js est chargé. Contenu rédigé sans prix, certification ni garantie inventés.
 
+## 404.html
+Page d'erreur servie par GitHub Pages pour toute URL inconnue (statut 404, `noindex`). Tous les chemins sont absolus (`/style.css`, `/`) car elle peut s'afficher à n'importe quelle profondeur d'URL. Générée depuis le gabarit des pages services.
+
 ## realisations.html
 Page galerie dédiée : conteneur #realisations-gallery rempli dynamiquement par script.js via la table Supabase `projects`, bandeau cookies (#cookie-banner, GA4).
 
