@@ -46,8 +46,11 @@ Page d'administration (protégée par Supabase Auth + RLS, pas par obscurité de
 - initTestimonialForm() / loadTestimonialsAdmin() / deleteTestimonial() — CRUD avis clients (table `testimonials`)
 
 ## index.html
-Page d'accueil : hero (titre + badge zone, voile sombre géré en CSS — pas de `style` inline), présentation de l'entreprise (#a-propos : texte éditorial + 4 chiffres clés dont « 15 ans » mis en avant, aucun nom de personne à la demande du client), services (6 cartes avec vocabulaire métier pour le SEO), avant/après (statique, dossier photo_pp/, images en `loading="lazy"`), méthode, zone d'intervention (#zone-intervention : ~45 communes dans un rayon de 50 km groupées en 4 secteurs + encart d'appel), réassurance (.trust, 4 cartes), avis clients dynamiques (section #avis, conteneur #reviews-list rempli via Supabase, secours codé en dur si Supabase indisponible), formulaire de contact (dont surface et upload photo facultatifs, envoyés à Formspree en multipart/form-data), bandeau cookies (#cookie-banner, GA4), SEO (title/description/keywords orientés plaquiste-placo-isolation-combles + Vierzon, JSON-LD LocalBusiness avec `areaServed` listant 29 villes, `hasOfferCatalog` de 5 services et `knowsAbout`).
+Page d'accueil : hero (titre + badge zone, voile sombre géré en CSS — pas de `style` inline), présentation de l'entreprise (#a-propos : texte éditorial + 4 chiffres clés dont « 15 ans » mis en avant, aucun nom de personne à la demande du client), services (6 cartes avec vocabulaire métier pour le SEO), avant/après (statique, dossier photo_pp/, images en `loading="lazy"`), méthode, zone d'intervention (#zone-intervention : ~45 communes dans un rayon de 50 km groupées en 4 secteurs + encart d'appel), réassurance (.trust, 4 cartes), avis clients dynamiques (section #avis, conteneur #reviews-list rempli via Supabase, secours codé en dur si Supabase indisponible), formulaire de contact (dont surface et upload photo facultatifs, envoyés à Formspree en multipart/form-data), bandeau cookies (#cookie-banner, GA4), SEO (title/description/keywords orientés plaquiste-placo-isolation-combles + Vierzon, JSON-LD LocalBusiness `@id` `https://pib-vierzon.fr/#entreprise` (référencé par les pages services) avec adresse complète, `areaServed` listant 29 villes, `hasOfferCatalog` de 5 services et `knowsAbout`), FAQ (#faq, 5 questions en `<details>` + JSON-LD FAQPage à garder identique au texte visible), liens « En savoir plus » des cartes services vers les pages services, préchargement de banniere.jpg (LCP).
 Ton rédactionnel : « nous » partout (jamais « je »), et les 15 ans sont toujours rattachés au métier (« 15 ans d'expérience dans le bâtiment et la rénovation »), jamais à l'ancienneté de la société — le SIRET date de 2023.
+
+## Pages services (pose-placo-vierzon.html, isolation-interieure-vierzon.html, amenagement-combles-vierzon.html, faux-plafond-vierzon.html, plaquiste-bourges.html)
+Landing pages SEO statiques (une requête cible chacune : « pose placo Vierzon », « isolation intérieure Vierzon », « aménagement combles Vierzon », « faux plafond Vierzon », « plaquiste Bourges »). Même gabarit : fil d'Ariane, h1 + chapeau + CTA, article `.service-page` (h2/h3, photos photo_pp/), bandeau `.cta-band`, FAQ `<details>`, bloc « Nos autres services » (maillage interne), footer 4 colonnes, bandeau cookies. JSON-LD Service (provider = `#entreprise`) + BreadcrumbList + FAQPage. Pas de Supabase ni Fancybox : seul script.js est chargé. Contenu rédigé sans prix, certification ni garantie inventés.
 
 ## realisations.html
 Page galerie dédiée : conteneur #realisations-gallery rempli dynamiquement par script.js via la table Supabase `projects`, bandeau cookies (#cookie-banner, GA4).
@@ -61,6 +64,7 @@ Page statique de politique de confidentialité RGPD (données du formulaire, For
 ## style.css
 Feuille de style unique du site (variables couleurs --primary-color/--secondary-color/--accent-color, BEM, responsive mobile-first), inclut les styles du bandeau cookies (.cookie-banner).
 Sections 9 à 11 (fin de fichier) : #a-propos (.about__grid 2 colonnes ≥1024px, .about__stats en grille sticky, .about-stat--highlight = bloc brun « 15 ans »), #zone-intervention (.zone__grid 1/2/4 colonnes, .zone-card, .zone__note), .hero__badge, .footer__services, et le resserrement de .nav__list entre 768 et 1100px (la nav compte 7 entrées).
+Section 12 (fin de fichier) : pages services (.breadcrumb, .page-header__lead/__actions, .service-page, .service-page__figure(--single), .faq/.faq__item, .cta-band, .related-services, .service-card__link). Footer en 4 colonnes (brand, contact, Nos services, navigation) sur toutes les pages publiques.
 
 ## admin.css
 Styles de la page admin (login, onglets, formulaires, listes) — s'appuie sur les variables de style.css.
@@ -69,13 +73,16 @@ Styles de la page admin (login, onglets, formulaires, listes) — s'appuie sur l
 Script SQL à exécuter dans Supabase (tables projects/testimonials, RLS, policies Storage, migration des 6 photos et 4 avis existants).
 
 ## sitemap.xml
-Plan de site soumis à Google : 4 URLs (accueil sur `/` pour coller au canonical, réalisations, mentions légales, politique de confidentialité) avec `lastmod` et `changefreq`. À réactualiser (`lastmod`) à chaque refonte de contenu.
+Plan de site soumis à Google : 7 URLs indexables (accueil sur `/` pour coller au canonical, 5 pages services, réalisations). Les pages en `noindex` (mentions, confidentialité, admin) n'y figurent pas avec `lastmod` et `changefreq`. À réactualiser (`lastmod`) à chaque refonte de contenu.
 
 ## robots.txt
 Autorise tous les robots et pointe vers sitemap.xml.
 
 ## package.json
 Manifest npm : dépendances (express, cors, helmet) et script `start` → node server.js.
+
+## banniere.jpg / favicon.png / apple-touch-icon.png
+Image du hero et d'Open Graph (JPEG ~100 Ko, remplace l'ancien PNG de 1,4 Mo), favicon carré 192×192 et icône iOS 180×180 recadrés depuis le logo.
 
 ## photo_pp/
 Images avant/après utilisées sur la page d'accueil.

@@ -1,11 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <!-- Politique de securite (CSP) : sur GitHub Pages, aucun header HTTP ne peut etre defini,
          la politique est donc portee par cette balise meta. Miroir de la config helmet de server.js. -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; media-src 'self' https://bxeooiynucuclnkpqtmd.supabase.co; connect-src 'self' https://bxeooiynucuclnkpqtmd.supabase.co https://formspree.io https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'">
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Plaquiste à Vierzon : Placo, Isolation, Combles | PIB — 15 ans d'expérience</title>
@@ -21,22 +22,26 @@
     <meta property="og:url" content="https://pib-vierzon.fr/">
     <meta property="og:title" content="Plaquiste à Vierzon : Placo, Isolation, Combles | PIB — 15 ans d'expérience">
     <meta property="og:description" content="Plaquiste à Vierzon depuis 15 ans dans le bâtiment et la rénovation : pose de placo et cloisons, isolation intérieure, faux plafonds, aménagement de combles. Intervention dans un rayon de 50 km. Devis gratuit.">
-    <meta property="og:image" content="https://pib-vierzon.fr/banniere.png">
+    <meta property="og:image" content="https://pib-vierzon.fr/banniere.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" as="image" href="banniere.jpg" fetchpriority="high">
 
     <!-- JSON-LD LocalBusiness -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "HomeAndConstructionBusiness",
+      "@id": "https://pib-vierzon.fr/#entreprise",
       "name": "Placo Isolation du Berry",
       "alternateName": "PIB",
       "url": "https://pib-vierzon.fr/",
       "telephone": "+33663143313",
-      "image": "https://pib-vierzon.fr/banniere.png",
+      "image": "https://pib-vierzon.fr/banniere.jpg",
       "logo": "https://pib-vierzon.fr/logo.jpg",
       "description": "Plaquiste à Vierzon fort de 15 ans d'expérience dans le bâtiment et la rénovation, spécialisé dans la pose de placo et de cloisons, l'isolation intérieure, les faux plafonds et l'aménagement de combles. Intervention dans un rayon de 50 km autour de Vierzon (Cher, Sologne, Berry).",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "13A Chemin des Ajoncs",
         "addressLocality": "Vierzon",
         "postalCode": "18100",
         "addressRegion": "Centre-Val de Loire",
@@ -110,6 +115,56 @@
         "Rénovation intérieure"
       ],
       "priceRange": "€€"
+    }
+    </script>
+
+    <!-- JSON-LD FAQ (miroir de la section #faq) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quels travaux réalise Placo Isolation du Berry ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nous réalisons la pose de placo et de cloisons sèches, les doublages de murs, l'isolation intérieure des murs, rampants et plafonds, la pose de faux plafonds, l'aménagement de combles et la rénovation intérieure (reprise de plâtrerie, enduits, préparation avant peinture)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Dans quelles communes intervenez-vous ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nous sommes basés à Vierzon et intervenons dans un rayon d'environ 50 km : Bourges, Mehun-sur-Yèvre, Foëcy, Salbris, Romorantin-Lanthenay, Aubigny-sur-Nère, Issoudun, Graçay et les communes voisines du Cher, de la Sologne et du Berry."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Le devis est-il gratuit ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui. Nous nous déplaçons gratuitement pour étudier votre projet et prendre les mesures, puis nous vous remettons un devis détaillé et sans engagement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Travaillez-vous pour les particuliers et les professionnels ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, nous intervenons aussi bien chez les particuliers (maisons, appartements) que pour les professionnels (bureaux, locaux commerciaux), en construction neuve comme en rénovation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment se déroule un chantier avec PIB ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Après votre appel ou votre demande en ligne, nous venons sur place pour étudier le projet et vous remettons un devis gratuit. Une fois le devis accepté, nous réalisons les travaux en protégeant vos espaces, puis nous laissons un chantier propre. Vous gardez le même interlocuteur du début à la fin."
+          }
+        }
+      ]
     }
     </script>
 
@@ -206,24 +261,28 @@
                     <i class="fa-solid fa-layer-group service-card__icon" aria-hidden="true"></i>
                     <h3 class="service-card__title">Pose de placo et cloisons</h3>
                     <p class="service-card__description">Création de cloisons sèches, doublages et ossatures métalliques en plaques de plâtre BA13. Nous posons également les plaques hydrofuges pour les salles de bain et les plaques phoniques pour isoler une chambre ou un bureau. Bandes à joint et enduits soignés, prêts à peindre.</p>
+                    <a href="pose-placo-vierzon.html" class="service-card__link">En savoir plus sur la pose de placo &rarr;</a>
                 </div>
 
                 <div class="service-card animate-on-scroll">
                     <i class="fa-solid fa-temperature-half service-card__icon" aria-hidden="true"></i>
                     <h3 class="service-card__title">Isolation intérieure et thermique</h3>
                     <p class="service-card__description">Isolation des murs, des rampants et des planchers en laine de verre ou laine de roche. Un logement bien isolé, c'est une facture de chauffage qui baisse et une maison plus silencieuse. Nous vous conseillons sur l'épaisseur et le matériau adaptés à votre bâti.</p>
+                    <a href="isolation-interieure-vierzon.html" class="service-card__link">En savoir plus sur l'isolation intérieure &rarr;</a>
                 </div>
 
                 <div class="service-card animate-on-scroll">
                     <i class="fa-solid fa-arrow-up-from-ground-water service-card__icon" aria-hidden="true"></i>
                     <h3 class="service-card__title">Plafonds et faux plafonds</h3>
                     <p class="service-card__description">Pose de plafonds suspendus et de faux plafonds : rattrapage d'un plafond abîmé, décrochements, gorges lumineuses et intégration de spots encastrés. Une solution efficace pour masquer des gaines ou réduire la hauteur d'une pièce trop haute.</p>
+                    <a href="faux-plafond-vierzon.html" class="service-card__link">En savoir plus sur les faux plafonds &rarr;</a>
                 </div>
 
                 <div class="service-card animate-on-scroll">
                     <i class="fa-solid fa-house-chimney service-card__icon" aria-hidden="true"></i>
                     <h3 class="service-card__title">Aménagement de combles</h3>
                     <p class="service-card__description">Transformez vos combles perdus en chambre, bureau ou salle de jeux. Isolation sous rampants, cloisonnement, habillage des pentes et finitions : nous gagnons de la surface habitable sans toucher à l'emprise de la maison.</p>
+                    <a href="amenagement-combles-vierzon.html" class="service-card__link">En savoir plus sur l'aménagement de combles &rarr;</a>
                 </div>
 
                 <div class="service-card animate-on-scroll">
@@ -363,7 +422,7 @@
                 <div class="zone-card animate-on-scroll">
                     <h3 class="zone-card__title"><i class="fa-solid fa-city" aria-hidden="true"></i> Bourges et sud du Cher</h3>
                     <p class="zone-card__distance">20 à 40 km</p>
-                    <p class="zone-card__cities">Bourges, Saint-Doulchard, Saint-Florent-sur-Cher, Marmagne, Trouy, Plaimpied-Givaudins, Graçay, Genouilly, Chéry, Saint-Outrille.</p>
+                    <p class="zone-card__cities"><a href="plaquiste-bourges.html" class="zone__note-link">Bourges</a>, Saint-Doulchard, Saint-Florent-sur-Cher, Marmagne, Trouy, Plaimpied-Givaudins, Graçay, Genouilly, Chéry, Saint-Outrille.</p>
                 </div>
 
                 <div class="zone-card animate-on-scroll">
@@ -455,6 +514,30 @@
             </div>
         </section>
 
+        <section id="faq" class="section container faq">
+            <h2 class="section__title animate-on-scroll">Questions fréquentes</h2>
+                <details class="faq__item animate-on-scroll">
+                    <summary class="faq__question">Quels travaux réalise Placo Isolation du Berry ?</summary>
+                    <p class="faq__answer">Nous réalisons la pose de placo et de cloisons sèches, les doublages de murs, l'isolation intérieure des murs, rampants et plafonds, la pose de faux plafonds, l'aménagement de combles et la rénovation intérieure (reprise de plâtrerie, enduits, préparation avant peinture).</p>
+                </details>
+                <details class="faq__item animate-on-scroll">
+                    <summary class="faq__question">Dans quelles communes intervenez-vous ?</summary>
+                    <p class="faq__answer">Nous sommes basés à Vierzon et intervenons dans un rayon d'environ 50 km : Bourges, Mehun-sur-Yèvre, Foëcy, Salbris, Romorantin-Lanthenay, Aubigny-sur-Nère, Issoudun, Graçay et les communes voisines du Cher, de la Sologne et du Berry.</p>
+                </details>
+                <details class="faq__item animate-on-scroll">
+                    <summary class="faq__question">Le devis est-il gratuit ?</summary>
+                    <p class="faq__answer">Oui. Nous nous déplaçons gratuitement pour étudier votre projet et prendre les mesures, puis nous vous remettons un devis détaillé et sans engagement.</p>
+                </details>
+                <details class="faq__item animate-on-scroll">
+                    <summary class="faq__question">Travaillez-vous pour les particuliers et les professionnels ?</summary>
+                    <p class="faq__answer">Oui, nous intervenons aussi bien chez les particuliers (maisons, appartements) que pour les professionnels (bureaux, locaux commerciaux), en construction neuve comme en rénovation.</p>
+                </details>
+                <details class="faq__item animate-on-scroll">
+                    <summary class="faq__question">Comment se déroule un chantier avec PIB ?</summary>
+                    <p class="faq__answer">Après votre appel ou votre demande en ligne, nous venons sur place pour étudier le projet et vous remettons un devis gratuit. Une fois le devis accepté, nous réalisons les travaux en protégeant vos espaces, puis nous laissons un chantier propre. Vous gardez le même interlocuteur du début à la fin.</p>
+                </details>
+        </section>
+
         <section id="contact" class="contact section">
             <div class="container">
                 <h2 class="section__title animate-on-scroll">Demandez votre devis gratuit</h2>
@@ -541,6 +624,16 @@
                 <p class="footer__col-title">Contact</p>
                 <a href="tel:+33663143313" class="footer__phone">+33 6 63 14 33 13</a>
                 <p class="footer__zone">Vierzon et 50 km alentour<br>Cher (18), Sologne, Berry</p>
+            </div>
+            <div>
+                <p class="footer__col-title">Nos services</p>
+                <div class="footer__links">
+                    <a href="pose-placo-vierzon.html" class="footer__link">Pose de placo</a>
+                    <a href="isolation-interieure-vierzon.html" class="footer__link">Isolation intérieure</a>
+                    <a href="amenagement-combles-vierzon.html" class="footer__link">Aménagement de combles</a>
+                    <a href="faux-plafond-vierzon.html" class="footer__link">Faux plafonds</a>
+                    <a href="plaquiste-bourges.html" class="footer__link">Plaquiste à Bourges</a>
+                </div>
             </div>
             <div>
                 <p class="footer__col-title">Navigation</p>

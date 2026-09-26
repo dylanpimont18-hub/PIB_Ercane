@@ -7,21 +7,39 @@
     <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://pib-vierzon.fr/realisations.html</loc>
+    <loc>https://pib-vierzon.fr/pose-placo-vierzon.html</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://pib-vierzon.fr/isolation-interieure-vierzon.html</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://pib-vierzon.fr/amenagement-combles-vierzon.html</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://pib-vierzon.fr/faux-plafond-vierzon.html</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://pib-vierzon.fr/plaquiste-bourges.html</loc>
     <lastmod>2026-09-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://pib-vierzon.fr/mentions-legales.html</loc>
+    <loc>https://pib-vierzon.fr/realisations.html</loc>
     <lastmod>2026-09-26</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.20</priority>
-  </url>
-  <url>
-    <loc>https://pib-vierzon.fr/politique-confidentialite.html</loc>
-    <lastmod>2026-09-26</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.20</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
   </url>
 </urlset>
