@@ -14,6 +14,7 @@
             loadRealisationsGallery();
         }
         if (document.getElementById('reviews-list')) {
+            initReviewsMarquee();
             loadTestimonials();
         }
     };
@@ -176,6 +177,7 @@
             if (!testimonials || testimonials.length === 0) return; // garde les avis codés en dur en secours
 
             reviewsGrid.innerHTML = '';
+            delete reviewsGrid.dataset.marquee;
             testimonials.forEach(review => {
                 const card = document.createElement('div');
                 card.className = 'review-card is-visible';
@@ -183,12 +185,40 @@
                 card.innerHTML = `
                     <div class="review-card__stars" aria-label="${review.rating} étoiles sur 5">${stars}</div>
                     <p class="review-card__text">« ${review.text} »</p>
-                    <p class="review-card__author"><i class="fa-brands fa-google" aria-hidden="true"></i> ${review.author_name}</p>
+                    <p class="review-card__author"><i class="fa-brands fa-google" aria-hidden="true"></i> ${firstName(review.author_name)} · Avis Google</p>
                 `;
                 reviewsGrid.appendChild(card);
             });
+            initReviewsMarquee();
         } catch (error) {
             console.error('Erreur lors du chargement des avis:', error); // garde les avis codés en dur en secours
+        }
+    };
+
+    // Seul le prénom est affiché, jamais le nom de famille
+    const firstName = (fullName) => (fullName || '').trim().split(/\s+/)[0] || 'Client';
+
+    // Bandeau défilant : duplique les cartes pour une boucle sans à-coup
+    const initReviewsMarquee = () => {
+        const track = document.getElementById('reviews-list');
+        if (!track || track.dataset.marquee) return;
+        track.dataset.marquee = 'on';
+
+        const cards = Array.from(track.children);
+        if (cards.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        cards.forEach(card => {
+            const clone = card.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true');
+            track.appendChild(clone);
+        });
+        track.style.setProperty('--reviews-duration', `${cards.length * 8}s`);
+        track.classList.add('is-scrolling');
+
+        // Sur mobile (pas de survol), un appui met en pause / relance
+        if (!track.dataset.tapPause) {
+            track.dataset.tapPause = 'on';
+            track.addEventListener('click', () => track.classList.toggle('is-paused'));
         }
     };
     

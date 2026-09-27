@@ -367,13 +367,47 @@ img {
     font-size: 1rem;
 }
 
-.reviews__grid {
-    display: grid;
-    gap: 2rem;
+/* Bandeau défilant : la piste est dupliquée par script.js puis translatée de -50 % en boucle */
+.reviews__marquee {
+    overflow: hidden;
+    padding: 0.75rem 0 1.25rem;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.reviews__track {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+}
+
+.reviews__track.is-scrolling {
+    animation: reviews-scroll var(--reviews-duration, 60s) linear infinite;
+}
+
+.reviews__marquee:hover .reviews__track,
+.reviews__marquee:focus-within .reviews__track,
+.reviews__track.is-paused {
+    animation-play-state: paused;
+}
+
+@keyframes reviews-scroll {
+    to { transform: translateX(calc(-50% - 0.75rem)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reviews__marquee {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+    }
+    .reviews__track .review-card {
+        scroll-snap-align: start;
+    }
 }
 
 .review-card {
     position: relative;
+    flex: 0 0 min(80vw, 340px);
     text-align: left;
     padding: 2.25rem 1.75rem 1.75rem;
     background-color: var(--white-color);
@@ -784,9 +818,6 @@ textarea.form-group__input {
     .trust__grid {
         grid-template-columns: repeat(3, 1fr);
     }
-    .reviews__grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
     .method__grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -802,9 +833,6 @@ textarea.form-group__input {
         margin-right: auto;
     }
     .method__grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    .reviews__grid {
         grid-template-columns: repeat(4, 1fr);
     }
 }
