@@ -43,8 +43,8 @@
                 { short: 'Départ', title: 'Le point de départ', text: 'Une grande pièce à séparer en deux. On la regarde de dessus, comme sur un plan : la cloison va traverser la pièce de gauche à droite.', gauge: { value: 0, text: '0 dB' } },
                 { short: 'Tracé', title: 'Le tracé au sol', text: 'On trace au sol l\u2019emplacement exact de la cloison au cordeau, puis on le reporte au plafond avec un laser.', gauge: { value: 0, text: '0 dB' } },
                 { short: 'Rails', title: 'Les rails', text: 'Un rail est vissé au sol et un autre au plafond, le long du tracé. Ils tiendront les montants.', gauge: { value: 0, text: '0 dB' } },
-                { short: 'Montants', title: 'Un montant tous les 60 cm', text: 'Les montants sont glissés dans les rails, un tous les 60 cm. Une porte prévue ? L\u2019ossature est renforcée à cet endroit.', gauge: { value: 0.05, text: '2 dB' } },
-                { short: 'Laine', title: 'Laine entre les montants', text: 'La laine est glissée entre les montants. C\u2019est elle qui absorbe le bruit : sans elle, une cloison sonne creux.', gauge: { value: 0.3, text: '15 dB' } },
+                { short: 'Montants', title: 'Un montant tous les 60 cm', text: 'Les montants sont glissés dans les rails, un tous les 60 cm. Une porte prévue ? L\u2019ossature est renforcée à cet endroit.', gauge: { value: 0, text: '0 dB' } },
+                { short: 'Laine', title: 'Laine entre les montants', text: 'La laine est glissée entre les montants. C\u2019est elle qui absorbe le bruit : sans elle, une cloison sonne creux.', gauge: { value: 0.1, text: '5 dB' } },
                 { short: 'Face 1', title: 'Première face de placo', text: 'Les plaques sont vissées sur les montants, d\u2019un seul côté de l\u2019ossature.', gauge: { value: 0.55, text: '30 dB' } },
                 { short: 'Face 2', title: 'Seconde face : le coffre se ferme', text: 'Les plaques de l\u2019autre côté referment la cloison comme un coffre. Deux parois et de la laine entre les deux : le bruit est étouffé.', gauge: { value: 0.8, text: '42 dB' } },
                 { short: 'Bandes', title: 'Bandes et enduit', text: 'Des deux côtés : bandes sur les joints, deux passes d\u2019enduit, ponçage.', gauge: { value: 0.82, text: '43 dB' } },
@@ -56,8 +56,8 @@
             file: 'animations/plafond.svg',
             steps: [
                 { short: 'Départ', title: 'Le point de départ', text: 'Une dalle en béton, ou une charpente, au-dessus de la pièce. Trop haute, irrégulière ou nue : on va créer un plafond suspendu dessous.' },
-                { short: 'Suspentes', title: 'Les suspentes', text: 'Des suspentes métalliques sont fixées une à une dans la dalle, tous les 60 cm environ. Ce sont elles qui portent tout le plafond.' },
-                { short: 'Fourrures', title: 'Les fourrures', text: 'Des fourrures, rails fins en acier, se clipsent en travers sur les suspentes. Réglées au laser, elles forment une grille parfaitement plane.' },
+                { short: 'Suspentes', title: 'Les suspentes', text: 'Des suspentes métalliques sont fixées une à une dans la dalle, environ tous les 1,20 m le long de chaque future fourrure. Ce sont elles qui portent tout le plafond.' },
+                { short: 'Fourrures', title: 'Les fourrures', text: 'Des fourrures, rails fins en acier, se clipsent sur les suspentes, une tous les 60 cm. Réglées au laser, elles forment un plan parfaitement horizontal.' },
                 { short: 'Isolant', title: 'L\u2019isolant', text: 'La laine est déroulée au-dessus des fourrures. Elle coupe le froid et amortit les bruits venant de l\u2019étage.' },
                 { short: 'Placo', title: 'Les plaques de plâtre', text: 'Les plaques sont levées et vissées sous les fourrures, une vis tous les 30 cm.' },
                 { short: 'Bandes', title: 'Bandes et enduit', text: 'Les joints sont bandés, enduits et poncés. Le plafond devient un plan lisse et continu.' },
@@ -95,7 +95,7 @@
                         affaissement: { title: 'Plafond affaissé', text: 'Le vieux plâtre sur lattis se décroche de ses fixations et pend. Il peut tomber : on le dépose sans attendre.' }
                     } },
                 { short: 'Dépose', weight: 1.5, title: 'La dépose', text: 'L\u2019ancien plafond est déposé jusqu\u2019à la structure : dalle ou solives.' },
-                { short: 'Plafond neuf', weight: 1.5, title: 'Le plafond neuf', text: 'Suspentes, fourrures, isolant, plaques : un plafond neuf, plan et léger, en quelques heures.' },
+                { short: 'Plafond neuf', weight: 1.5, title: 'Le plafond neuf', text: 'Suspentes, fourrures, isolant, plaques : un plafond neuf, plan, léger et isolé.' },
                 { short: 'Finitions', title: 'Les finitions', text: 'Bandes, enduit, ponçage, peinture.' },
                 { short: 'Avant / après', weight: 1.5, compare: true, title: 'Avant / après', text: 'Glissez le curseur pour comparer.' }
             ]
@@ -355,7 +355,7 @@
             if (data.compare) setCompare(svg, 50);
             const caption = document.createElement('figcaption');
             caption.innerHTML = `<p class="anim__step-number">${k === 0 ? scene.label : `Étape ${k} / ${scene.steps.length - 1}`}</p>`
-                + `<h3 class="anim__step-title">${data.title}</h3><p class="anim__step-text">${data.text}</p>`;
+                + `<h2 class="anim__step-title">${data.title}</h2><p class="anim__step-text">${data.text}</p>`;
             if (data.hotspots) {
                 const list = document.createElement('dl');
                 list.className = 'anim__hotspot-list';
@@ -473,10 +473,10 @@
     const placeTabs = () => {
         if (reduceMotion.matches) {
             root.classList.add('anim--static');
-            els.track.before(els.tablist);
+            els.track.before(els.tablist, els.subtabs);
         } else {
             root.classList.remove('anim--static');
-            els.stage.prepend(els.tablist);
+            els.stage.prepend(els.tablist, els.subtabs);
         }
     };
 
@@ -489,7 +489,12 @@
 
         const hash = window.location.hash.replace('#', '');
         const initial = SCENES[hash] ? hash : 'doublage';
-        selectScene(initial);
+        selectScene(initial).then(() => {
+            // Lien direct (#doublage, #renovation...) : on amène la section à l'écran
+            if (SCENES[hash] && !reduceMotion.matches) {
+                window.scrollTo({ top: Math.round(scrollRange().trackTop), behavior: 'auto' });
+            }
+        });
 
         els.compare.addEventListener('input', () => {
             const svg = els.scene.querySelector('svg');
