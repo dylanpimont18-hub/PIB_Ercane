@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <!-- Politique de securite (CSP) : sur GitHub Pages, aucun header HTTP ne peut etre defini,
+         la politique est donc portee par cette balise meta. Miroir de la config helmet de server.js. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; media-src 'self' https://bxeooiynucuclnkpqtmd.supabase.co; connect-src 'self' https://bxeooiynucuclnkpqtmd.supabase.co https://formspree.io https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment travaille un plaquiste ? Doublage, cloison, plafond, rénovation en animations | PIB Vierzon</title>
+    <meta name="description" content="Découvrez en animations comment Placo Isolation du Berry réalise un doublage isolé, une cloison, un faux plafond et une rénovation de mur : étape par étape, du parpaing à la peinture.">
+    <link rel="canonical" href="https://pib-vierzon.fr/comment-nous-travaillons.html">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#8B5A2B">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="Placo Isolation du Berry">
+    <meta property="og:url" content="https://pib-vierzon.fr/comment-nous-travaillons.html">
+    <meta property="og:title" content="Comment travaille un plaquiste ? Nos chantiers en animations">
+    <meta property="og:description" content="Doublage isolé, cloison, faux plafond, rénovation : chaque étape expliquée en animation, du parpaing à la peinture.">
+    <meta property="og:image" content="https://pib-vierzon.fr/banniere.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animations.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo">
+                <img src="logo.jpg" alt="Logo Placo Isolation du Berry" class="nav__logo-img">
+            </a>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="index.html#accueil" class="nav__link">Accueil</a></li>
+                    <li class="nav__item"><a href="index.html#a-propos" class="nav__link">L'entreprise</a></li>
+                    <li class="nav__item"><a href="index.html#services" class="nav__link">Services</a></li>
+                    <li class="nav__item"><a href="realisations.html" class="nav__link">Réalisations</a></li>
+                    <li class="nav__item"><a href="comment-nous-travaillons.html" class="nav__link active-link">Comment on travaille</a></li>
+                    <li class="nav__item"><a href="index.html#zone-intervention" class="nav__link">Zone</a></li>
+                    <li class="nav__item"><a href="index.html#contact" class="nav__link">Contact</a></li>
+                </ul>
+            </div>
+
+            <a href="index.html#contact" class="button nav__button">Demander un Devis</a>
+
+            <button class="nav__toggle" id="nav-toggle" aria-label="Ouvrir le menu">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="page-header section container">
+            <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="index.html">Accueil</a> &rsaquo; Comment on travaille</nav>
+            <h1 class="section__title">Comment travaille un plaquiste ?</h1>
+            <p class="page-header__lead">Un doublage isolé, une cloison, un faux plafond ou la rénovation d'un mur abîmé : faites défiler pour voir chaque étape se construire sous vos yeux, du parpaing à la peinture.</p>
+        </section>
+
+        <section id="animations" class="anim section container" aria-label="Animations pédagogiques">
+            <p class="anim-intro">Choisissez un type de chantier, puis <strong>faites défiler</strong> : chaque pas de défilement ajoute une couche. Vous pouvez remonter pour revoir une étape, ou cliquer sur un numéro.</p>
+
+            <div class="anim__track">
+                <div class="anim__stage">
+                    <div class="anim__tabs" role="tablist" aria-label="Type de chantier">
+                        <button type="button" class="anim__tab" role="tab" data-scene="doublage" aria-selected="true">Doublage</button>
+                        <button type="button" class="anim__tab" role="tab" data-scene="cloison" aria-selected="false" tabindex="-1">Cloison</button>
+                        <button type="button" class="anim__tab" role="tab" data-scene="plafond" aria-selected="false" tabindex="-1">Plafond</button>
+                        <button type="button" class="anim__tab" role="tab" data-scene="renovation" aria-selected="false" tabindex="-1">Rénovation</button>
+                    </div>
+
+                    <div class="anim__scene" aria-hidden="true"></div>
+
+                    <div class="anim__caption" aria-live="polite" aria-atomic="true">
+                        <div class="anim__caption-inner">
+                            <p class="anim__step-number">Doublage</p>
+                            <h2 class="anim__step-title">Chargement…</h2>
+                            <p class="anim__step-text"></p>
+                        </div>
+                        <a href="index.html#contact" class="button anim__cta">Demandez un devis</a>
+                    </div>
+
+                    <div class="anim__progress-wrap">
+                        <div class="anim__progress-fill" aria-hidden="true"></div>
+                        <ol class="anim__progress" aria-label="Étapes"></ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="anim__static" aria-label="Étapes en images"></div>
+
+            <noscript>
+                <p class="anim__scene anim__scene--empty">Ces animations nécessitent JavaScript. Vous pouvez aussi <a href="index.html#contact">nous demander un devis</a> directement.</p>
+            </noscript>
+        </section>
+
+        <section class="section container service-page">
+            <h2>Pourquoi vous montrer tout ça ?</h2>
+            <p>Un chantier de plaquiste se joue dans ce qu'on ne voit plus une fois la peinture posée : l'ossature, l'isolant, le pare-vapeur, les vis. Ces animations vous expliquent ce que nous mettons derrière vos murs et vos plafonds, pour que vous compreniez votre devis et les choix que nous vous proposons.</p>
+            <p>Une question sur votre projet à Vierzon ou dans le Cher ? <a href="index.html#contact">Écrivez-nous</a> ou appelez le <a href="tel:+33663143313">06 63 14 33 13</a> : le déplacement et le devis sont gratuits.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner container">
+            <div class="footer__brand">
+                <p class="footer__brand-name">Placo Isolation du Berry</p>
+                <p class="footer__tagline">Plaquiste à Vierzon &mdash; 15 ans d'expérience dans le bâtiment et la rénovation</p>
+            </div>
+            <div>
+                <p class="footer__col-title">Contact</p>
+                <a href="tel:+33663143313" class="footer__phone">+33 6 63 14 33 13</a>
+                <a href="mailto:placoduberry@gmail.com" class="footer__email">placoduberry@gmail.com</a>
+                <p class="footer__zone">Vierzon et 50 km alentour<br>Cher (18), Sologne, Berry</p>
+            </div>
+            <div>
+                <p class="footer__col-title">Nos services</p>
+                <div class="footer__links">
+                    <a href="pose-placo-vierzon.html" class="footer__link">Pose de placo</a>
+                    <a href="isolation-interieure-vierzon.html" class="footer__link">Isolation intérieure</a>
+                    <a href="amenagement-combles-vierzon.html" class="footer__link">Aménagement de combles</a>
+                    <a href="faux-plafond-vierzon.html" class="footer__link">Faux plafonds</a>
+                    <a href="plaquiste-bourges.html" class="footer__link">Plaquiste à Bourges</a>
+                </div>
+            </div>
+            <div>
+                <p class="footer__col-title">Navigation</p>
+                <div class="footer__links">
+                    <a href="index.html" class="footer__link">Accueil</a>
+                    <a href="realisations.html" class="footer__link">Réalisations</a>
+                    <a href="comment-nous-travaillons.html" class="footer__link">Comment on travaille</a>
+                    <a href="index.html#zone-intervention" class="footer__link">Zone d'intervention</a>
+                    <a href="index.html#contact" class="footer__link">Devis gratuit</a>
+                    <a href="mentions-legales.html" class="footer__link">Mentions légales</a>
+                    <a href="politique-confidentialite.html" class="footer__link">Politique de confidentialité</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer__bottom container">
+            <p class="footer__copy">&copy; <span class="footer__year">2026</span> Placo Isolation du Berry &middot; SIRET 983 082 595 00015 &middot; Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+    <script src="animations.js" defer></script>
+
+    <a href="tel:+33663143313" class="floating-call-button" aria-label="Appeler Placo Isolation du Berry au 06 63 14 33 13">
+        <i class="fa-solid fa-phone" aria-hidden="true"></i> Appeler
+    </a>
+    <a href="index.html#contact" class="floating-cta-button" id="floating-button" aria-label="Aller au formulaire de contact">
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+    </a>
+
+    <div id="cookie-banner" class="cookie-banner">
+        <i class="fa-solid fa-cookie-bite cookie-banner__icon" aria-hidden="true"></i>
+        <div class="cookie-banner__body">
+            <p class="cookie-banner__title">Un petit mot sur les cookies</p>
+            <p class="cookie-banner__text">Nous utilisons Google Analytics pour mieux comprendre nos visiteurs et améliorer le site. Vous décidez librement. <a href="politique-confidentialite.html">En savoir plus</a>.</p>
+        </div>
+        <div class="cookie-banner__actions">
+            <button type="button" id="cookie-refuse" class="cookie-banner__button cookie-banner__button--refuse">Refuser</button>
+            <button type="button" id="cookie-accept" class="cookie-banner__button cookie-banner__button--accept">Accepter</button>
+        </div>
+    </div>
+
+</body>
+</html>

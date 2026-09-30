@@ -1,0 +1,476 @@
+/* ==========================================================================
+   ANIMATIONS PÉDAGOGIQUES — comment-nous-travaillons.html
+   Section épinglée pilotée par le scroll (voir animations.js).
+   Aucune dépendance : SVG inline + transitions CSS.
+   ========================================================================== */
+
+:root {
+    /* Palette matériaux, harmonisée avec la charte (brun / gris chaud / orange) */
+    --mat-parpaing: #9C9A94;
+    --mat-parpaing-cell: #B4B2AC;
+    --mat-beton: #C4C1BB;
+    --mat-metal: #C9CDD1;
+    --mat-metal-line: #9AA0A6;
+    --mat-laine: #E8C55A;
+    --mat-pare-vapeur: rgba(74, 144, 217, 0.45);
+    --mat-pare-vapeur-line: #4A90D9;
+    --mat-placo: #F1EDE3;
+    --mat-placo-line: #D9D2C2;
+    --mat-enduit: #FAFAF8;
+    --mat-enduit-line: #E5E2DA;
+    --mat-peinture: #EADFCF;
+    --mat-vis: #6B6B6B;
+    --mat-exterieur: #EEF2F5;
+    --mat-interieur: #FDFBF7;
+
+    /* Rythme des animations */
+    --anim-duration: 0.6s;
+    --anim-stagger: 0.1s;
+    --anim-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* -------------------- En-tête de page -------------------- */
+.anim-intro {
+    max-width: 46rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* -------------------- Onglets -------------------- */
+.anim__tabs {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0.25rem 0 0.5rem;
+    margin: 0 -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.anim__tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.anim__tab {
+    flex: 0 0 auto;
+    font-family: var(--title-font);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    background: var(--secondary-color);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.anim__tab:hover,
+.anim__tab:focus-visible {
+    border-color: var(--primary-light);
+    outline: none;
+}
+
+.anim__tab[aria-selected="true"] {
+    background: var(--primary-color);
+    color: var(--white-color);
+}
+
+/* -------------------- Piste + zone épinglée -------------------- */
+.anim__track {
+    position: relative;
+    /* Hauteur fixée par animations.js : (N+1) × 40 vh + hauteur de la scène */
+}
+
+.anim__stage {
+    position: sticky;
+    top: var(--header-height);
+    height: calc(100vh - var(--header-height));
+    height: calc(100svh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    /* Marge basse : laisse la place aux boutons flottants (Appeler / enveloppe) */
+    padding: 0.5rem 0 5.5rem;
+    box-sizing: border-box;
+}
+
+.anim__scene {
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white-color);
+    border: 1px solid #E8E4DC;
+    border-radius: 0.6rem;
+    overflow: hidden;
+}
+
+.anim__scene svg {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    display: block;
+}
+
+.anim__scene--empty {
+    font-family: var(--title-font);
+    color: var(--primary-color);
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+/* -------------------- Légende -------------------- */
+.anim__caption {
+    position: relative;
+    flex: 0 0 auto;
+    min-height: 11.5rem;
+    padding: 0.25rem 0 3.25rem;
+}
+
+.anim__step-number {
+    font-family: var(--title-font);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+}
+
+.anim__step-title {
+    font-family: var(--title-font);
+    font-size: 1.15rem;
+    color: var(--primary-color);
+    margin: 0.1rem 0 0.35rem;
+}
+
+.anim__step-text {
+    line-height: 1.55;
+    margin: 0;
+}
+
+.anim__caption-inner {
+    transition: opacity 0.3s ease, transform 0.3s var(--anim-ease);
+}
+
+.anim__caption-inner.is-changing {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: none;
+}
+
+.anim__cta {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease), visibility 0s linear var(--anim-duration);
+}
+
+.anim__cta.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+}
+
+/* -------------------- Barre de progression -------------------- */
+.anim__progress-wrap {
+    position: relative;
+    padding: 0.5rem 0.2rem 0;
+}
+
+.anim__progress-wrap::before,
+.anim__progress-fill {
+    content: '';
+    position: absolute;
+    left: 0.95rem;
+    right: 0.95rem;
+    top: calc(0.5rem + 0.75rem - 1.5px);
+    height: 3px;
+    border-radius: 2px;
+    background: #E3DED5;
+}
+
+.anim__progress-fill {
+    right: auto;
+    width: 0;
+    background: var(--accent-color);
+    transition: width var(--anim-duration) var(--anim-ease);
+}
+
+.anim__progress {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.anim__dot {
+    position: relative;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 2px solid #E3DED5;
+    background: var(--white-color);
+    color: var(--text-color);
+    font-family: var(--title-font);
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+.anim__dot:hover,
+.anim__dot:focus-visible {
+    border-color: var(--primary-light);
+    outline: none;
+}
+
+.anim__dot.is-done {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.anim__dot.is-current {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--white-color);
+    transform: scale(1.15);
+}
+
+.anim__dot-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+/* -------------------- Éléments animés dans le SVG -------------------- */
+.scene text {
+    font-family: var(--body-font);
+    fill: var(--text-color);
+}
+
+.scene__label {
+    font-size: 20px;
+    font-weight: 700;
+    fill: #5C5650;
+}
+
+.scene__label--cold {
+    font-size: 18px;
+    fill: var(--mat-pare-vapeur-line);
+}
+
+.scene__cote text {
+    font-size: 17px;
+    fill: #5C5650;
+}
+
+.scene__cote line {
+    stroke: #5C5650;
+    stroke-width: 1;
+}
+
+/* Matériaux */
+.mat-exterieur { fill: var(--mat-exterieur); }
+.mat-interieur { fill: var(--mat-interieur); }
+.mat-beton { fill: var(--mat-beton); }
+.mat-parpaing { fill: var(--mat-parpaing); stroke: #85837D; stroke-width: 1; }
+.mat-parpaing-cell { fill: var(--mat-parpaing-cell); }
+.mat-metal { fill: var(--mat-metal); stroke: var(--mat-metal-line); stroke-width: 1; }
+.mat-metal-line { stroke: var(--mat-metal-line); stroke-width: 1; }
+.mat-laine { fill: var(--mat-laine); }
+.mat-pare-vapeur { fill: var(--mat-pare-vapeur); stroke: var(--mat-pare-vapeur-line); stroke-width: 1; }
+.mat-placo { fill: var(--mat-placo); stroke: var(--mat-placo-line); stroke-width: 1.2; }
+.mat-vis { fill: var(--mat-vis); }
+.mat-bande { fill: #E3E0D8; stroke: #CFCAC0; stroke-width: 1; }
+.mat-enduit { fill: var(--mat-enduit); stroke: var(--mat-enduit-line); stroke-width: 1; }
+.mat-peinture { fill: var(--mat-peinture); }
+
+/* Jauge (thermomètre) */
+.gauge__title { font-size: 15px; font-weight: 700; fill: #5C5650; }
+.gauge__tube { fill: var(--white-color); stroke: #9AA0A6; stroke-width: 1.5; }
+.gauge__bulb { fill: var(--accent-color); stroke: #9AA0A6; stroke-width: 1.5; }
+.gauge__fill {
+    fill: var(--accent-color);
+    transform-box: fill-box;
+    transform-origin: bottom center;
+    transform: scaleY(var(--gauge, 0.2));
+    transition: transform var(--anim-duration) var(--anim-ease);
+}
+.gauge__mark { stroke: var(--mat-pare-vapeur-line); stroke-width: 2; }
+.gauge__mark-label { font-size: 13px; fill: var(--mat-pare-vapeur-line); }
+.gauge__value { font-size: 20px; font-weight: 700; fill: var(--primary-color); }
+
+/* État caché / visible : chaque élément porte data-in="k" (étape d'apparition)
+   et une classe de mouvement. --i = rang dans la cascade de l'étape. */
+[data-in] {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease);
+    transition-delay: 0s;
+}
+
+[data-in].is-in {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(var(--i, 0) * var(--anim-stagger));
+}
+
+.anim-drop { transform: translateY(-40px); }
+.anim-rise { transform: translateY(40px); }
+.anim-from-right { transform: translateX(60px); }
+.anim-from-left { transform: translateX(-60px); }
+.anim-fade { transform: none; }
+.anim-pop { transform: scale(0); }
+.anim-grow-up { transform: scaleY(0); transform-origin: bottom center; }
+.anim-grow-down { transform: scaleY(0); transform-origin: top center; }
+.anim-unroll { transform: scaleY(0); transform-origin: top center; }
+
+/* -------------------- Mode « réduire les animations » -------------------- */
+/* Une image fixe par étape, empilées, avec la légende en dessous. */
+.anim--static .anim__track,
+.anim--static .anim__stage {
+    display: none;
+}
+
+.anim__static {
+    display: none;
+}
+
+.anim--static .anim__static {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.anim__static [data-in],
+.anim__static .gauge__fill,
+.anim__static .anim__caption-inner {
+    transition: none !important;
+}
+
+.anim__static-step {
+    margin: 0;
+}
+
+.anim__static-step .anim__scene {
+    aspect-ratio: 720 / 500;
+}
+
+.anim__static-step figcaption {
+    padding-top: 0.75rem;
+}
+
+.anim__static .anim__cta {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    margin-top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-in],
+    .gauge__fill,
+    .anim__progress-fill,
+    .anim__caption-inner,
+    .anim__cta {
+        transition: none !important;
+    }
+}
+
+/* -------------------- Tablette / desktop -------------------- */
+@media screen and (min-width: 768px) {
+    .anim__tabs {
+        justify-content: center;
+        margin: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .anim__tab {
+        font-size: 1rem;
+        padding: 0.55rem 1.4rem;
+    }
+
+    .anim__step-title {
+        font-size: 1.35rem;
+    }
+
+    .anim__dot-label {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 0.35rem;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        clip: auto;
+        font-size: 0.7rem;
+        font-weight: 400;
+        color: var(--text-color);
+        white-space: nowrap;
+    }
+
+    .anim__progress-wrap {
+        padding-bottom: 1.6rem;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .anim__stage {
+        display: grid;
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        grid-template-areas:
+            "tabs tabs"
+            "scene caption"
+            "progress progress";
+        column-gap: 2.5rem;
+        row-gap: 1rem;
+        padding: 1rem 0 1.5rem;
+    }
+
+    .anim__tabs { grid-area: tabs; }
+    .anim__scene { grid-area: scene; align-self: center; }
+    .anim__caption {
+        grid-area: caption;
+        align-self: center;
+        min-height: 0;
+        padding: 0 0 4rem;
+    }
+    .anim__progress-wrap { grid-area: progress; }
+
+    .anim__step-title {
+        font-size: 1.6rem;
+    }
+
+    .anim__step-text {
+        font-size: 1.05rem;
+        line-height: 1.65;
+    }
+
+    .anim__static-step {
+        display: grid;
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        gap: 2rem;
+        align-items: center;
+    }
+}
