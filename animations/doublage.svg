@@ -3,7 +3,7 @@
 
   <defs>
     <!-- Fibres de la laine de verre -->
-    <pattern id="fibres" width="24" height="16" patternUnits="userSpaceOnUse">
+    <pattern id="fibres" x="250" y="64" width="24" height="16" patternUnits="userSpaceOnUse">
       <path d="M0 8 Q6 2 12 8 T24 8" fill="none" stroke="#D9B142" stroke-width="1.4" opacity="0.7"/>
       <path d="M-6 14 Q0 8 6 14 T18 14" fill="none" stroke="#F3D877" stroke-width="1.2" opacity="0.7"/>
     </pattern>
@@ -16,7 +16,7 @@
   <!-- ===== Décor fixe (étape 0) ===== -->
   <g class="scene__decor">
     <rect class="mat-exterieur" x="0" y="0" width="90" height="440"/>
-    <rect class="mat-interieur" x="400" y="0" width="320" height="440"/>
+    <rect class="mat-interieur" x="390" y="0" width="330" height="440"/>
 
     <!-- Dalle haute et dalle basse -->
     <rect class="mat-beton" x="90" y="30" width="510" height="34"/>
@@ -44,21 +44,21 @@
   <!-- ===== Étape 4 : laine de verre (dessinée avant l'ossature pour passer derrière) ===== -->
   <g class="layer layer--laine">
     <g data-in="4" class="anim-from-right">
-      <rect class="mat-laine" x="250" y="64" width="100" height="372"/>
-      <rect x="250" y="64" width="100" height="372" fill="url(#fibres)"/>
+      <rect class="mat-laine" x="250" y="64" width="90" height="372"/>
+      <rect x="250" y="64" width="90" height="372" fill="url(#fibres)"/>
     </g>
   </g>
 
   <!-- ===== Étape 2 : rails bas et haut ===== -->
   <g class="layer layer--rails">
     <g data-in="2" class="anim-drop">
-      <rect class="mat-metal" x="300" y="430" width="40" height="6"/>
-      <rect class="mat-metal" x="300" y="414" width="5" height="22"/>
+      <rect class="mat-metal" x="316" y="430" width="24" height="6"/>
+      <rect class="mat-metal" x="316" y="414" width="5" height="22"/>
       <rect class="mat-metal" x="335" y="414" width="5" height="22"/>
     </g>
     <g data-in="2" class="anim-rise">
-      <rect class="mat-metal" x="300" y="64" width="40" height="6"/>
-      <rect class="mat-metal" x="300" y="64" width="5" height="22"/>
+      <rect class="mat-metal" x="316" y="64" width="24" height="6"/>
+      <rect class="mat-metal" x="316" y="64" width="5" height="22"/>
       <rect class="mat-metal" x="335" y="64" width="5" height="22"/>
     </g>
   </g>
@@ -66,51 +66,51 @@
   <!-- ===== Étape 3 : montant (un tous les 60 cm) ===== -->
   <g class="layer layer--montants">
     <g data-in="3" class="anim-grow-up">
-      <rect class="mat-metal" x="306" y="70" width="28" height="360"/>
-      <line class="mat-metal-line" x1="311" y1="70" x2="311" y2="430"/>
-      <line class="mat-metal-line" x1="329" y1="70" x2="329" y2="430"/>
+      <rect class="mat-metal" x="318" y="70" width="22" height="360"/>
+      <line class="mat-metal-line" x1="323" y1="70" x2="323" y2="430"/>
+      <line class="mat-metal-line" x1="335" y1="70" x2="335" y2="430"/>
     </g>
     <!-- Cote « 60 cm » -->
     <g data-in="3" class="anim-fade scene__cote">
-      <line x1="320" y1="20" x2="320" y2="26"/>
-      <text x="320" y="16" text-anchor="middle">un montant tous les 60 cm</text>
+      <line x1="329" y1="20" x2="329" y2="26"/>
+      <text x="329" y="16" text-anchor="middle">un montant tous les 60 cm</text>
     </g>
   </g>
 
   <!-- ===== Étape 5 : pare-vapeur côté pièce ===== -->
   <g class="layer layer--pare-vapeur">
     <g data-in="5" class="anim-unroll">
-      <rect class="mat-pare-vapeur" x="350" y="64" width="8" height="372"/>
+      <rect class="mat-pare-vapeur" x="340" y="64" width="8" height="372"/>
     </g>
   </g>
 
   <!-- ===== Étape 6 : plaques de plâtre + vis ===== -->
   <g class="layer layer--placo">
     <g data-in="6" class="anim-from-right">
-      <rect class="mat-placo" x="358" y="64" width="30" height="184"/>
+      <rect class="mat-placo" x="348" y="64" width="30" height="184"/>
     </g>
     <g data-in="6" class="anim-from-right">
-      <rect class="mat-placo" x="358" y="252" width="30" height="184"/>
+      <rect class="mat-placo" x="348" y="252" width="30" height="184"/>
     </g>
     <g class="layer--vis">
-      <circle data-in="6" class="mat-vis anim-pop" cx="373" cy="96" r="3.5"/>
-      <circle data-in="6" class="mat-vis anim-pop" cx="373" cy="150" r="3.5"/>
-      <circle data-in="6" class="mat-vis anim-pop" cx="373" cy="204" r="3.5"/>
-      <circle data-in="6" class="mat-vis anim-pop" cx="373" cy="296" r="3.5"/>
-      <circle data-in="6" class="mat-vis anim-pop" cx="373" cy="350" r="3.5"/>
-      <circle data-in="6" class="mat-vis anim-pop" cx="373" cy="404" r="3.5"/>
+      <circle data-in="6" class="mat-vis anim-pop" cx="363" cy="96" r="3.5"/>
+      <circle data-in="6" class="mat-vis anim-pop" cx="363" cy="150" r="3.5"/>
+      <circle data-in="6" class="mat-vis anim-pop" cx="363" cy="204" r="3.5"/>
+      <circle data-in="6" class="mat-vis anim-pop" cx="363" cy="296" r="3.5"/>
+      <circle data-in="6" class="mat-vis anim-pop" cx="363" cy="350" r="3.5"/>
+      <circle data-in="6" class="mat-vis anim-pop" cx="363" cy="404" r="3.5"/>
     </g>
   </g>
 
   <!-- ===== Étape 7 : bande sur le joint puis enduit ===== -->
   <g class="layer layer--finitions">
-    <rect data-in="7" class="mat-bande anim-pop" x="384" y="234" width="6" height="32" rx="1"/>
-    <rect data-in="7" class="mat-enduit anim-grow-down" x="388" y="64" width="6" height="372"/>
+    <rect data-in="7" class="mat-bande anim-pop" x="376" y="234" width="6" height="32" rx="1"/>
+    <rect data-in="7" class="mat-enduit anim-grow-down" x="378" y="64" width="6" height="372"/>
   </g>
 
   <!-- ===== Étape 8 : peinture ===== -->
   <g class="layer layer--peinture">
-    <rect data-in="8" class="mat-peinture anim-grow-down" x="394" y="64" width="6" height="372"/>
+    <rect data-in="8" class="mat-peinture anim-grow-down" x="384" y="64" width="6" height="372"/>
   </g>
 
   <!-- ===== Thermomètre ===== -->
