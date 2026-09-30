@@ -985,6 +985,18 @@ textarea.form-group__input {
     margin-bottom: 1rem;
 }
 
+/* Lien vers les animations pédagogiques, sous la méthode */
+.method__more {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
+.method__more-text {
+    max-width: 38rem;
+    margin: 0 auto 1.25rem;
+    line-height: 1.6;
+}
+
 /* -------------------- PAGES LÉGALES -------------------- */
 .legal-content {
     max-width: 800px;
