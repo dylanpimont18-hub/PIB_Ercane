@@ -36,10 +36,74 @@
                 { short: 'Peinture', title: 'Peinture', text: 'Le mur est prêt à peindre. Isolé, plan et propre : la pièce est confortable, hiver comme été.', gauge: { value: 0.8, text: '20 °C' } }
             ]
         },
-        cloison: { label: 'Cloison', file: null, steps: [] },
-        plafond: { label: 'Plafond', file: null, steps: [] },
-        renovation: { label: 'Rénovation', file: null, steps: [] }
+        cloison: {
+            label: 'Cloison',
+            file: 'animations/cloison.svg',
+            steps: [
+                { short: 'Départ', title: 'Le point de départ', text: 'Une grande pièce à séparer en deux. On la regarde de dessus, comme sur un plan : la cloison va traverser la pièce de gauche à droite.', gauge: { value: 0, text: '0 dB' } },
+                { short: 'Tracé', title: 'Le tracé au sol', text: 'On trace au sol l\u2019emplacement exact de la cloison au cordeau, puis on le reporte au plafond avec un laser.', gauge: { value: 0, text: '0 dB' } },
+                { short: 'Rails', title: 'Les rails', text: 'Un rail est vissé au sol et un autre au plafond, le long du tracé. Ils tiendront les montants.', gauge: { value: 0, text: '0 dB' } },
+                { short: 'Montants', title: 'Un montant tous les 60 cm', text: 'Les montants sont glissés dans les rails, un tous les 60 cm. Une porte prévue ? L\u2019ossature est renforcée à cet endroit.', gauge: { value: 0.05, text: '2 dB' } },
+                { short: 'Laine', title: 'Laine entre les montants', text: 'La laine est glissée entre les montants. C\u2019est elle qui absorbe le bruit : sans elle, une cloison sonne creux.', gauge: { value: 0.3, text: '15 dB' } },
+                { short: 'Face 1', title: 'Première face de placo', text: 'Les plaques sont vissées sur les montants, d\u2019un seul côté de l\u2019ossature.', gauge: { value: 0.55, text: '30 dB' } },
+                { short: 'Face 2', title: 'Seconde face : le coffre se ferme', text: 'Les plaques de l\u2019autre côté referment la cloison comme un coffre. Deux parois et de la laine entre les deux : le bruit est étouffé.', gauge: { value: 0.8, text: '42 dB' } },
+                { short: 'Bandes', title: 'Bandes et enduit', text: 'Des deux côtés : bandes sur les joints, deux passes d\u2019enduit, ponçage.', gauge: { value: 0.82, text: '43 dB' } },
+                { short: 'Peinture', title: 'Peinture', text: 'Deux pièces indépendantes, prêtes à peindre. Une cloison de 7 cm suffit à isoler une chambre du salon.', gauge: { value: 0.82, text: '43 dB' } }
+            ]
+        },
+        plafond: {
+            label: 'Plafond',
+            file: 'animations/plafond.svg',
+            steps: [
+                { short: 'Départ', title: 'Le point de départ', text: 'Une dalle en béton, ou une charpente, au-dessus de la pièce. Trop haute, irrégulière ou nue : on va créer un plafond suspendu dessous.' },
+                { short: 'Suspentes', title: 'Les suspentes', text: 'Des suspentes métalliques sont fixées une à une dans la dalle, tous les 60 cm environ. Ce sont elles qui portent tout le plafond.' },
+                { short: 'Fourrures', title: 'Les fourrures', text: 'Des fourrures, rails fins en acier, se clipsent en travers sur les suspentes. Réglées au laser, elles forment une grille parfaitement plane.' },
+                { short: 'Isolant', title: 'L\u2019isolant', text: 'La laine est déroulée au-dessus des fourrures. Elle coupe le froid et amortit les bruits venant de l\u2019étage.' },
+                { short: 'Placo', title: 'Les plaques de plâtre', text: 'Les plaques sont levées et vissées sous les fourrures, une vis tous les 30 cm.' },
+                { short: 'Bandes', title: 'Bandes et enduit', text: 'Les joints sont bandés, enduits et poncés. Le plafond devient un plan lisse et continu.' },
+                { short: 'Peinture', title: 'Peinture', text: 'Le plafond est prêt à peindre. Spots, corniche ou gorge lumineuse peuvent s\u2019y intégrer.' }
+            ]
+        },
+        renovation: {
+            label: 'Rénovation',
+            group: 'renovation',
+            variant: 'Mur abîmé',
+            file: 'animations/renovation-mur.svg',
+            steps: [
+                { short: 'Diagnostic', weight: 2.5, title: 'Le diagnostic', text: 'Avant tout, on regarde. Touchez les pastilles pour comprendre chaque désordre : fissure, humidité, enduit friable, papier décollé.',
+                    hotspots: {
+                        fissure: { title: 'Fissure', text: 'Une fissure fine suit souvent un joint de maçonnerie ou un mouvement du bâti. On ne la rebouche pas : on la couvre d\u2019une nouvelle paroi désolidarisée.' },
+                        humidite: { title: 'Humidité', text: 'Auréoles et cloques en bas de mur : l\u2019eau remonte ou traverse. On traite la cause, puis on isole avec un pare-vapeur côté pièce.' },
+                        friable: { title: 'Enduit friable', text: 'Le vieux plâtre sonne creux et part en poussière. Impossible de peindre dessus : il faut déposer jusqu\u2019au support.' },
+                        papier: { title: 'Papier décollé', text: 'Le papier se décolle parce que le support bouge ou est humide. Il sera retiré avec l\u2019ancien enduit.' }
+                    } },
+                { short: 'Dépose', weight: 1.5, title: 'La dépose', text: 'L\u2019ancien revêtement est arraché : papier, plâtre friable, tout tombe jusqu\u2019au mur nu. On repart sur une base saine.' },
+                { short: 'Reconstruction', weight: 1.5, title: 'La reconstruction', text: 'Comme en neuf, en accéléré : rails, montants, laine, pare-vapeur et plaques viennent recouvrir le mur nu.' },
+                { short: 'Finitions', title: 'Les finitions', text: 'Bandes, enduit, ponçage, peinture. Le mur est neuf, plan et isolé.' },
+                { short: 'Avant / après', weight: 1.5, compare: true, title: 'Avant / après', text: 'Glissez le curseur pour comparer le mur d\u2019origine et le mur rénové.' }
+            ]
+        },
+        'renovation-plafond': {
+            label: 'Rénovation',
+            group: 'renovation',
+            variant: 'Plafond abîmé',
+            file: 'animations/renovation-plafond.svg',
+            steps: [
+                { short: 'Diagnostic', weight: 2.5, title: 'Le diagnostic', text: 'Un plafond taché ou qui pend n\u2019est jamais anodin. Touchez les pastilles pour comprendre.',
+                    hotspots: {
+                        tache: { title: 'Tache d\u2019humidité', text: 'Une auréole brune signale une fuite ou une condensation passée. Une fois la cause réglée, le plâtre taché reste fragile et poreux.' },
+                        affaissement: { title: 'Plafond affaissé', text: 'Le vieux plâtre sur lattis se décroche de ses fixations et pend. Il peut tomber : on le dépose sans attendre.' }
+                    } },
+                { short: 'Dépose', weight: 1.5, title: 'La dépose', text: 'L\u2019ancien plafond est déposé jusqu\u2019à la structure : dalle ou solives.' },
+                { short: 'Plafond neuf', weight: 1.5, title: 'Le plafond neuf', text: 'Suspentes, fourrures, isolant, plaques : un plafond neuf, plan et léger, en quelques heures.' },
+                { short: 'Finitions', title: 'Les finitions', text: 'Bandes, enduit, ponçage, peinture.' },
+                { short: 'Avant / après', weight: 1.5, compare: true, title: 'Avant / après', text: 'Glissez le curseur pour comparer.' }
+            ]
+        }
     };
+
+    const stepWeight = (step) => (step && step.weight) || 1;
+    const totalWeight = (scene) => scene.steps.reduce((sum, step) => sum + stepWeight(step), 0);
 
     const root = document.getElementById('animations');
     if (!root) return;
@@ -55,6 +119,12 @@
         stepTitle: root.querySelector('.anim__step-title'),
         stepText: root.querySelector('.anim__step-text'),
         cta: root.querySelector('.anim__cta'),
+        tip: root.querySelector('.anim__tip'),
+        tipTitle: root.querySelector('.anim__tip-title'),
+        tipText: root.querySelector('.anim__tip-text'),
+        tipClose: root.querySelector('.anim__tip-close'),
+        compare: root.querySelector('.anim__compare'),
+        subtabs: root.querySelector('.anim__subtabs'),
         progress: root.querySelector('.anim__progress'),
         progressFill: root.querySelector('.anim__progress-fill'),
         staticWrap: root.querySelector('.anim__static')
@@ -90,9 +160,9 @@
     /* Assigne --i (rang dans la cascade) à chaque élément d'une même étape. */
     const prepareSvg = (svg) => {
         const counters = {};
-        const animated = Array.from(svg.querySelectorAll('[data-in]'));
+        const animated = Array.from(svg.querySelectorAll('[data-in], [data-out]'));
         animated.forEach((el) => {
-            const k = Number(el.dataset.in);
+            const k = el.dataset.in !== undefined ? `in${el.dataset.in}` : `out${el.dataset.out}`;
             counters[k] = counters[k] || 0;
             el.style.setProperty('--i', el.dataset.i !== undefined ? el.dataset.i : counters[k]);
             counters[k] += 1;
@@ -100,22 +170,42 @@
         return animated;
     };
 
+    const setCompare = (svg, percent) => {
+        const clip = svg.querySelector('[data-compare-clip]');
+        const handle = svg.querySelector('[data-compare-handle]');
+        const width = Number(svg.getAttribute('viewBox').split(/\s+/)[2]) || 720;
+        const x = (width * percent) / 100;
+        if (clip) clip.setAttribute('width', x);
+        if (handle) handle.setAttribute('transform', `translate(${x} 0)`);
+    };
+
     const applyStateToSvg = (svg, animated, step, scene) => {
-        animated.forEach((el) => el.classList.toggle('is-in', Number(el.dataset.in) <= step));
+        animated.forEach((el) => {
+            if (el.dataset.in !== undefined) el.classList.toggle('is-in', Number(el.dataset.in) <= step);
+            if (el.dataset.out !== undefined) el.classList.toggle('is-out', Number(el.dataset.out) <= step);
+        });
         const stepData = scene.steps[step];
         if (stepData && stepData.gauge) {
             svg.style.setProperty('--gauge', stepData.gauge.value);
             const label = svg.querySelector('[data-gauge-text]');
             if (label) label.textContent = stepData.gauge.text;
         }
+        svg.classList.toggle('is-diagnostic', Boolean(stepData && stepData.hotspots));
     };
 
     /* ---------------------------------------------------------------------
        Mode scroll (par défaut)
        --------------------------------------------------------------------- */
+    /* Vide la scène en conservant le curseur avant/après (élément HTML fixe). */
+    const clearScene = () => {
+        Array.from(els.scene.children).forEach((child) => {
+            if (child !== els.compare) child.remove();
+        });
+    };
+
     const setTrackHeight = () => {
         const stageHeight = els.stage.offsetHeight;
-        const scrollLength = (state.stepCount + 1) * STEP_VH * window.innerHeight;
+        const scrollLength = totalWeight(state.scene) * STEP_VH * window.innerHeight;
         els.track.style.height = `${Math.round(stageHeight + scrollLength)}px`;
     };
 
@@ -128,16 +218,21 @@
     const stepFromScroll = () => {
         const { trackTop, length } = scrollRange();
         if (length <= 0) return 0;
-        const progress = (window.scrollY - trackTop) / length;
-        const states = state.stepCount + 1;
-        const index = Math.floor(progress * states);
-        return Math.max(0, Math.min(state.stepCount, index));
+        const position = ((window.scrollY - trackTop) / length) * totalWeight(state.scene);
+        let cumulated = 0;
+        for (let k = 0; k < state.scene.steps.length; k += 1) {
+            cumulated += stepWeight(state.scene.steps[k]);
+            if (position < cumulated) return k;
+        }
+        return state.stepCount;
     };
 
     const scrollToStep = (k) => {
         const { trackTop, length } = scrollRange();
-        const states = state.stepCount + 1;
-        const target = trackTop + ((k + 0.5) / states) * length;
+        const total = totalWeight(state.scene);
+        let before = 0;
+        for (let j = 0; j < k; j += 1) before += stepWeight(state.scene.steps[j]);
+        const target = trackTop + ((before + stepWeight(state.scene.steps[k]) / 2) / total) * length;
         window.scrollTo({ top: Math.round(target), behavior: reduceMotion.matches ? 'auto' : 'smooth' });
     };
 
@@ -164,14 +259,53 @@
         els.progressFill.style.width = `calc((100% - 1.8rem) * ${ratio})`;
     };
 
+    const hideTip = () => {
+        els.tip.hidden = true;
+        els.captionInner.hidden = false;
+    };
+
+    const showTip = (id) => {
+        const data = state.scene.steps[state.step];
+        const info = data && data.hotspots && data.hotspots[id];
+        if (!info) return;
+        els.tipTitle.textContent = info.title;
+        els.tipText.textContent = info.text;
+        els.captionInner.hidden = true;
+        els.tip.hidden = false;
+    };
+
     const applyStep = (step) => {
         if (step === state.step) return;
         state.step = step;
         const svg = els.scene.querySelector('svg');
+        const data = state.scene.steps[step];
         if (svg) applyStateToSvg(svg, state.animated, step, state.scene);
+        hideTip();
         renderCaption(step);
         renderProgress(step);
+        const compare = Boolean(data && data.compare);
+        els.compare.hidden = !compare;
+        els.scene.classList.toggle('is-comparing', compare);
+        if (compare && svg) {
+            els.compare.value = 50;
+            setCompare(svg, 50);
+        }
         els.cta.classList.toggle('is-visible', state.stepCount > 0 && step === state.stepCount);
+    };
+
+    const initHotspots = (svg) => {
+        svg.querySelectorAll('[data-hotspot]').forEach((spot) => {
+            spot.setAttribute('role', 'button');
+            spot.setAttribute('tabindex', '0');
+            const open = (event) => {
+                event.preventDefault();
+                showTip(spot.dataset.hotspot);
+            };
+            spot.addEventListener('click', open);
+            spot.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') open(event);
+            });
+        });
     };
 
     const onScroll = () => {
@@ -218,9 +352,18 @@
             const animated = prepareSvg(svg);
             applyStateToSvg(svg, animated, k, scene);
             sceneBox.appendChild(svg);
+            if (data.compare) setCompare(svg, 50);
             const caption = document.createElement('figcaption');
             caption.innerHTML = `<p class="anim__step-number">${k === 0 ? scene.label : `Étape ${k} / ${scene.steps.length - 1}`}</p>`
                 + `<h3 class="anim__step-title">${data.title}</h3><p class="anim__step-text">${data.text}</p>`;
+            if (data.hotspots) {
+                const list = document.createElement('dl');
+                list.className = 'anim__hotspot-list';
+                Object.values(data.hotspots).forEach((info) => {
+                    list.innerHTML += `<dt>${info.title}</dt><dd>${info.text}</dd>`;
+                });
+                caption.appendChild(list);
+            }
             if (k === scene.steps.length - 1) {
                 const cta = els.cta.cloneNode(true);
                 cta.classList.add('is-visible');
@@ -242,11 +385,13 @@
         state.step = -1;
         state.stepCount = Math.max(0, scene.steps.length - 1);
 
+        const tabId = scene.group || id;
         els.tabs.forEach((tab) => {
-            const selected = tab.dataset.scene === id;
+            const selected = tab.dataset.scene === tabId;
             tab.setAttribute('aria-selected', selected ? 'true' : 'false');
             tab.tabIndex = selected ? 0 : -1;
         });
+        renderSubtabs(id);
         if (scrollToStart && window.history.replaceState) window.history.replaceState(null, '', `#${id}`);
 
         if (reduceMotion.matches) {
@@ -254,10 +399,10 @@
             return;
         }
 
-        els.scene.innerHTML = '';
+        clearScene();
         els.cta.classList.remove('is-visible');
         if (!scene.file) {
-            els.scene.innerHTML = '<p class="anim__scene--empty">Cette animation arrive bientôt.<br>Choisissez « Doublage » pour découvrir la première.</p>';
+            els.scene.insertAdjacentHTML('beforeend', '<p class="anim__scene--empty">Cette animation arrive bientôt.</p>');
             state.animated = [];
             els.progress.innerHTML = '';
             els.progressFill.style.width = '0';
@@ -271,9 +416,10 @@
         try {
             const svg = await loadSvg(scene.file);
             state.animated = prepareSvg(svg);
+            initHotspots(svg);
             els.scene.appendChild(svg);
         } catch (error) {
-            els.scene.innerHTML = '<p class="anim__scene--empty">Impossible de charger l’animation.</p>';
+            els.scene.insertAdjacentHTML('beforeend', '<p class="anim__scene--empty">Impossible de charger l’animation.</p>');
             return;
         }
 
@@ -284,6 +430,28 @@
             window.scrollTo({ top: Math.round(trackTop), behavior: 'auto' });
         }
         applyStep(stepFromScroll());
+    };
+
+    /* Sous-onglets (Rénovation : mur / plafond) */
+    const renderSubtabs = (currentId) => {
+        const current = SCENES[currentId];
+        els.subtabs.innerHTML = '';
+        if (!current.group) {
+            els.subtabs.hidden = true;
+            return;
+        }
+        Object.keys(SCENES)
+            .filter((id) => SCENES[id].group === current.group)
+            .forEach((id) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'anim__subtab';
+                button.textContent = SCENES[id].variant;
+                button.setAttribute('aria-pressed', id === currentId ? 'true' : 'false');
+                button.addEventListener('click', () => selectScene(id, { scrollToStart: true }));
+                els.subtabs.appendChild(button);
+            });
+        els.subtabs.hidden = false;
     };
 
     const initTabs = () => {
@@ -322,6 +490,12 @@
         const hash = window.location.hash.replace('#', '');
         const initial = SCENES[hash] ? hash : 'doublage';
         selectScene(initial);
+
+        els.compare.addEventListener('input', () => {
+            const svg = els.scene.querySelector('svg');
+            if (svg) setCompare(svg, Number(els.compare.value));
+        });
+        els.tipClose.addEventListener('click', hideTip);
 
         window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', () => {

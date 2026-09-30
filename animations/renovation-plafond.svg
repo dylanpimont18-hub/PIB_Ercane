@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 500" role="img" aria-labelledby="renoplaf-title" class="scene scene--renovation-plafond">
+  <title id="renoplaf-title">Rénovation d'un plafond taché et affaissé : diagnostic, dépose, plafond suspendu neuf, finitions et comparaison avant / après</title>
+
+  <defs>
+    <pattern id="fibres-rp" x="60" y="76" width="24" height="16" patternUnits="userSpaceOnUse">
+      <path d="M0 8 Q6 2 12 8 T24 8" fill="none" stroke="#D9B142" stroke-width="1.4" opacity="0.7"/>
+      <path d="M-6 14 Q0 8 6 14 T18 14" fill="none" stroke="#F3D877" stroke-width="1.2" opacity="0.7"/>
+    </pattern>
+    <pattern id="beton-rp" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="12" stroke="#9E9B95" stroke-width="1.2" opacity="0.55"/>
+    </pattern>
+
+    <!-- Vieux plafond : plâtre sur lattis, qui pend au milieu -->
+    <g id="rp-ties" fill="none" stroke="#85837D" stroke-width="2">
+      <line x1="150" y1="70" x2="150" y2="150"/>
+      <line x1="270" y1="70" x2="270" y2="100"/>
+      <line x1="390" y1="70" x2="390" y2="96"/>
+      <line x1="510" y1="70" x2="510" y2="150"/>
+    </g>
+    <g id="rp-lattis" fill="none">
+      <path class="mat-vieux-lattis" d="M60 150 Q360 214 660 150"/>
+      <path class="mat-vieux-lattis" d="M60 156 Q360 220 660 156"/>
+      <path class="mat-vieux-lattis" d="M60 162 Q360 226 660 162"/>
+    </g>
+    <g id="rp-platre-1">
+      <path class="mat-vieux-enduit" d="M60 164 Q160 178 260 194 L260 210 Q160 194 60 180 Z"/>
+    </g>
+    <g id="rp-platre-2">
+      <path class="mat-vieux-enduit" d="M260 194 Q360 208 460 194 L460 210 Q360 224 260 210 Z"/>
+      <path class="mat-fissure" d="M330 210 L342 200 L356 212 L372 204" stroke-width="1.5"/>
+    </g>
+    <g id="rp-platre-3">
+      <path class="mat-vieux-enduit" d="M460 194 Q560 178 660 164 L660 180 Q560 194 460 210 Z"/>
+      <ellipse class="mat-tache" cx="540" cy="200" rx="62" ry="11"/>
+      <ellipse class="mat-tache" cx="548" cy="200" rx="34" ry="6"/>
+    </g>
+
+    <!-- Plafond neuf complet, pour la comparaison -->
+    <g id="rp-new">
+      <rect class="mat-laine" x="60" y="76" width="600" height="96"/>
+      <rect x="60" y="76" width="600" height="96" fill="url(#fibres-rp)"/>
+      <g class="mat-metal">
+        <rect x="142" y="70" width="16" height="6"/><rect x="147" y="76" width="6" height="96"/><rect x="140" y="166" width="20" height="6"/>
+        <rect x="262" y="70" width="16" height="6"/><rect x="267" y="76" width="6" height="96"/><rect x="260" y="166" width="20" height="6"/>
+        <rect x="382" y="70" width="16" height="6"/><rect x="387" y="76" width="6" height="96"/><rect x="380" y="166" width="20" height="6"/>
+        <rect x="502" y="70" width="16" height="6"/><rect x="507" y="76" width="6" height="96"/><rect x="500" y="166" width="20" height="6"/>
+        <rect x="60" y="172" width="600" height="14"/>
+      </g>
+      <rect class="mat-placo" x="60" y="186" width="298" height="16"/>
+      <rect class="mat-placo" x="362" y="186" width="298" height="16"/>
+      <rect class="mat-enduit" x="60" y="202" width="600" height="5"/>
+      <rect class="mat-peinture" x="60" y="207" width="600" height="5"/>
+    </g>
+
+    <clipPath id="rp-clip">
+      <rect data-compare-clip="true" x="0" y="0" width="360" height="500"/>
+    </clipPath>
+  </defs>
+
+  <!-- ===== Décor fixe ===== -->
+  <g class="scene__decor">
+    <rect class="mat-interieur" x="0" y="0" width="720" height="500"/>
+    <rect class="mat-beton" x="0" y="30" width="720" height="40"/>
+    <rect x="0" y="30" width="720" height="40" fill="url(#beton-rp)"/>
+    <rect class="mat-placo" x="0" y="70" width="60" height="370"/>
+    <rect class="mat-placo" x="660" y="70" width="60" height="370"/>
+    <rect class="mat-beton" x="0" y="440" width="720" height="60"/>
+    <rect x="0" y="440" width="720" height="60" fill="url(#beton-rp)"/>
+    <text class="scene__label" x="360" y="22" text-anchor="middle">Dalle ou solives</text>
+    <text class="scene__label" x="360" y="360" text-anchor="middle">La pièce</text>
+  </g>
+
+  <!-- ===== Étapes 0-1 : le vieux plafond, puis la dépose ===== -->
+  <g data-out="2" class="anim-fade-out">
+    <use href="#rp-ties"/>
+    <use href="#rp-lattis" data-out="1" data-i="3" class="anim-fall-left"/>
+    <use href="#rp-platre-1" data-out="1" data-i="2" class="anim-fall"/>
+    <use href="#rp-platre-2" data-out="1" data-i="0" class="anim-fall"/>
+    <use href="#rp-platre-3" data-out="1" data-i="1" class="anim-fall"/>
+
+    <g class="hotspot" data-hotspot="tache" data-in="0" data-out="1">
+      <title>Tache d'humidité : en savoir plus</title>
+      <circle class="hotspot__ring" cx="540" cy="232" r="18"/>
+      <circle class="hotspot__dot" cx="540" cy="232" r="12"/>
+      <text x="540" y="238" text-anchor="middle">+</text>
+    </g>
+    <g class="hotspot" data-hotspot="affaissement" data-in="0" data-out="1">
+      <title>Plafond affaissé : en savoir plus</title>
+      <circle class="hotspot__ring" cx="300" cy="250" r="18"/>
+      <circle class="hotspot__dot" cx="300" cy="250" r="12"/>
+      <text x="300" y="256" text-anchor="middle">+</text>
+    </g>
+  </g>
+
+  <!-- ===== Étapes 2-3 : plafond neuf, en accéléré ===== -->
+  <g data-in="2" data-out="4" class="anim-fade">
+    <g data-in="2" data-i="3" class="anim-drop">
+      <rect class="mat-laine" x="60" y="76" width="600" height="96"/>
+      <rect x="60" y="76" width="600" height="96" fill="url(#fibres-rp)"/>
+    </g>
+    <g data-in="2" data-i="0" class="anim-drop">
+      <rect class="mat-metal" x="142" y="70" width="16" height="6"/><rect class="mat-metal" x="147" y="76" width="6" height="96"/><rect class="mat-metal" x="140" y="166" width="20" height="6"/>
+    </g>
+    <g data-in="2" data-i="0" class="anim-drop">
+      <rect class="mat-metal" x="262" y="70" width="16" height="6"/><rect class="mat-metal" x="267" y="76" width="6" height="96"/><rect class="mat-metal" x="260" y="166" width="20" height="6"/>
+    </g>
+    <g data-in="2" data-i="1" class="anim-drop">
+      <rect class="mat-metal" x="382" y="70" width="16" height="6"/><rect class="mat-metal" x="387" y="76" width="6" height="96"/><rect class="mat-metal" x="380" y="166" width="20" height="6"/>
+    </g>
+    <g data-in="2" data-i="1" class="anim-drop">
+      <rect class="mat-metal" x="502" y="70" width="16" height="6"/><rect class="mat-metal" x="507" y="76" width="6" height="96"/><rect class="mat-metal" x="500" y="166" width="20" height="6"/>
+    </g>
+    <g data-in="2" data-i="2" class="anim-from-right">
+      <rect class="mat-metal" x="60" y="172" width="600" height="14"/>
+      <line class="mat-metal-line" x1="60" y1="179" x2="660" y2="179"/>
+    </g>
+    <rect data-in="2" data-i="5" class="mat-placo anim-rise" x="60" y="186" width="298" height="16"/>
+    <rect data-in="2" data-i="5" class="mat-placo anim-rise" x="362" y="186" width="298" height="16"/>
+    <circle data-in="2" data-i="7" class="mat-vis anim-pop" cx="150" cy="194" r="3.5"/>
+    <circle data-in="2" data-i="7" class="mat-vis anim-pop" cx="270" cy="194" r="3.5"/>
+    <circle data-in="2" data-i="7" class="mat-vis anim-pop" cx="390" cy="194" r="3.5"/>
+    <circle data-in="2" data-i="7" class="mat-vis anim-pop" cx="510" cy="194" r="3.5"/>
+    <!-- Étape 3 : finitions -->
+    <rect data-in="3" class="mat-bande anim-pop" x="352" y="200" width="16" height="5" rx="1"/>
+    <rect data-in="3" class="mat-enduit anim-grow-right" x="60" y="202" width="600" height="5"/>
+    <rect data-in="3" class="mat-peinture anim-grow-right" x="60" y="207" width="600" height="5"/>
+  </g>
+
+  <!-- ===== Étape 4 : avant / après ===== -->
+  <g data-in="4" class="anim-fade">
+    <use href="#rp-new"/>
+    <g clip-path="url(#rp-clip)">
+      <rect class="mat-interieur" x="0" y="70" width="720" height="370"/>
+      <rect class="mat-placo" x="0" y="70" width="60" height="370"/>
+      <use href="#rp-ties"/>
+      <use href="#rp-lattis"/>
+      <use href="#rp-platre-1"/>
+      <use href="#rp-platre-2"/>
+      <use href="#rp-platre-3"/>
+      <rect class="compare__label-bg" x="72" y="270" width="76" height="28" rx="14"/>
+      <text class="compare__label" x="110" y="290" text-anchor="middle">Avant</text>
+    </g>
+    <rect class="compare__label-bg" x="572" y="270" width="76" height="28" rx="14"/>
+    <text class="compare__label" x="610" y="290" text-anchor="middle">Après</text>
+    <text class="scene__label" x="360" y="360" text-anchor="middle">La pièce</text>
+    <g data-compare-handle="true" transform="translate(360 0)">
+      <line class="compare__handle-line--shadow" x1="0" y1="70" x2="0" y2="440"/>
+      <line class="compare__handle-line" x1="0" y1="70" x2="0" y2="440"/>
+      <circle class="compare__handle-knob" cx="0" cy="300" r="18"/>
+      <path class="compare__handle-arrow" d="M-11 300 L-4 294 L-4 306 Z"/>
+      <path class="compare__handle-arrow" d="M11 300 L4 294 L4 306 Z"/>
+    </g>
+  </g>
+</svg>

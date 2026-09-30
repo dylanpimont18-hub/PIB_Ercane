@@ -76,13 +76,23 @@
                         <button type="button" class="anim__tab" role="tab" data-scene="renovation" aria-selected="false" tabindex="-1">Rénovation</button>
                     </div>
 
-                    <div class="anim__scene" aria-hidden="true"></div>
+                    <div class="anim__subtabs" hidden></div>
+
+                    <div class="anim__scene">
+                        <input type="range" class="anim__compare" min="0" max="100" value="50" step="1" aria-label="Comparer avant et après" hidden>
+                    </div>
 
                     <div class="anim__caption" aria-live="polite" aria-atomic="true">
                         <div class="anim__caption-inner">
                             <p class="anim__step-number">Doublage</p>
                             <h2 class="anim__step-title">Chargement…</h2>
                             <p class="anim__step-text"></p>
+                        </div>
+                        <div class="anim__tip" hidden>
+                            <p class="anim__step-number">Diagnostic</p>
+                            <h3 class="anim__tip-title"></h3>
+                            <p class="anim__tip-text"></p>
+                            <button type="button" class="anim__tip-close">Fermer</button>
                         </div>
                         <a href="index.html#contact" class="button anim__cta">Demandez un devis</a>
                     </div>

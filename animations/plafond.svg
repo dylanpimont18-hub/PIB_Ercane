@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 500" role="img" aria-labelledby="plafond-title" class="scene scene--plafond">
+  <title id="plafond-title">Coupe d'un plafond suspendu : suspentes, fourrures, isolant et plaques de plâtre sous une dalle</title>
+
+  <defs>
+    <pattern id="fibres-p" x="60" y="76" width="24" height="16" patternUnits="userSpaceOnUse">
+      <path d="M0 8 Q6 2 12 8 T24 8" fill="none" stroke="#D9B142" stroke-width="1.4" opacity="0.7"/>
+      <path d="M-6 14 Q0 8 6 14 T18 14" fill="none" stroke="#F3D877" stroke-width="1.2" opacity="0.7"/>
+    </pattern>
+    <pattern id="beton-p" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="12" stroke="#9E9B95" stroke-width="1.2" opacity="0.55"/>
+    </pattern>
+  </defs>
+
+  <!-- ===== Décor fixe ===== -->
+  <g class="scene__decor">
+    <rect class="mat-interieur" x="0" y="0" width="720" height="500"/>
+    <!-- Dalle haute -->
+    <rect class="mat-beton" x="0" y="30" width="720" height="40"/>
+    <rect x="0" y="30" width="720" height="40" fill="url(#beton-p)"/>
+    <!-- Murs latéraux -->
+    <rect class="mat-placo" x="0" y="70" width="60" height="370"/>
+    <rect class="mat-placo" x="660" y="70" width="60" height="370"/>
+    <!-- Sol -->
+    <rect class="mat-beton" x="0" y="440" width="720" height="60"/>
+    <rect x="0" y="440" width="720" height="60" fill="url(#beton-p)"/>
+
+    <text class="scene__label" x="360" y="22" text-anchor="middle">Dalle béton ou charpente</text>
+    <text class="scene__label" x="360" y="340" text-anchor="middle">La pièce</text>
+  </g>
+
+  <!-- ===== Étape 3 : isolant au-dessus (dessiné avant les suspentes pour passer derrière) ===== -->
+  <g class="layer layer--laine">
+    <g data-in="3" class="anim-drop">
+      <rect class="mat-laine" x="60" y="76" width="600" height="96"/>
+      <rect x="60" y="76" width="600" height="96" fill="url(#fibres-p)"/>
+    </g>
+  </g>
+
+  <!-- ===== Étape 1 : suspentes, une à une ===== -->
+  <g class="layer layer--suspentes">
+    <g data-in="1" class="anim-drop">
+      <rect class="mat-metal" x="142" y="70" width="16" height="6"/>
+      <rect class="mat-metal" x="147" y="76" width="6" height="96"/>
+      <rect class="mat-metal" x="140" y="166" width="20" height="6"/>
+    </g>
+    <g data-in="1" class="anim-drop">
+      <rect class="mat-metal" x="262" y="70" width="16" height="6"/>
+      <rect class="mat-metal" x="267" y="76" width="6" height="96"/>
+      <rect class="mat-metal" x="260" y="166" width="20" height="6"/>
+    </g>
+    <g data-in="1" class="anim-drop">
+      <rect class="mat-metal" x="382" y="70" width="16" height="6"/>
+      <rect class="mat-metal" x="387" y="76" width="6" height="96"/>
+      <rect class="mat-metal" x="380" y="166" width="20" height="6"/>
+    </g>
+    <g data-in="1" class="anim-drop">
+      <rect class="mat-metal" x="502" y="70" width="16" height="6"/>
+      <rect class="mat-metal" x="507" y="76" width="6" height="96"/>
+      <rect class="mat-metal" x="500" y="166" width="20" height="6"/>
+    </g>
+    <g data-in="1" class="anim-fade scene__cote">
+      <line x1="150" y1="228" x2="270" y2="228"/>
+      <line x1="150" y1="224" x2="150" y2="232"/>
+      <line x1="270" y1="224" x2="270" y2="232"/>
+      <text x="210" y="248" text-anchor="middle">60 cm</text>
+    </g>
+  </g>
+
+  <!-- ===== Étape 2 : fourrure en travers, clipsée sous les suspentes ===== -->
+  <g class="layer layer--fourrures">
+    <g data-in="2" class="anim-from-right">
+      <rect class="mat-metal" x="60" y="172" width="600" height="14"/>
+      <line class="mat-metal-line" x1="60" y1="179" x2="660" y2="179"/>
+    </g>
+  </g>
+
+  <!-- ===== Étape 4 : plaques qui montent et se vissent ===== -->
+  <g class="layer layer--placo">
+    <g data-in="4" class="anim-rise">
+      <rect class="mat-placo" x="60" y="186" width="298" height="16"/>
+    </g>
+    <g data-in="4" class="anim-rise">
+      <rect class="mat-placo" x="362" y="186" width="298" height="16"/>
+    </g>
+    <circle data-in="4" class="mat-vis anim-pop" cx="150" cy="194" r="3.5"/>
+    <circle data-in="4" class="mat-vis anim-pop" cx="270" cy="194" r="3.5"/>
+    <circle data-in="4" class="mat-vis anim-pop" cx="390" cy="194" r="3.5"/>
+    <circle data-in="4" class="mat-vis anim-pop" cx="510" cy="194" r="3.5"/>
+  </g>
+
+  <!-- ===== Étape 5 : bande sur le joint puis enduit ===== -->
+  <g class="layer layer--finitions">
+    <rect data-in="5" class="mat-bande anim-pop" x="352" y="200" width="16" height="5" rx="1"/>
+    <rect data-in="5" class="mat-enduit anim-grow-right" x="60" y="202" width="600" height="5"/>
+  </g>
+
+  <!-- ===== Étape 6 : peinture ===== -->
+  <g class="layer layer--peinture">
+    <rect data-in="6" class="mat-peinture anim-grow-right" x="60" y="207" width="600" height="5"/>
+    <!-- Spot encastré, pour le plaisir -->
+    <g data-in="6" class="anim-pop">
+      <rect class="mat-metal" x="580" y="200" width="24" height="12" rx="2"/>
+      <circle fill="#FFF3C4" stroke="#E0C97A" stroke-width="1" cx="592" cy="212" r="5"/>
+    </g>
+  </g>
+</svg>

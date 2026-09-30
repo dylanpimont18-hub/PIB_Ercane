@@ -326,6 +326,10 @@
     transition-delay: 0s;
 }
 
+[data-in]:not(.is-in) {
+    pointer-events: none;
+}
+
 [data-in].is-in {
     opacity: 1;
     transform: none;
@@ -341,6 +345,177 @@
 .anim-grow-up { transform: scaleY(0); transform-origin: bottom center; }
 .anim-grow-down { transform: scaleY(0); transform-origin: top center; }
 .anim-unroll { transform: scaleY(0); transform-origin: top center; }
+
+/* Éléments qui disparaissent (dépose) : data-out="k" */
+[data-out] {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease);
+}
+
+[data-out].is-out {
+    opacity: 0;
+    pointer-events: none;
+    transition-delay: calc(var(--i, 0) * var(--anim-stagger));
+}
+
+[data-out].is-out.anim-fall { transform: translateY(90px) rotate(6deg); }
+[data-out].is-out.anim-fall-left { transform: translate(-30px, 90px) rotate(-10deg); }
+[data-out].is-out.anim-fade-out { transform: none; }
+
+/* Mouvements supplémentaires */
+.anim-grow-right { transform: scaleX(0); transform-origin: left center; }
+.anim-grow-left { transform: scaleX(0); transform-origin: right center; }
+
+/* Jauge horizontale (acoustique) */
+.gauge__fill--x {
+    transform-origin: left center;
+    transform: scaleX(var(--gauge, 0));
+}
+
+/* Tracé au sol */
+.scene__trace {
+    stroke: var(--accent-color);
+    stroke-width: 3;
+    stroke-dasharray: 10 6;
+    fill: none;
+}
+
+/* Vieux matériaux (rénovation) */
+.mat-vieux-enduit { fill: #D8CFC0; stroke: #C4B9A6; stroke-width: 1; }
+.mat-vieux-lattis { stroke: #A8865A; stroke-width: 2; }
+.mat-papier { fill: #E9E0D0; stroke: #D3C7B2; stroke-width: 1; }
+.mat-papier-dos { fill: #F4EFE6; stroke: #D3C7B2; stroke-width: 1; }
+.mat-fissure { fill: none; stroke: #5C5650; stroke-width: 2.5; stroke-linejoin: round; }
+.mat-humidite { fill: rgba(74, 144, 217, 0.28); stroke: rgba(60, 110, 170, 0.5); stroke-width: 1; }
+.mat-tache { fill: rgba(139, 90, 43, 0.35); stroke: rgba(110, 70, 30, 0.5); stroke-width: 1; }
+.mat-bois { fill: #C9A879; stroke: #A8865A; stroke-width: 1; }
+.mat-plinthe { fill: #D9CBB6; stroke: #C4B49B; stroke-width: 1; }
+
+/* Pastilles du diagnostic */
+.hotspot { cursor: pointer; }
+.hotspot__ring {
+    fill: rgba(232, 126, 90, 0.25);
+    stroke: var(--accent-color);
+    stroke-width: 2;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+.hotspot__dot { fill: var(--accent-color); }
+.hotspot text { fill: var(--white-color); font-family: var(--title-font); font-weight: 700; font-size: 16px; }
+.hotspot:hover .hotspot__dot,
+.hotspot:focus .hotspot__dot { fill: var(--primary-color); }
+.hotspot:focus { outline: none; }
+.hotspot:focus-visible .hotspot__ring { stroke: var(--primary-color); stroke-width: 3; }
+
+@keyframes hotspot-pulse {
+    0% { transform: scale(0.85); opacity: 0.9; }
+    70% { transform: scale(1.5); opacity: 0; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+.is-diagnostic .hotspot.is-in .hotspot__ring {
+    animation: hotspot-pulse 1.8s ease-out infinite;
+}
+
+/* Info-bulle du diagnostic (dans la légende) */
+.anim__tip-title {
+    font-family: var(--title-font);
+    font-size: 1.15rem;
+    color: var(--primary-color);
+    margin: 0.1rem 0 0.35rem;
+}
+
+.anim__tip-text {
+    line-height: 1.55;
+    margin: 0 0 0.6rem;
+}
+
+.anim__tip-close {
+    font-family: var(--title-font);
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    background: none;
+    border: 1px solid var(--accent-color);
+    border-radius: 999px;
+    padding: 0.3rem 0.9rem;
+    cursor: pointer;
+}
+
+.anim__hotspot-list {
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.25rem;
+}
+
+.anim__hotspot-list dt {
+    font-family: var(--title-font);
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.anim__hotspot-list dd {
+    margin: 0 0 0.5rem;
+    line-height: 1.5;
+}
+
+/* Curseur avant / après : un <input type="range"> invisible sur toute la scène */
+.anim__scene {
+    position: relative;
+}
+
+.anim__compare {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    z-index: 2;
+}
+
+.anim__scene.is-comparing:focus-within {
+    outline: 3px solid var(--primary-light);
+    outline-offset: 2px;
+}
+
+.compare__handle-line { stroke: var(--white-color); stroke-width: 3; }
+.compare__handle-line--shadow { stroke: rgba(0, 0, 0, 0.35); stroke-width: 5; }
+.compare__handle-knob { fill: var(--white-color); stroke: var(--primary-color); stroke-width: 2; }
+.compare__handle-arrow { fill: var(--primary-color); }
+.compare__label {
+    font-family: var(--title-font);
+    font-weight: 700;
+    font-size: 16px;
+    fill: var(--white-color);
+}
+.compare__label-bg { fill: rgba(30, 26, 23, 0.65); }
+
+/* Sous-onglets (Rénovation) */
+.anim__subtabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.anim__subtab {
+    font-family: var(--title-font);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: var(--white-color);
+    border: 1px solid var(--primary-light);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.anim__subtab[aria-pressed="true"] {
+    background: var(--primary-light);
+    color: var(--white-color);
+}
 
 /* -------------------- Mode « réduire les animations » -------------------- */
 /* Une image fixe par étape, empilées, avec la légende en dessous. */
@@ -360,9 +535,18 @@
 }
 
 .anim__static [data-in],
+.anim__static [data-out],
 .anim__static .gauge__fill,
 .anim__static .anim__caption-inner {
     transition: none !important;
+}
+
+.anim__static .hotspot__ring {
+    animation: none !important;
+}
+
+.anim__static .hotspot {
+    cursor: default;
 }
 
 .anim__static-step {
@@ -387,6 +571,7 @@
 
 @media (prefers-reduced-motion: reduce) {
     [data-in],
+    [data-out],
     .gauge__fill,
     .anim__progress-fill,
     .anim__caption-inner,
@@ -438,9 +623,10 @@
     .anim__stage {
         display: grid;
         grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-        grid-template-rows: auto minmax(0, 1fr) auto;
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
         grid-template-areas:
             "tabs tabs"
+            "subtabs subtabs"
             "scene caption"
             "progress progress";
         column-gap: 2.5rem;
@@ -449,6 +635,8 @@
     }
 
     .anim__tabs { grid-area: tabs; }
+    .anim__subtabs { grid-area: subtabs; }
+    .anim__subtabs[hidden] { display: none; }
     .anim__scene { grid-area: scene; align-self: center; }
     .anim__caption {
         grid-area: caption;

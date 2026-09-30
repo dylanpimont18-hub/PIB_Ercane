@@ -1,0 +1,212 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 500" role="img" aria-labelledby="renomur-title" class="scene scene--renovation-mur">
+  <title id="renomur-title">Rénovation d'un mur abîmé : diagnostic, dépose de l'ancien revêtement, doublage isolé, finitions et comparaison avant / après</title>
+
+  <defs>
+    <pattern id="fibres-r" x="250" y="64" width="24" height="16" patternUnits="userSpaceOnUse">
+      <path d="M0 8 Q6 2 12 8 T24 8" fill="none" stroke="#D9B142" stroke-width="1.4" opacity="0.7"/>
+      <path d="M-6 14 Q0 8 6 14 T18 14" fill="none" stroke="#F3D877" stroke-width="1.2" opacity="0.7"/>
+    </pattern>
+    <pattern id="beton-r" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="12" stroke="#9E9B95" stroke-width="1.2" opacity="0.55"/>
+    </pattern>
+    <!-- Appareillage des parpaings vus de face -->
+    <pattern id="courses-r" x="60" y="60" width="120" height="100" patternUnits="userSpaceOnUse">
+      <rect width="120" height="100" fill="#9C9A94"/>
+      <line x1="0" y1="0" x2="120" y2="0" stroke="#85837D" stroke-width="3"/>
+      <line x1="0" y1="50" x2="120" y2="50" stroke="#85837D" stroke-width="3"/>
+      <line x1="0" y1="0" x2="0" y2="50" stroke="#85837D" stroke-width="3"/>
+      <line x1="60" y1="50" x2="60" y2="100" stroke="#85837D" stroke-width="3"/>
+    </pattern>
+    <!-- Motif du vieux papier peint -->
+    <pattern id="papier-motif" x="510" y="60" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="8" cy="8" r="3" fill="#CDBF9F" opacity="0.8"/>
+      <circle cx="23" cy="23" r="3" fill="#CDBF9F" opacity="0.8"/>
+    </pattern>
+
+    <!-- Le mur nu, vu de face -->
+    <g id="rm-support">
+      <rect x="60" y="60" width="600" height="380" fill="url(#courses-r)"/>
+    </g>
+
+    <!-- Le vieil enduit, en quatre morceaux, avec ses désordres -->
+    <g id="rm-enduit-1">
+      <rect class="mat-vieux-enduit" x="60" y="60" width="150" height="380"/>
+      <path class="mat-humidite" d="M62 438 C70 380 120 356 175 372 C205 382 208 420 204 438 Z"/>
+      <circle class="mat-humidite" cx="120" cy="352" r="7"/>
+      <circle class="mat-humidite" cx="160" cy="344" r="5"/>
+    </g>
+    <g id="rm-enduit-2">
+      <rect class="mat-vieux-enduit" x="210" y="60" width="150" height="380"/>
+      <path class="mat-fissure" d="M298 60 L288 108 L306 150 L294 198 L312 246 L300 292 L310 330"/>
+      <path class="mat-fissure" d="M306 150 L322 162" stroke-width="1.5"/>
+    </g>
+    <g id="rm-enduit-3">
+      <rect class="mat-vieux-enduit" x="360" y="60" width="150" height="380"/>
+      <path fill="#9C9A94" stroke="#85837D" stroke-width="1" d="M400 262 L440 250 L472 282 L458 322 L412 334 L388 300 Z"/>
+      <path fill="#C4B9A6" d="M382 246 L398 240 L402 256 Z"/>
+      <path fill="#C4B9A6" d="M476 332 L494 326 L490 346 Z"/>
+      <path fill="#C4B9A6" d="M420 346 L436 342 L430 360 Z"/>
+      <path fill="#C4B9A6" d="M456 232 L470 226 L468 244 Z"/>
+    </g>
+    <g id="rm-enduit-4">
+      <rect class="mat-vieux-enduit" x="510" y="60" width="150" height="380"/>
+    </g>
+    <!-- Le papier peint, dont un coin se décolle -->
+    <g id="rm-papier">
+      <rect class="mat-papier" x="510" y="60" width="150" height="380"/>
+      <rect x="510" y="60" width="150" height="380" fill="url(#papier-motif)"/>
+      <path class="mat-papier-dos" d="M510 60 L610 60 L510 172 Z"/>
+      <path fill="none" stroke="#C4B9A6" stroke-width="1" d="M510 60 L610 60 L510 172"/>
+    </g>
+
+    <!-- Le mur rénové, vu de face -->
+    <g id="rm-clean">
+      <rect class="mat-peinture" x="60" y="60" width="600" height="380"/>
+      <rect class="mat-plinthe" x="60" y="422" width="600" height="18"/>
+      <rect fill="#FFFFFF" stroke="#D9D2C2" stroke-width="1.5" x="120" y="300" width="34" height="34" rx="4"/>
+      <circle fill="#D9D2C2" cx="137" cy="317" r="7"/>
+    </g>
+
+    <clipPath id="rm-clip">
+      <rect data-compare-clip="true" x="0" y="0" width="360" height="500"/>
+    </clipPath>
+  </defs>
+
+  <!-- ===== Décor fixe de la vue de face ===== -->
+  <g class="scene__decor">
+    <rect class="mat-interieur" x="0" y="0" width="720" height="500"/>
+    <rect class="mat-beton" x="0" y="30" width="720" height="30"/>
+    <rect x="0" y="30" width="720" height="30" fill="url(#beton-r)"/>
+    <rect class="mat-placo" x="0" y="60" width="60" height="380"/>
+    <rect class="mat-placo" x="660" y="60" width="60" height="380"/>
+    <rect class="mat-beton" x="0" y="440" width="720" height="60"/>
+    <rect x="0" y="440" width="720" height="60" fill="url(#beton-r)"/>
+  </g>
+
+  <!-- ===== Étapes 0-1 : le mur abîmé, puis la dépose ===== -->
+  <g data-out="2" class="anim-fade-out">
+    <use href="#rm-support"/>
+    <use href="#rm-enduit-1" data-out="1" data-i="3" class="anim-fall"/>
+    <use href="#rm-enduit-2" data-out="1" data-i="2" class="anim-fall"/>
+    <use href="#rm-enduit-3" data-out="1" data-i="1" class="anim-fall"/>
+    <use href="#rm-enduit-4" data-out="1" data-i="4" class="anim-fall"/>
+    <use href="#rm-papier" data-out="1" data-i="0" class="anim-fall-left"/>
+
+    <!-- Pastilles cliquables du diagnostic -->
+    <g class="hotspot" data-hotspot="fissure" data-in="0" data-out="1">
+      <title>Fissure : en savoir plus</title>
+      <circle class="hotspot__ring" cx="330" cy="180" r="18"/>
+      <circle class="hotspot__dot" cx="330" cy="180" r="12"/>
+      <text x="330" y="186" text-anchor="middle">+</text>
+    </g>
+    <g class="hotspot" data-hotspot="humidite" data-in="0" data-out="1">
+      <title>Humidité : en savoir plus</title>
+      <circle class="hotspot__ring" cx="140" cy="395" r="18"/>
+      <circle class="hotspot__dot" cx="140" cy="395" r="12"/>
+      <text x="140" y="401" text-anchor="middle">+</text>
+    </g>
+    <g class="hotspot" data-hotspot="friable" data-in="0" data-out="1">
+      <title>Enduit friable : en savoir plus</title>
+      <circle class="hotspot__ring" cx="430" cy="290" r="18"/>
+      <circle class="hotspot__dot" cx="430" cy="290" r="12"/>
+      <text x="430" y="296" text-anchor="middle">+</text>
+    </g>
+    <g class="hotspot" data-hotspot="papier" data-in="0" data-out="1">
+      <title>Papier décollé : en savoir plus</title>
+      <circle class="hotspot__ring" cx="560" cy="120" r="18"/>
+      <circle class="hotspot__dot" cx="560" cy="120" r="12"/>
+      <text x="560" y="126" text-anchor="middle">+</text>
+    </g>
+  </g>
+
+  <!-- ===== Étapes 2-3 : reconstruction en coupe (mêmes couches que le doublage, en accéléré) ===== -->
+  <g data-in="2" data-out="4" class="anim-fade">
+    <rect class="mat-exterieur" x="0" y="0" width="90" height="440"/>
+    <rect class="mat-interieur" x="90" y="0" width="630" height="440"/>
+    <rect class="mat-beton" x="90" y="30" width="510" height="34"/>
+    <rect x="90" y="30" width="510" height="34" fill="url(#beton-r)"/>
+    <rect class="mat-beton" x="0" y="436" width="720" height="64"/>
+    <rect x="0" y="436" width="720" height="64" fill="url(#beton-r)"/>
+    <text class="scene__label" x="45" y="112" text-anchor="middle">Extérieur</text>
+    <text class="scene__label" x="500" y="112" text-anchor="middle">Intérieur</text>
+    <g class="scene__cote"><text x="360" y="22" text-anchor="middle">Vue en coupe</text></g>
+
+    <!-- Le mur nu, en coupe -->
+    <g data-in="2" data-i="0" class="anim-fade">
+      <rect class="mat-parpaing" x="90" y="64" width="160" height="372"/>
+      <rect class="mat-parpaing-cell" x="110" y="72" width="50" height="29"/><rect class="mat-parpaing-cell" x="180" y="72" width="50" height="29"/>
+      <rect class="mat-parpaing-cell" x="110" y="119" width="50" height="29"/><rect class="mat-parpaing-cell" x="180" y="119" width="50" height="29"/>
+      <rect class="mat-parpaing-cell" x="110" y="166" width="50" height="29"/><rect class="mat-parpaing-cell" x="180" y="166" width="50" height="29"/>
+      <rect class="mat-parpaing-cell" x="110" y="213" width="50" height="29"/><rect class="mat-parpaing-cell" x="180" y="213" width="50" height="29"/>
+      <rect class="mat-parpaing-cell" x="110" y="260" width="50" height="29"/><rect class="mat-parpaing-cell" x="180" y="260" width="50" height="29"/>
+      <rect class="mat-parpaing-cell" x="110" y="307" width="50" height="29"/><rect class="mat-parpaing-cell" x="180" y="307" width="50" height="29"/>
+      <rect class="mat-parpaing-cell" x="110" y="354" width="50" height="29"/><rect class="mat-parpaing-cell" x="180" y="354" width="50" height="29"/>
+      <rect class="mat-parpaing-cell" x="110" y="401" width="50" height="29"/><rect class="mat-parpaing-cell" x="180" y="401" width="50" height="29"/>
+      <line x1="90" y1="106" x2="250" y2="106" stroke="#85837D"/><line x1="90" y1="153" x2="250" y2="153" stroke="#85837D"/>
+      <line x1="90" y1="200" x2="250" y2="200" stroke="#85837D"/><line x1="90" y1="247" x2="250" y2="247" stroke="#85837D"/>
+      <line x1="90" y1="294" x2="250" y2="294" stroke="#85837D"/><line x1="90" y1="341" x2="250" y2="341" stroke="#85837D"/>
+      <line x1="90" y1="388" x2="250" y2="388" stroke="#85837D"/>
+    </g>
+    <!-- Laine (derrière l'ossature) -->
+    <g data-in="2" data-i="4" class="anim-from-right">
+      <rect class="mat-laine" x="250" y="64" width="90" height="372"/>
+      <rect x="250" y="64" width="90" height="372" fill="url(#fibres-r)"/>
+    </g>
+    <!-- Rails -->
+    <g data-in="2" data-i="2" class="anim-drop">
+      <rect class="mat-metal" x="316" y="430" width="24" height="6"/>
+      <rect class="mat-metal" x="316" y="414" width="5" height="22"/>
+      <rect class="mat-metal" x="335" y="414" width="5" height="22"/>
+    </g>
+    <g data-in="2" data-i="2" class="anim-rise">
+      <rect class="mat-metal" x="316" y="64" width="24" height="6"/>
+      <rect class="mat-metal" x="316" y="64" width="5" height="22"/>
+      <rect class="mat-metal" x="335" y="64" width="5" height="22"/>
+    </g>
+    <!-- Montant -->
+    <g data-in="2" data-i="3" class="anim-grow-up">
+      <rect class="mat-metal" x="318" y="70" width="22" height="360"/>
+      <line class="mat-metal-line" x1="323" y1="70" x2="323" y2="430"/>
+      <line class="mat-metal-line" x1="335" y1="70" x2="335" y2="430"/>
+    </g>
+    <!-- Pare-vapeur -->
+    <rect data-in="2" data-i="6" class="mat-pare-vapeur anim-unroll" x="340" y="64" width="8" height="372"/>
+    <!-- Placo + vis -->
+    <rect data-in="2" data-i="7" class="mat-placo anim-from-right" x="348" y="64" width="30" height="184"/>
+    <rect data-in="2" data-i="7" class="mat-placo anim-from-right" x="348" y="252" width="30" height="184"/>
+    <circle data-in="2" data-i="9" class="mat-vis anim-pop" cx="363" cy="96" r="3.5"/>
+    <circle data-in="2" data-i="9" class="mat-vis anim-pop" cx="363" cy="150" r="3.5"/>
+    <circle data-in="2" data-i="9" class="mat-vis anim-pop" cx="363" cy="204" r="3.5"/>
+    <circle data-in="2" data-i="9" class="mat-vis anim-pop" cx="363" cy="296" r="3.5"/>
+    <circle data-in="2" data-i="9" class="mat-vis anim-pop" cx="363" cy="350" r="3.5"/>
+    <circle data-in="2" data-i="9" class="mat-vis anim-pop" cx="363" cy="404" r="3.5"/>
+    <!-- Étape 3 : finitions -->
+    <rect data-in="3" class="mat-bande anim-pop" x="376" y="234" width="6" height="32" rx="1"/>
+    <rect data-in="3" class="mat-enduit anim-grow-down" x="378" y="64" width="6" height="372"/>
+    <rect data-in="3" class="mat-peinture anim-grow-down" x="384" y="64" width="6" height="372"/>
+  </g>
+
+  <!-- ===== Étape 4 : avant / après, vue de face ===== -->
+  <g data-in="4" class="anim-fade">
+    <use href="#rm-clean"/>
+    <g clip-path="url(#rm-clip)">
+      <use href="#rm-support"/>
+      <use href="#rm-enduit-1"/>
+      <use href="#rm-enduit-2"/>
+      <use href="#rm-enduit-3"/>
+      <use href="#rm-enduit-4"/>
+      <use href="#rm-papier"/>
+      <rect class="compare__label-bg" x="72" y="72" width="76" height="28" rx="14"/>
+      <text class="compare__label" x="110" y="92" text-anchor="middle">Avant</text>
+    </g>
+    <rect class="compare__label-bg" x="572" y="72" width="76" height="28" rx="14"/>
+    <text class="compare__label" x="610" y="92" text-anchor="middle">Après</text>
+    <g data-compare-handle="true" transform="translate(360 0)">
+      <line class="compare__handle-line--shadow" x1="0" y1="30" x2="0" y2="500"/>
+      <line class="compare__handle-line" x1="0" y1="30" x2="0" y2="500"/>
+      <circle class="compare__handle-knob" cx="0" cy="250" r="18"/>
+      <path class="compare__handle-arrow" d="M-11 250 L-4 244 L-4 256 Z"/>
+      <path class="compare__handle-arrow" d="M11 250 L4 244 L4 256 Z"/>
+    </g>
+  </g>
+</svg>
